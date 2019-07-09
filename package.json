@@ -4,5 +4,8 @@
   "description": "CLI утилита для быстрого добавления e2e тестов в проект",
   "main": "index.js",
   "author": "Maxim Samoilov <nitive@icloud.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "prettier": "^1.18.2"
+  }
 }
