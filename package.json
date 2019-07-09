@@ -5,7 +5,16 @@
   "main": "index.js",
   "author": "Maxim Samoilov <nitive@icloud.com>",
   "license": "MIT",
+  "bin": {
+    "eto": "./bin/eto.js"
+  },
   "devDependencies": {
+    "@types/jest": "^24.0.15",
+    "jest": "^24.8.0",
+    "memfs": "^2.15.4",
     "prettier": "^1.18.2"
+  },
+  "dependencies": {
+    "yargs": "^13.2.4"
   }
 }
