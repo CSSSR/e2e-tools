@@ -1,28 +1,4 @@
-const { Volume, createFsFromVolume } = require('memfs')
-const yargs = require('yargs')
-const { main } = require('../src')
-
-/**
- *
- * @param {string} cmd command to run
- * @returns {Promise<{ fs: import('fs') }>}
- */
-async function run(cmd) {
-  yargs.reset()
-
-  /** @type {any} */
-  const fs = createFsFromVolume(new Volume())
-  process.chdir('/')
-
-  main({
-    yargs: yargs(['/bin/node', '/bin/eto']),
-    fs,
-  })
-
-  yargs.parse(cmd)
-
-  return { fs }
-}
+const { run } = require('./run')
 
 describe('init command', () => {
   it('should create e2e-tests/ directory', async () => {
