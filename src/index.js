@@ -39,6 +39,9 @@ const initCommand = ({ fs }) => ({
       { fs },
       { toolsVersion: '~' + e2eToolsPackage.version }
     )
+
+    createByTemplate('./e2e-tests/.eslintrc.js', { fs })
+    createByTemplate('./e2e-tests/.eslintignore', { fs })
   },
 })
 

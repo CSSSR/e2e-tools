@@ -39,4 +39,22 @@ describe('init command', () => {
       }
   `)
   })
+
+  it('should create eslint files', async () => {
+    const { fs } = await run('init')
+
+    const eslintFile = fs.readFileSync('/e2e-tests/.eslintrc.js', { encoding: 'utf8' })
+    expect(eslintFile).toMatchInlineSnapshot(`
+        "module.exports = {
+          extends: ['@csssr/e2e-tools/eslint'],
+        }
+        "
+    `)
+
+    const eslintIgnoreFile = fs.readFileSync('/e2e-tests/.eslintignore', { encoding: 'utf8' })
+    expect(eslintIgnoreFile).toMatchInlineSnapshot(`
+      "!.eslintrc.js
+      "
+    `)
+  })
 })
