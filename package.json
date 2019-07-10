@@ -8,6 +8,9 @@
   "bin": {
     "eto": "./bin/eto.js"
   },
+  "scripts": {
+    "fix": "npx prettier --write '**/*.{js,js.hbs,json,json.hbs}'"
+  },
   "devDependencies": {
     "@types/jest": "^24.0.15",
     "jest": "^24.8.0",
