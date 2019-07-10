@@ -1,6 +1,7 @@
 const path = require('path')
 const realFs = require('fs')
 const { compile } = require('handlebars')
+const e2eToolsPackage = require('../package.json')
 
 /**
  * @typedef {'mkdirSync' | 'statSync' | 'writeFileSync'} UsedFsMethods
@@ -16,11 +17,12 @@ const { compile } = require('handlebars')
  *
  * @param {string} pathToFile Path to destination file
  * @param {{ fs: FileSystem }} templateOptions
+ * @param {object=} templateContext
  */
-function createByTemplate(pathToFile, { fs }) {
+function createByTemplate(pathToFile, { fs }, templateContext) {
   const pathToTemplate = path.join(__dirname, '../templates', pathToFile + '.hbs')
   const render = compile(realFs.readFileSync(pathToTemplate, { encoding: 'utf8' }))
-  fs.writeFileSync(pathToFile, render({}))
+  fs.writeFileSync(pathToFile, render(templateContext))
 }
 
 /**
@@ -32,6 +34,11 @@ const initCommand = ({ fs }) => ({
   handler() {
     fs.mkdirSync('./e2e-tests')
     createByTemplate('./e2e-tests/.gitignore', { fs })
+    createByTemplate(
+      './e2e-tests/package.json',
+      { fs },
+      { toolsVersion: '~' + e2eToolsPackage.version }
+    )
   },
 })
 
