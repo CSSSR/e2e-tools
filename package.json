@@ -18,6 +18,7 @@
     "prettier": "^1.18.2"
   },
   "dependencies": {
+    "prettier": "1.18.2",
     "yargs": "^13.2.4"
   }
 }
