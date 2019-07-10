@@ -5,12 +5,13 @@ const { main } = require('../src')
 /**
  *
  * @param {string} cmd command to run
+ * @param {{ initialFileSystemState?: any }} options
  * @returns {Promise<{ fs: import('fs'), files: { [filePath: string]: string } }>}
  */
-exports.run = async cmd => {
+async function run(cmd, options = {}) {
   yargs.reset()
 
-  const volume = new Volume()
+  const volume = Volume.fromJSON(options.initialFileSystemState)
   /** @type {any} */
   const fs = createFsFromVolume(volume)
   process.chdir('/')
@@ -23,4 +24,15 @@ exports.run = async cmd => {
   yargs.parse(cmd)
 
   return { fs, files: volume.toJSON() }
+}
+
+async function runInInitedProject(cmd) {
+  const { files } = await run('init')
+
+  return run(cmd, { initialFileSystemState: files })
+}
+
+module.exports = {
+  run,
+  runInInitedProject,
 }

@@ -1,0 +1,12 @@
+FROM node:8
+
+WORKDIR /usr/src/app
+
+COPY ../package.json ../yarn.lock ./
+RUN yarn install --frozen-lockfile && yarn cache clean
+
+COPY . ./nightwatch
+
+RUN touch .env
+
+ENTRYPOINT npx -p @csssr/e2e-tools run

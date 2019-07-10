@@ -13,11 +13,13 @@
   },
   "devDependencies": {
     "@types/jest": "^24.0.15",
+    "@types/node": "^12.6.2",
     "jest": "^24.8.0",
     "memfs": "^2.15.4",
     "prettier": "1.18.2"
   },
   "dependencies": {
+    "nightwatch": "^1.1.13",
     "prettier": "1.18.2",
     "yargs": "^13.2.4"
   }

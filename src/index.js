@@ -19,9 +19,12 @@ const e2eToolsPackage = require('../package.json')
  * @param {{ fs: FileSystem }} templateOptions
  * @param {object=} templateContext
  */
-function createByTemplate(pathToFile, { fs }, templateContext) {
+function createWithTemplate(pathToFile, { fs }, templateContext) {
+  fs.mkdirSync(path.dirname(pathToFile), { recursive: true })
+
   const pathToTemplate = path.join(__dirname, '../templates', pathToFile + '.hbs')
   const render = compile(realFs.readFileSync(pathToTemplate, { encoding: 'utf8' }))
+
   fs.writeFileSync(pathToFile, render(templateContext))
 }
 
@@ -32,16 +35,33 @@ const initCommand = ({ fs }) => ({
   command: 'init',
   describe: 'Setup tests in current project',
   handler() {
-    fs.mkdirSync('./e2e-tests')
-    createByTemplate('./e2e-tests/.gitignore', { fs })
-    createByTemplate(
-      './e2e-tests/package.json',
+    createWithTemplate('e2e-tests/.gitignore', { fs })
+    createWithTemplate(
+      'e2e-tests/package.json',
       { fs },
       { toolsVersion: '~' + e2eToolsPackage.version }
     )
 
-    createByTemplate('./e2e-tests/.eslintrc.js', { fs })
-    createByTemplate('./e2e-tests/.eslintignore', { fs })
+    createWithTemplate('e2e-tests/.eslintrc.js', { fs })
+    createWithTemplate('e2e-tests/.eslintignore', { fs })
+  },
+})
+
+/**
+ * @param {Context} context
+ */
+const addNightwatchCommand = ({ fs }) => ({
+  command: 'nightwatch:add',
+  describe: 'Setup nightwatch and add test example',
+  handler() {
+    createWithTemplate('e2e-tests/nightwatch/.eslintrc.js', { fs })
+
+    createWithTemplate(
+      'e2e-tests/nightwatch/tests/Примеры/Переход на страницу авторизации.test.js',
+      { fs }
+    )
+
+    createWithTemplate('e2e-tests/nightwatch/screenshots/.gitignore', { fs })
   },
 })
 
@@ -51,6 +71,7 @@ const initCommand = ({ fs }) => ({
 exports.main = context => {
   context.yargs
     .command(initCommand(context))
+    .command(addNightwatchCommand(context))
     .demandCommand()
     .help().argv
 }
