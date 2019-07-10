@@ -1,0 +1,30 @@
+{
+  "nightwatch": {
+    "browsers": {
+      "localChrome": {
+        "type": "chromedriver",
+        "desiredCapabilities": {
+          "browserName": "chrome",
+          "goog:chromeOptions": {
+            "args": ["--window-size=1200,800"]
+          }
+        }
+      },
+      "remoteChrome": {
+        "type": "selenium",
+        "selenium_port": 80,
+        "selenium_host": "chromedriver.csssr.ru",
+        "username_env": "CHROMEDRIVER_USERNAME",
+        "password_env": "CHROMEDRIVER_ACCESS_KEY",
+
+        "desiredCapabilities": {
+          "browserName": "chrome",
+          "goog:chromeOptions": {
+            "w3c": false,
+            "args": ["--headless", "--disable-gpu", "--window-size=1200,800"]
+          }
+        }
+      }
+    }
+  }
+}
