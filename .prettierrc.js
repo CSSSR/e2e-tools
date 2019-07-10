@@ -3,4 +3,13 @@ module.exports = {
   trailingComma: 'es5',
   singleQuote: true,
   printWidth: 100,
+
+  overrides: [
+    {
+      files: '*.js.hbs',
+      options: {
+        parser: 'babel',
+      },
+    },
+  ],
 }
