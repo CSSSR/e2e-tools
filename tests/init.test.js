@@ -31,13 +31,11 @@ describe('init command', () => {
       Object {
         "devDependencies": Object {
           "@csssr/e2e-tools": "~0.1.0",
-          "husky": "^3.0.0",
         },
-        "husky": Object {},
         "prettier": "@csssr/e2e-tools/prettier",
         "private": true,
       }
-  `)
+    `)
   })
 
   it('should create eslint files', async () => {
