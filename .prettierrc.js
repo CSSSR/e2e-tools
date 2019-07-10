@@ -11,5 +11,9 @@ module.exports = {
         parser: 'babel',
       },
     },
+    {
+      files: '*.json.hbs',
+      options: { parser: 'json' },
+    },
   ],
 }
