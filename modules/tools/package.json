@@ -8,7 +8,7 @@
     "eto": "./bin/eto.js"
   },
   "dependencies": {
-    "nightwatch": "^1.1.13",
+    "handlebars": "^4.1.2",
     "prettier": "1.18.2",
     "yargs": "^13.2.4"
   }

@@ -1,7 +1,7 @@
 {
   "private": true,
   "scripts": {
-    "fix": "npx prettier --write '**/*.{js,js.hbs,json,json.hbs}'"
+    "fix": "prettier --write '**/*.{js,js.hbs,json,json.hbs}'"
   },
   "workspaces": [
     "modules/*"

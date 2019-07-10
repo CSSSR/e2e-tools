@@ -1,0 +1,10 @@
+{
+  "name": "@csssr/e2e-tools-nightwatch",
+  "version": "0.1.0",
+  "description": "Nightwatch плагин для @csssr/e2e-tools",
+  "author": "Maxim Samoilov <nitive@icloud.com>",
+  "license": "MIT",
+  "dependencies": {
+    "nightwatch": "^1.1.13"
+  }
+}
