@@ -5,6 +5,11 @@
   "author": "Maxim Samoilov <nitive@icloud.com>",
   "license": "MIT",
   "dependencies": {
+    "@nitive/mocha-testrail-ui": "^0.1.2",
+    "@nitive/nightwatch-image-comparison": "^0.1.0",
+    "mocha": "^5.2.0",
+    "mochawesome": "^4.0.1",
+    "chromedriver": "^74.0.0",
     "nightwatch": "^1.1.13"
   }
 }
