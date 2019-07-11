@@ -176,9 +176,9 @@ const addNightwatchRunCommand = context => {
   return {
     aliases: ['nightwatch', 'nw'],
     builder: {
-      env: {
-        alias: 'e',
-        describe: 'Environment, defined in your e2e-tools.json file',
+      browser: {
+        alias: 'b',
+        describe: 'Browser, defined in your e2e-tools.json file',
         default: defaultBrowser,
         choices: browsers,
       },
@@ -191,7 +191,7 @@ const addNightwatchRunCommand = context => {
         [
           'nightwatch',
           '--env',
-          args.env,
+          args.browser,
           '--config',
           require.resolve('@csssr/e2e-tools-nightwatch/config'),
         ],
