@@ -3,21 +3,7 @@ const fs = require('fs')
 const path = require('path')
 const nightwatchImageComparison = require('@nitive/nightwatch-image-comparison')
 
-const assert = require('assert')
-const { argv } = require('yargs')
-
 const config = JSON.parse(fs.readFileSync('./e2e-tools.json', { encoding: 'utf-8' }))
-
-console.log(argv)
-const env = argv.env
-
-if (env === 'remoteChrome') {
-  assert(process.env.CHROMEDRIVER_ACCESS_KEY, 'Set CHROMEDRIVER_ACCESS_KEY to run Nightwatch tests')
-}
-
-if (env === 'remoteIE') {
-  assert(process.env.IEDRIVER_ACCESS_KEY, 'Set IEDRIVER_ACCESS_KEY to run Nightwatch tests')
-}
 
 function getChromeDriverPath() {
   const unixPath = path.resolve('./node_modules/.bin/chromedriver')
@@ -101,12 +87,6 @@ module.exports = {
     },
   },
 
-  webdriver: {
-    start_process: true,
-    server_path: getChromeDriverPath(),
-    port: 9515,
-  },
-
   test_settings: getTestSettings(config.nightwatch.browsers),
 
   test_runner: {
@@ -124,5 +104,5 @@ module.exports = {
   },
   globals_path: path.join(__dirname, 'globals.js'),
   custom_assertions_path: [nightwatchImageComparison.assertionsPath],
-  launch_url: removeEndingSlash(process.env.LAUNCH_URL || 'http://arm.csssr.ru'),
+  launch_url: removeEndingSlash(process.env.LAUNCH_URL),
 }

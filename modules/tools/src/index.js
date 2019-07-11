@@ -97,6 +97,7 @@ const addNightwatchCommand = ({ fs }) => ({
   command: 'nightwatch:add',
   describe: 'Setup nightwatch and add test example',
   handler() {
+    createWithTemplate('e2e-tests/.env', { fs })
     createWithTemplate('e2e-tests/nightwatch/.eslintrc.js', { fs })
 
     createWithTemplate(
@@ -189,6 +190,7 @@ const addNightwatchRunCommand = context => {
       spawn.sync(
         'yarn',
         [
+          'env-cmd',
           'nightwatch',
           '--env',
           args.browser,
