@@ -1,6 +1,7 @@
 {
   "private": true,
   "scripts": {
+    "test": "jest",
     "fix": "prettier --write '**/*.{js,js.hbs,json,json.hbs}'"
   },
   "workspaces": [

@@ -2,6 +2,7 @@ const path = require('path')
 const realFs = require('fs')
 const prettier = require('prettier')
 const { compile } = require('handlebars')
+const uniq = require('lodash/uniq')
 
 const getTestsRootDir = () => {
   return path.join(process.cwd(), 'e2e-tests').replace('e2e-tests/e2e-tests', 'e2e-tests')
@@ -159,6 +160,32 @@ const addNightwatchCommand = ({ fs, spawnSync }) => ({
  * @param {Context} context
  * @returns {Command}
  */
+const addToolCommand = ({ fs, spawnSync }) => ({
+  command: 'add-tool <package-name>',
+  describe: 'Add new tool',
+  handler({ packageName }) {
+    updateJsonFile({
+      fs,
+      filePath: 'e2e-tests/e2e-tools.json',
+      update(config) {
+        return {
+          ...config,
+          tools: uniq((config.tools || []).concat(packageName)),
+        }
+      },
+    })
+
+    spawnSync('yarn', ['add', '--dev', packageName], {
+      stdio: 'inherit',
+      cwd: getTestsRootDir(),
+    })
+  },
+})
+
+/**
+ * @param {Context} context
+ * @returns {Command}
+ */
 const addNightwatchRunCommand = context => {
   const config = getConfig()
   const defaultBrowser = Object.entries(config.nightwatch.browsers).find(
@@ -199,7 +226,10 @@ const addNightwatchRunCommand = context => {
  * @param {Context} context
  */
 exports.main = context => {
-  context.yargs.command(initCommand(context)).command(addNightwatchCommand(context))
+  context.yargs
+    .command(initCommand(context))
+    .command(addNightwatchCommand(context))
+    .command(addToolCommand(context))
 
   const isNightwatchInited = context.fs.existsSync('nightwatch')
   if (isNightwatchInited) {

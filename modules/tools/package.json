@@ -10,6 +10,7 @@
   "dependencies": {
     "cross-spawn": "^6.0.5",
     "handlebars": "^4.1.2",
+    "lodash": "^4.17.15",
     "prettier": "1.18.2",
     "yargs": "^13.2.4"
   }

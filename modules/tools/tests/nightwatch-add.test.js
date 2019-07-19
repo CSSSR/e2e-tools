@@ -1,18 +1,19 @@
 const { runInInitedProject } = require('./run')
 
-describe('init command', () => {
+describe('nightwatch:add command', () => {
   it('should create e2e-tests/nightwatch/ directory', async () => {
     const { fs } = await runInInitedProject('nightwatch:add')
 
     expect(fs.existsSync('/e2e-tests/nightwatch')).toBe(true)
   })
 
-  it.skip('should add @csssr/e2e-tools-nightwatch to dependencies', async () => {
-    const { fs } = await runInInitedProject('nightwatch:add')
+  it('should add @csssr/e2e-tools-nightwatch to dependencies', async () => {
+    const spawnSync = jest.fn()
+    await runInInitedProject('nightwatch:add', { spawnSync })
 
-    const packageJsonFile = fs.readFileSync('/e2e-tests/package.json', { encoding: 'utf8' })
-    expect(JSON.parse(packageJsonFile).devDependencies).toHaveProperty(
-      '@csssr/e2e-tools-nightwatch'
-    )
+    expect(spawnSync).toBeCalledWith('yarn', ['add', '--dev', '@csssr/e2e-tools-nightwatch'], {
+      cwd: '/e2e-tests',
+      stdio: 'inherit',
+    })
   })
 })

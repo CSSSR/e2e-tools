@@ -5,7 +5,7 @@ const { main } = require('../src')
 /**
  *
  * @param {string} cmd command to run
- * @param {{ initialFileSystemState?: any }} options
+ * @param {{ initialFileSystemState?: any, spawnSync?: Function }} options
  * @returns {Promise<{ fs: import('fs'), files: { [filePath: string]: string } }>}
  */
 async function run(cmd, options = {}) {
@@ -17,7 +17,7 @@ async function run(cmd, options = {}) {
   process.chdir('/')
 
   /** @type {any} */
-  const spawnSync = () => {}
+  const spawnSync = options.spawnSync || (() => {})
 
   main({
     yargs: yargs(['/bin/node', '/bin/et']),
@@ -31,10 +31,10 @@ async function run(cmd, options = {}) {
   return { fs, files: volume.toJSON() }
 }
 
-async function runInInitedProject(cmd) {
+async function runInInitedProject(cmd, options) {
   const { files } = await run('init')
 
-  return run(cmd, { initialFileSystemState: files })
+  return run(cmd, { initialFileSystemState: files, ...options })
 }
 
 module.exports = {
