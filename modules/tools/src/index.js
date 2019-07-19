@@ -1,9 +1,7 @@
 const path = require('path')
 const realFs = require('fs')
-const spawn = require('cross-spawn')
 const prettier = require('prettier')
 const { compile } = require('handlebars')
-const e2eToolsPackage = require('../package.json')
 
 const getTestsRootDir = () => {
   return path.join(process.cwd(), 'e2e-tests').replace('e2e-tests/e2e-tests', 'e2e-tests')
@@ -32,6 +30,8 @@ const isTest = true
  * @typedef {{
  *   fs: FileSystem,
  *   yargs: typeof import('yargs'),
+ *   spawnSync: typeof import('child_process').spawnSync
+ *   config: { version: string }
  * }} Context
  *
  * @typedef {import('yargs').CommandModule} Command
@@ -66,23 +66,19 @@ function updateJsonFile({ fs, filePath, update }) {
 /**
  * @param {Context} context
  */
-const initCommand = ({ fs }) => ({
+const initCommand = ({ fs, spawnSync, config }) => ({
   command: 'init',
   describe: 'Setup tests in current project',
   handler() {
     createWithTemplate('e2e-tests/.gitignore', { fs })
-    createWithTemplate(
-      'e2e-tests/package.json',
-      { fs },
-      { toolsVersion: isTest ? 'file:../modules/tools' : `~${e2eToolsPackage.version}` }
-    )
+    createWithTemplate('e2e-tests/package.json', { fs }, { toolsVersion: config.version })
 
     createWithTemplate('e2e-tests/.eslintrc.js', { fs })
     createWithTemplate('e2e-tests/.eslintignore', { fs })
 
     createJsonFile({ fs, filePath: 'e2e-tests/e2e-tools.json', fileContent: {} })
 
-    spawn.sync('yarn', ['install'], {
+    spawnSync('yarn', ['install'], {
       stdio: 'inherit',
       cwd: getTestsRootDir(),
     })
@@ -93,7 +89,7 @@ const initCommand = ({ fs }) => ({
  * @param {Context} context
  * @returns {Command}
  */
-const addNightwatchCommand = ({ fs }) => ({
+const addNightwatchCommand = ({ fs, spawnSync }) => ({
   command: 'nightwatch:add',
   describe: 'Setup nightwatch and add test example',
   handler() {
@@ -106,14 +102,10 @@ const addNightwatchCommand = ({ fs }) => ({
     )
 
     createWithTemplate('e2e-tests/nightwatch/screenshots/.gitignore', { fs })
-    spawn.sync(
-      'yarn',
-      ['add', '--dev', `@csssr/e2e-tools-nightwatch${isTest ? '@file:../modules/nightwatch' : ''}`],
-      {
-        stdio: 'inherit',
-        cwd: getTestsRootDir(),
-      }
-    )
+    spawnSync('yarn', ['add', '--dev', `@csssr/e2e-tools-nightwatch`], {
+      stdio: 'inherit',
+      cwd: getTestsRootDir(),
+    })
 
     updateJsonFile({
       fs,
@@ -187,7 +179,7 @@ const addNightwatchRunCommand = context => {
     command: 'nightwatch:run',
     describe: 'Run nightwatch',
     handler(args) {
-      spawn.sync(
+      context.spawnSync(
         'yarn',
         [
           'env-cmd',

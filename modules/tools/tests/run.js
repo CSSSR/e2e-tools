@@ -16,9 +16,14 @@ async function run(cmd, options = {}) {
   const fs = createFsFromVolume(volume)
   process.chdir('/')
 
+  /** @type {any} */
+  const spawnSync = () => {}
+
   main({
-    yargs: yargs(['/bin/node', '/bin/eto']),
+    yargs: yargs(['/bin/node', '/bin/et']),
     fs,
+    spawnSync,
+    config: { version: '~1.0.0' },
   })
 
   yargs.parse(cmd)

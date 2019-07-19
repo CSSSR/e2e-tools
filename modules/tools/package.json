@@ -5,7 +5,7 @@
   "author": "Maxim Samoilov <nitive@icloud.com>",
   "license": "MIT",
   "bin": {
-    "eto": "./bin/eto.js"
+    "et": "./bin/et.js"
   },
   "dependencies": {
     "cross-spawn": "^6.0.5",

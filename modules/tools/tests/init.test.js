@@ -26,7 +26,7 @@ describe('init command', () => {
     expect(JSON.parse(packageJsonFile)).toMatchInlineSnapshot(`
       Object {
         "devDependencies": Object {
-          "@csssr/e2e-tools": "~0.1.0",
+          "@csssr/e2e-tools": "~1.0.0",
         },
         "prettier": "@csssr/e2e-tools/prettier",
         "private": true,
