@@ -3,10 +3,10 @@ const path = require('path')
 const spawn = require('cross-spawn')
 
 function setupEnvironment(name) {
-  const sandboxDir = path.join(__dirname, 'sandbox', name)
+  const sandboxDir = path.join(__dirname, '../sandbox', name)
 
   if (fs.existsSync(sandboxDir)) {
-    throw new Error('Sandbox dir already exist')
+    throw new Error('Sandbox dir already exists')
   }
 
   fs.mkdirSync(sandboxDir, { recursive: true })
