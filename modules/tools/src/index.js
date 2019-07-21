@@ -7,6 +7,11 @@ const uniq = require('lodash/uniq')
 const getTestsRootDir = () => {
   return path.join(process.cwd(), 'e2e-tests').replace('e2e-tests/e2e-tests', 'e2e-tests')
 }
+
+const getParentProjectRootDir = () => {
+  return getTestsRootDir().replace('/e2e-tests', '')
+}
+
 const getConfig = () => {
   try {
     const configFile = realFs.readFileSync(path.join(getTestsRootDir(), 'e2e-tools.json'), {
@@ -175,7 +180,21 @@ const addToolCommand = ({ fs, spawnSync }) => ({
       },
     })
 
-    spawnSync('yarn', ['add', '--dev', packageName], {
+    updateJsonFile({
+      fs,
+      filePath: 'e2e-tests/package.json',
+      update(packageJson) {
+        return {
+          ...packageJson,
+          devDependencies: {
+            ...packageJson.devDependencies,
+            [packageName]: '*',
+          },
+        }
+      },
+    })
+
+    spawnSync('yarn', ['install'], {
       stdio: 'inherit',
       cwd: getTestsRootDir(),
     })

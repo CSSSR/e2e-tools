@@ -1,17 +1,15 @@
 {
   "private": true,
   "scripts": {
-    "test": "jest",
+    "test": "yarn workspace tests test",
     "fix": "prettier --write '**/*.{js,js.hbs,json,json.hbs}'"
   },
   "workspaces": [
-    "modules/*"
+    "modules/*",
+    "modules/tests/integration/sandbox/*",
+    "modules/tests/integration/sandbox/*/e2e-tests"
   ],
   "devDependencies": {
-    "@types/jest": "^24.0.15",
-    "@types/node": "^12.6.2",
-    "jest": "^24.8.0",
-    "memfs": "^2.15.4",
     "prettier": "1.18.2"
   }
 }

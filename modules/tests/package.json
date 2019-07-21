@@ -1,0 +1,16 @@
+{
+  "name": "tests",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "test": "rm -rf ./integration/sandbox && jest"
+  },
+  "devDependencies": {
+    "@types/jest": "^24.0.15",
+    "@types/node": "^12.6.2",
+    "@types/rimraf": "^2.0.2",
+    "jest": "^24.8.0",
+    "memfs": "^2.15.4",
+    "rimraf": "^2.6.3"
+  }
+}
