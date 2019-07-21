@@ -1,15 +1,23 @@
+const fs = require('fs')
 const path = require('path')
 const realFs = require('fs')
 const prettier = require('prettier')
 const { compile } = require('handlebars')
 const uniq = require('lodash/uniq')
+const findRoot = require('find-root')
 
 const getTestsRootDir = () => {
-  return path.join(process.cwd(), 'e2e-tests').replace('e2e-tests/e2e-tests', 'e2e-tests')
+  const foundRoot = findRoot(process.cwd())
+  const testsPackagePath = path.join(foundRoot, 'e2e-tests')
+  if (fs.existsSync(testsPackagePath)) {
+    return testsPackagePath
+  }
+
+  return foundRoot
 }
 
-const getParentProjectRootDir = () => {
-  return getTestsRootDir().replace('/e2e-tests', '')
+const getProjectRootDir = () => {
+  return getTestsRootDir().replace(/\/e2e-tests$/, '')
 }
 
 const getConfig = () => {
@@ -76,6 +84,10 @@ const initCommand = ({ fs, spawnSync, config }) => ({
   command: 'init',
   describe: 'Setup tests in current project',
   handler() {
+    if (fs.existsSync('e2e-tests')) {
+      throw new Error('Already inited')
+    }
+
     createWithTemplate('e2e-tests/.gitignore', { fs })
     createWithTemplate('e2e-tests/package.json', { fs }, { toolsVersion: config.version })
 
@@ -245,6 +257,8 @@ const addNightwatchRunCommand = context => {
  * @param {Context} context
  */
 exports.main = context => {
+  process.chdir(getProjectRootDir())
+
   context.yargs
     .command(initCommand(context))
     .command(addNightwatchCommand(context))

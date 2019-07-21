@@ -2,11 +2,7 @@ const path = require('path')
 const spawnSync = require('cross-spawn').sync
 const { setupEnvironment } = require('./helpers')
 
-describe('add-tool command', () => {
-  const { run, readFile, rootDir } = setupEnvironment('add-tool')
-  run('init')
-  run('add-tool @csssr/e2e-tools-nightwatch')
-
+function checks({ readFile, rootDir }) {
   it('should add tool to e2e-tools.json', async () => {
     const configFile = JSON.parse(readFile('e2e-tests/e2e-tools.json'))
     expect(configFile.tools).toContain('@csssr/e2e-tools-nightwatch')
@@ -26,5 +22,24 @@ describe('add-tool command', () => {
 
     const err = stderr && stderr.toString()
     expect(err).toBe('')
+  })
+}
+
+describe('add-tool command', () => {
+  describe(`Inside root dir`, () => {
+    const { run, readFile, rootDir } = setupEnvironment(`add-tool-cwd-root`)
+    run('init')
+    run('add-tool @csssr/e2e-tools-nightwatch')
+    checks({ readFile, rootDir })
+  })
+
+  describe(`Inside e2e-tests dir`, () => {
+    const { run, readFile, rootDir } = setupEnvironment(`add-tool-cwd-e2e-tests`)
+
+    run('init')
+    process.chdir(path.join(rootDir, 'e2e-tests'))
+
+    run('add-tool @csssr/e2e-tools-nightwatch')
+    checks({ readFile, rootDir })
   })
 })

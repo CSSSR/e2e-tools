@@ -11,6 +11,7 @@ function setupEnvironment(name) {
 
   fs.mkdirSync(sandboxDir, { recursive: true })
   process.chdir(sandboxDir)
+
   fs.writeFileSync(
     path.join(sandboxDir, '/package.json'),
     JSON.stringify(
@@ -31,7 +32,7 @@ function setupEnvironment(name) {
     },
     run(command) {
       spawn.sync(path.join(__dirname, 'bin.js'), command.split(' '), {
-        cwd: sandboxDir,
+        cwd: process.cwd(),
         stdio: 'inherit',
       })
     },
