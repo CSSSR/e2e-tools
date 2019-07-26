@@ -35,7 +35,6 @@ const getConfig = () => {
     throw err
   }
 }
-const isTest = true
 
 /**
  * @typedef {'mkdirSync' | 'statSync' | 'writeFileSync' | 'readFileSync' | 'existsSync'} UsedFsMethods

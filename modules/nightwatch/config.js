@@ -1,12 +1,14 @@
 /* eslint-disable @typescript-eslint/camelcase */
 const fs = require('fs')
 const path = require('path')
+const chromedriver = require('chromedriver')
 const nightwatchImageComparison = require('@nitive/nightwatch-image-comparison')
 
 const config = JSON.parse(fs.readFileSync('./e2e-tools.json', { encoding: 'utf-8' }))
 
 function getChromeDriverPath() {
-  const unixPath = path.resolve('./node_modules/.bin/chromedriver')
+  const nodeModulesPath = chromedriver.path.replace(/(node_modules).*/, '$1')
+  const unixPath = path.join(nodeModulesPath, '.bin/chromedriver')
   return process.platform === 'win32' ? `${unixPath}.cmd` : unixPath
 }
 
