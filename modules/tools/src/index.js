@@ -1,85 +1,21 @@
 const fs = require('fs')
 const path = require('path')
-const realFs = require('fs')
-const prettier = require('prettier')
-const { compile } = require('handlebars')
-const uniq = require('lodash/uniq')
-const findRoot = require('find-root')
+const spawn = require('cross-spawn')
+const {
+  getTestsRootDir,
+  getProjectRootDir,
+  createJsonFile,
+  updateJsonFile,
+  getConfigSafe,
+  initTemplate,
+} = require('./utils')
 
-const getTestsRootDir = () => {
-  const foundRoot = findRoot(process.cwd())
-  const testsPackagePath = path.join(foundRoot, 'e2e-tests')
-  if (fs.existsSync(testsPackagePath)) {
-    return testsPackagePath
-  }
+const createFromTemplate = initTemplate({
+  root: 'e2e-tests',
+  templatesRoot: path.join(__dirname, '../templates'),
+})
 
-  return foundRoot
-}
-
-const getProjectRootDir = () => {
-  return getTestsRootDir().replace(/\/e2e-tests$/, '')
-}
-
-const getConfig = () => {
-  try {
-    const configFile = realFs.readFileSync(path.join(getTestsRootDir(), 'e2e-tools.json'), {
-      encoding: 'utf-8',
-    })
-
-    return JSON.parse(configFile)
-  } catch (err) {
-    if (err && err.code === 'ENOENT') {
-      throw new Error(`Config file ${err.path} was not found`)
-    }
-
-    throw err
-  }
-}
-
-/**
- * @typedef {'mkdirSync' | 'statSync' | 'writeFileSync' | 'readFileSync' | 'existsSync'} UsedFsMethods
- * @typedef {Pick<typeof import('fs'), UsedFsMethods>} FileSystem
- *
- * @typedef {{
- *   fs: FileSystem,
- *   yargs: typeof import('yargs'),
- *   spawnSync: typeof import('child_process').spawnSync
- *   config: { version: string }
- * }} Context
- *
- * @typedef {import('yargs').CommandModule} Command
- */
-
-/**
- *
- * @param {string} pathToFile Path to destination file
- * @param {{ fs: FileSystem }} options
- * @param {object=} templateContext
- */
-function createWithTemplate(pathToFile, { fs }, templateContext) {
-  fs.mkdirSync(path.dirname(pathToFile), { recursive: true })
-
-  const pathToTemplate = path.join(__dirname, '../templates', pathToFile + '.hbs')
-  const render = compile(realFs.readFileSync(pathToTemplate, { encoding: 'utf8' }))
-
-  fs.writeFileSync(pathToFile, render(templateContext))
-}
-
-function createJsonFile({ fs, filePath, fileContent }) {
-  const formattedContent = prettier.format(JSON.stringify(fileContent), { parser: 'json' })
-  fs.writeFileSync(filePath, formattedContent)
-}
-
-function updateJsonFile({ fs, filePath, update }) {
-  const file = fs.readFileSync(filePath, { encoding: 'utf-8' })
-  const fileContent = JSON.parse(file)
-  createJsonFile({ fs, filePath, fileContent: update(fileContent) })
-}
-
-/**
- * @param {Context} context
- */
-const initCommand = ({ fs, spawnSync, config }) => ({
+const initCommand = ({ config }) => ({
   command: 'init',
   describe: 'Setup tests in current project',
   handler() {
@@ -87,112 +23,42 @@ const initCommand = ({ fs, spawnSync, config }) => ({
       throw new Error('Already inited')
     }
 
-    createWithTemplate('e2e-tests/.gitignore', { fs })
-    createWithTemplate('e2e-tests/package.json', { fs }, { toolsVersion: config.version })
+    createFromTemplate({ filePath: '.gitignore' })
+    createFromTemplate({
+      filePath: 'package.json',
+      data: { toolsVersion: config.version },
+    })
 
-    createWithTemplate('e2e-tests/.eslintrc.js', { fs })
-    createWithTemplate('e2e-tests/.eslintignore', { fs })
+    createFromTemplate({ filePath: '.eslintrc.js' })
+    createFromTemplate({ filePath: '.eslintignore' })
 
-    createJsonFile({ fs, filePath: 'e2e-tests/e2e-tools.json', fileContent: {} })
+    createJsonFile({ filePath: 'e2e-tests/e2e-tools.json', fileContent: {} })
 
-    spawnSync('yarn', ['install'], {
+    spawn.sync('yarn', ['install'], {
       stdio: 'inherit',
       cwd: getTestsRootDir(),
     })
   },
 })
 
-/**
- * @param {Context} context
- * @returns {Command}
- */
-const addNightwatchCommand = ({ fs, spawnSync }) => ({
-  command: 'nightwatch:add',
-  describe: 'Setup nightwatch and add test example',
-  handler() {
-    createWithTemplate('e2e-tests/.env', { fs })
-    createWithTemplate('e2e-tests/nightwatch/.eslintrc.js', { fs })
-
-    createWithTemplate(
-      'e2e-tests/nightwatch/tests/Примеры/Переход на страницу авторизации.test.js',
-      { fs }
-    )
-
-    createWithTemplate('e2e-tests/nightwatch/screenshots/.gitignore', { fs })
-    spawnSync('yarn', ['add', '--dev', `@csssr/e2e-tools-nightwatch`], {
-      stdio: 'inherit',
-      cwd: getTestsRootDir(),
-    })
-
-    updateJsonFile({
-      fs,
-      filePath: 'e2e-tests/e2e-tools.json',
-      update(config) {
-        return {
-          ...config,
-          nightwatch: {
-            browsers: {
-              local_chrome: {
-                default: true,
-                type: 'webdriver',
-                desiredCapabilities: {
-                  browserName: 'chrome',
-                  'goog:chromeOptions': {
-                    args: ['--window-size=1200,800'],
-                  },
-                },
-                globals: {
-                  skipScreenshotAssertions: true,
-                },
-              },
-              // remote_chrome: {
-              //   type: 'selenium',
-              //   host: 'chromedriver.csssr.ru',
-              //   basicAuth: {
-              //     username_env: 'CHROMEDRIVER_BASIC_AUTH_USERNAME',
-              //     password_env: 'CHROMEDRIVER_BASIC_AUTH_PASSWORD',
-              //   },
-
-              //   desiredCapabilities: {
-              //     browserName: 'chrome',
-              //     'goog:chromeOptions': {
-              //       w3c: false,
-              //       args: ['--headless', '--disable-gpu', '--window-size=1200,800'],
-              //     },
-              //   },
-              //   globals: {
-              //     skipScreenshotAssertions: false,
-              //   },
-              // },
-            },
-          },
-        }
-      },
-    })
-  },
-})
-
-/**
- * @param {Context} context
- * @returns {Command}
- */
-const addToolCommand = ({ fs, spawnSync }) => ({
+const addToolCommand = context => ({
   command: 'add-tool <package-name>',
   describe: 'Add new tool',
   handler({ packageName }) {
     updateJsonFile({
-      fs,
       filePath: 'e2e-tests/e2e-tools.json',
       update(config) {
         return {
           ...config,
-          tools: uniq((config.tools || []).concat(packageName)),
+          tools: {
+            ...config.tools,
+            [packageName]: true,
+          },
         }
       },
     })
 
     updateJsonFile({
-      fs,
       filePath: 'e2e-tests/package.json',
       update(packageJson) {
         return {
@@ -205,67 +71,32 @@ const addToolCommand = ({ fs, spawnSync }) => ({
       },
     })
 
-    spawnSync('yarn', ['install'], {
+    const tool = require(packageName)
+
+    spawn.sync('yarn', ['install'], {
       stdio: 'inherit',
       cwd: getTestsRootDir(),
     })
+
+    tool.initScript(context)
   },
 })
 
-/**
- * @param {Context} context
- * @returns {Command}
- */
-const addNightwatchRunCommand = context => {
-  const config = getConfig()
-  const defaultBrowser = Object.entries(config.nightwatch.browsers).find(
-    ([browserName, browser]) => browser.default
-  )[0]
-  const browsers = Object.keys(config.nightwatch.browsers)
-
-  return {
-    aliases: ['nightwatch', 'nw'],
-    builder: {
-      browser: {
-        alias: 'b',
-        describe: 'Browser, defined in your e2e-tools.json file',
-        default: defaultBrowser,
-        choices: browsers,
-      },
-    },
-    command: 'nightwatch:run',
-    describe: 'Run nightwatch',
-    handler(args) {
-      context.spawnSync(
-        'yarn',
-        [
-          'env-cmd',
-          'nightwatch',
-          '--env',
-          args.browser,
-          '--config',
-          require.resolve('@csssr/e2e-tools-nightwatch/config'),
-        ],
-        { stdio: 'inherit' }
-      )
-    },
-  }
-}
-
-/**
- * @param {Context} context
- */
 exports.main = context => {
   process.chdir(getProjectRootDir())
+  const config = getConfigSafe()
 
-  context.yargs
-    .command(initCommand(context))
-    .command(addNightwatchCommand(context))
-    .command(addToolCommand(context))
+  context.yargs.command(initCommand(context)).command(addToolCommand(context))
 
-  const isNightwatchInited = context.fs.existsSync('nightwatch')
-  if (isNightwatchInited) {
-    context.yargs.command(addNightwatchRunCommand(context))
+  if (config && config.tools) {
+    Object.keys(config.tools).forEach(toolName => {
+      const tool = require(toolName)
+      if (typeof tool.getCommands === 'function') {
+        tool.getCommands(context).forEach(command => {
+          context.yargs.command(command)
+        })
+      }
+    })
   }
 
   context.yargs.demandCommand().help().argv
