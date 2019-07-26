@@ -16,36 +16,6 @@ function removeEndingSlash(url) {
   return url.replace(/\/$/, '')
 }
 
-/**
- * @typedef {import('nightwatch').NightwatchTestSettingScreenshots & { webdriver: any }} TestSetting
- *
- * @typedef {import('nightwatch').NightwatchDesiredCapabilities} DesiredCapabilities
- *
- * @typedef {import('nightwatch').NightwatchGlobals & {
- *   skipScreenshotAssertions: boolean,
- * }} Globals
- *
- * @typedef {TestSetting & {
- *   type: 'webdriver',
- *   desiredCapabilities: DesiredCapabilities,
- *   globals?: Globals,
- * }} WebdriverBrowser
- *
- * @typedef {TestSetting & {
- *   type: 'selenium',
- *   host: string,
- *   port?: number,
- *   desiredCapabilities: DesiredCapabilities,
- *   globals?: Globals,
- * }} SeleniumBrowser
- *
- * @typedef {WebdriverBrowser | SeleniumBrowser} Browser
- */
-
-/**
- * @param {Browser} browser
- * @returns {TestSetting}
- */
 function getTestSettingsForBrowser(browser) {
   switch (browser.type) {
     case 'webdriver': {
@@ -62,12 +32,7 @@ function getTestSettingsForBrowser(browser) {
   }
 }
 
-/**
- * @param {{ [key: string]: Browser }} browsers
- * @returns {import('nightwatch').NightwatchTestSettings}
- */
 function getTestSettings(browsers) {
-  /** @type {import('nightwatch').NightwatchTestSettings} */
   const testSettings = {}
 
   Object.keys(browsers).forEach(browserName => {
