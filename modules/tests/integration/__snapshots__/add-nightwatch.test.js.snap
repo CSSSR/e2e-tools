@@ -1,0 +1,109 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`add-tool command Inside e2e-tests dir should add Jenkinsfile 1`] = `
+"pipeline {
+  agent any
+
+  environment {
+    scmVars = \\"\\"
+  }
+
+  parameters {
+    string(defaultValue: 'http://github.com', description: 'Адрес стенда', name: 'launch_url', trim: true)
+  }
+
+  stages {
+    stage('Clone') {
+      steps {
+        echo \\"Branch: \${GIT_BRANCH}\\"
+        script {
+          scmVars = checkout([
+            $class: 'GitSCM',
+            branches: [[name: GIT_BRANCH]],
+            doGenerateSubmoduleConfigurations: false,
+            extensions: [[$class: 'GitLFSPull']],
+            userRemoteConfigs: [[credentialsId: 'github', url: 'git@github.com:github/web.git']]
+          ])
+        }
+        echo \\"GIT_BRANCH: \${scmVars.GIT_BRANCH}\\"
+        echo \\"GIT_COMMIT: \${scmVars.GIT_COMMIT}\\"
+      }
+    }
+
+    stage('Install dependencies') {
+      steps {
+        script {
+          sh \\"cd e2e-tests/nightwatch && docker build --network host -t github/tests:\${scmVars.GIT_COMMIT} .\\"
+        }
+      }
+    }
+
+    stage('Run tests') {
+      steps {
+        script {
+          withCredentials([
+            usernamePassword(credentialsId: 'chromedriver', usernameVariable: 'CHROMEDRIVER_USERNAME', passwordVariable: 'CHROMEDRIVER_PASSWORD')
+          ]) {
+            sh \\"docker run --network host -e LAUNCH_URL=\${params.launch_url} -e CHROMEDRIVER_USERNAME -e CHROMEDRIVER_PASSWORD github/tests:\${scmVars.GIT_COMMIT}\\"
+          }
+        }
+      }
+    }
+  }
+}
+"
+`;
+
+exports[`add-tool command Inside root dir should add Jenkinsfile 1`] = `
+"pipeline {
+  agent any
+
+  environment {
+    scmVars = \\"\\"
+  }
+
+  parameters {
+    string(defaultValue: 'http://github.com', description: 'Адрес стенда', name: 'launch_url', trim: true)
+  }
+
+  stages {
+    stage('Clone') {
+      steps {
+        echo \\"Branch: \${GIT_BRANCH}\\"
+        script {
+          scmVars = checkout([
+            $class: 'GitSCM',
+            branches: [[name: GIT_BRANCH]],
+            doGenerateSubmoduleConfigurations: false,
+            extensions: [[$class: 'GitLFSPull']],
+            userRemoteConfigs: [[credentialsId: 'github', url: 'git@github.com:github/web.git']]
+          ])
+        }
+        echo \\"GIT_BRANCH: \${scmVars.GIT_BRANCH}\\"
+        echo \\"GIT_COMMIT: \${scmVars.GIT_COMMIT}\\"
+      }
+    }
+
+    stage('Install dependencies') {
+      steps {
+        script {
+          sh \\"cd e2e-tests/nightwatch && docker build --network host -t github/tests:\${scmVars.GIT_COMMIT} .\\"
+        }
+      }
+    }
+
+    stage('Run tests') {
+      steps {
+        script {
+          withCredentials([
+            usernamePassword(credentialsId: 'chromedriver', usernameVariable: 'CHROMEDRIVER_USERNAME', passwordVariable: 'CHROMEDRIVER_PASSWORD')
+          ]) {
+            sh \\"docker run --network host -e LAUNCH_URL=\${params.launch_url} -e CHROMEDRIVER_USERNAME -e CHROMEDRIVER_PASSWORD github/tests:\${scmVars.GIT_COMMIT}\\"
+          }
+        }
+      }
+    }
+  }
+}
+"
+`;

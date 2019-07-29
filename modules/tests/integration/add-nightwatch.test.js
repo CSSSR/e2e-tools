@@ -90,13 +90,43 @@ function checks({ readFile, rootDir }) {
     )
     expect(exist).toBe(true)
   })
+
+  it('should add Jenkinsfile', async () => {
+    const jenkinsfile = readFile('e2e-tests/nightwatch/Jenkinsfile')
+    expect(jenkinsfile).toMatchSnapshot()
+  })
+
+  it('should add Dockerfile', async () => {
+    const dockerfile = readFile('e2e-tests/nightwatch/Dockerfile')
+    expect(dockerfile).toMatchInlineSnapshot(`
+    "FROM node:8
+
+    WORKDIR /usr/src/app
+
+    COPY ../package.json ../yarn.lock ./
+    RUN yarn install --frozen-lockfile && yarn cache clean
+
+    COPY . ./nightwatch
+
+    RUN touch .env
+
+    ENTRYPOINT yarn et nightwatch:run --browser remote_chrome
+    "
+  `)
+  })
+}
+
+const promptResults = {
+  defaultLaunchUrl: 'github.com',
+  projectName: 'github',
+  repoSshAddress: 'git@github.com:github/web.git',
 }
 
 describe('add-tool command', () => {
-  describe(`Inside root dir`, () => {
+  describe('Inside root dir', () => {
     const { run, readFile, rootDir } = setupEnvironment('add-tool-cwd-root')
     run('init')
-    run('add-tool @csssr/e2e-tools-nightwatch')
+    run('add-tool @csssr/e2e-tools-nightwatch', { promptResults })
     checks({ readFile, rootDir })
   })
 
@@ -106,7 +136,7 @@ describe('add-tool command', () => {
     run('init')
     process.chdir(path.join(rootDir, 'e2e-tests'))
 
-    run('add-tool @csssr/e2e-tools-nightwatch')
+    run('add-tool @csssr/e2e-tools-nightwatch', { promptResults })
     checks({ readFile, rootDir })
   })
 })

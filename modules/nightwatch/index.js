@@ -88,7 +88,15 @@ function getCommands(context) {
   return [addNightwatchRunCommand(context)]
 }
 
-function initScript() {
+function normalizeUrl(input) {
+  if (input.startsWith('http')) {
+    return input
+  }
+
+  return `http://${input}`
+}
+
+async function initScript({ inquirer }) {
   const createFromTemplate = initTemplate({
     root: getTestsRootDir(),
     templatesRoot: path.join(__dirname, 'templates/e2e-tests'),
@@ -99,6 +107,35 @@ function initScript() {
     filePath: 'nightwatch/tests/Примеры/Переход на страницу авторизации.test.js',
   })
   createFromTemplate({ filePath: 'nightwatch/screenshots/.gitignore' })
+  createFromTemplate({ filePath: 'nightwatch/Dockerfile' })
+
+  const jenkinsfileData = await inquirer.prompt([
+    {
+      type: 'input',
+      name: 'defaultLaunchUrl',
+      message: 'Адрес стенда по умолчанию',
+    },
+    // TODO: get from project's package.json
+    {
+      type: 'input',
+      name: 'projectName',
+      message: 'Название проекта',
+    },
+    // TODO: get from project's package.json
+    {
+      type: 'input',
+      name: 'repoSshAddress',
+      message: 'Адрес GitHub-репозитория (ssh):',
+    },
+  ])
+
+  createFromTemplate({
+    filePath: 'nightwatch/Jenkinsfile',
+    data: {
+      ...jenkinsfileData,
+      defaultLaunchUrl: normalizeUrl(jenkinsfileData.defaultLaunchUrl),
+    },
+  })
 
   updateToolConfig(packageName, createToolConfig)
 }

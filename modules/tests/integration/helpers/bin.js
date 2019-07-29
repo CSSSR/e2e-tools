@@ -1,11 +1,22 @@
 #!/usr/bin/env node
 const fs = require('fs')
 const yargs = require('yargs')
-const { main } = require('@csssr/e2e-tools/src')
 const spawnSync = require('cross-spawn').sync
+const { main } = require('@csssr/e2e-tools/src')
 
 const config = {
   version: '*',
 }
 
-main({ yargs, fs, spawnSync, config })
+const inquirer = {
+  async prompt() {
+    const results = yargs.argv.promptResults
+    if (typeof results === 'string') {
+      return JSON.parse(results)
+    } else {
+      return {}
+    }
+  },
+}
+
+main({ yargs, fs, spawnSync, config, inquirer })

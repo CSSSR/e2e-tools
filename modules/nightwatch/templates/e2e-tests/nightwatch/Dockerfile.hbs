@@ -9,4 +9,4 @@ COPY . ./nightwatch
 
 RUN touch .env
 
-ENTRYPOINT npx -p @csssr/e2e-tools run
+ENTRYPOINT yarn et nightwatch:run --browser remote_chrome

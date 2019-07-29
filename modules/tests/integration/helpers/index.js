@@ -30,11 +30,15 @@ function setupEnvironment(name) {
     readFile(filePath) {
       return fs.readFileSync(path.join(sandboxDir, filePath), 'utf-8')
     },
-    run(command) {
-      spawn.sync(path.join(__dirname, 'bin.js'), command.split(' '), {
-        cwd: process.cwd(),
-        stdio: 'inherit',
-      })
+    run(command, { promptResults = {} } = {}) {
+      spawn.sync(
+        path.join(__dirname, 'bin.js'),
+        [...command.split(' '), '--promptResults', JSON.stringify(promptResults)],
+        {
+          cwd: process.cwd(),
+          stdio: 'inherit',
+        }
+      )
     },
   }
 }
