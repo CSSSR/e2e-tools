@@ -1,11 +1,11 @@
 const path = require('path')
-const { getConfig, updateToolConfig, initTemplate } = require('@csssr/e2e-tools/utils')
+const {
+  getConfig,
+  updateToolConfig,
+  initTemplate,
+  getTestsRootDir,
+} = require('@csssr/e2e-tools/utils')
 const packageName = require('./package.json').name
-
-const createFromTemplate = initTemplate({
-  root: 'e2e-tests/nightwatch',
-  templatesRoot: path.join(__dirname, 'templates'),
-})
 
 /**
  * @returns {import('yargs').CommandModule}
@@ -65,8 +65,8 @@ function createToolConfig() {
         type: 'selenium',
         host: 'chromedriver.csssr.ru',
         basicAuth: {
-          username_env: 'CHROMEDRIVER_BASIC_AUTH_USERNAME',
-          password_env: 'CHROMEDRIVER_BASIC_AUTH_PASSWORD',
+          username_env: 'CHROMEDRIVER_USERNAME',
+          password_env: 'CHROMEDRIVER_PASSWORD',
         },
 
         desiredCapabilities: {
@@ -89,9 +89,16 @@ function getCommands(context) {
 }
 
 function initScript() {
-  createFromTemplate({ filePath: '.eslintrc.js' })
-  createFromTemplate({ filePath: 'tests/Примеры/Переход на страницу авторизации.test.js' })
-  createFromTemplate({ filePath: 'screenshots/.gitignore' })
+  const createFromTemplate = initTemplate({
+    root: getTestsRootDir(),
+    templatesRoot: path.join(__dirname, 'templates/e2e-tests'),
+  })
+
+  createFromTemplate({ filePath: 'nightwatch/.eslintrc.js' })
+  createFromTemplate({
+    filePath: 'nightwatch/tests/Примеры/Переход на страницу авторизации.test.js',
+  })
+  createFromTemplate({ filePath: 'nightwatch/screenshots/.gitignore' })
 
   updateToolConfig(packageName, createToolConfig)
 }

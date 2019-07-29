@@ -10,29 +10,31 @@ const {
   initTemplate,
 } = require('./utils')
 
-const createFromTemplate = initTemplate({
-  root: 'e2e-tests',
-  templatesRoot: path.join(__dirname, '../templates'),
-})
-
 const initCommand = ({ config }) => ({
   command: 'init',
   describe: 'Setup tests in current project',
   handler() {
-    if (fs.existsSync('e2e-tests')) {
+    if (path.basename(process.cwd()) === 'e2e-tests') {
       throw new Error('Already inited')
     }
+    const root = getProjectRootDir()
 
-    createFromTemplate({ filePath: '.gitignore' })
+    const createFromTemplate = initTemplate({
+      root,
+      templatesRoot: path.join(__dirname, '../templates'),
+    })
+
+    createFromTemplate({ filePath: 'e2e-tests/.gitignore' })
     createFromTemplate({
-      filePath: 'package.json',
+      filePath: 'e2e-tests/package.json',
       data: { toolsVersion: config.version },
     })
 
-    createFromTemplate({ filePath: '.eslintrc.js' })
-    createFromTemplate({ filePath: '.eslintignore' })
+    createFromTemplate({ filePath: 'e2e-tests/.eslintrc.js' })
+    createFromTemplate({ filePath: 'e2e-tests/.eslintignore' })
+    createFromTemplate({ filePath: 'e2e-tests/.env' })
 
-    createJsonFile({ filePath: 'e2e-tests/e2e-tools.json', fileContent: {} })
+    createJsonFile({ filePath: path.join(root, 'e2e-tests/e2e-tools.json'), fileContent: {} })
 
     spawn.sync('yarn', ['install'], {
       stdio: 'inherit',
@@ -46,7 +48,7 @@ const addToolCommand = context => ({
   describe: 'Add new tool',
   handler({ packageName }) {
     updateJsonFile({
-      filePath: 'e2e-tests/e2e-tools.json',
+      filePath: path.join(getTestsRootDir(), 'e2e-tools.json'),
       update(config) {
         return {
           ...config,
@@ -59,7 +61,7 @@ const addToolCommand = context => ({
     })
 
     updateJsonFile({
-      filePath: 'e2e-tests/package.json',
+      filePath: path.join(getTestsRootDir(), 'package.json'),
       update(packageJson) {
         return {
           ...packageJson,
@@ -83,10 +85,10 @@ const addToolCommand = context => ({
 })
 
 exports.main = context => {
-  process.chdir(getProjectRootDir())
+  process.chdir(getTestsRootDir())
   const config = getConfigSafe()
 
-  context.yargs.command(initCommand(context)).command(addToolCommand(context))
+  context.yargs.command(addToolCommand(context)).command(initCommand(context))
 
   if (config && config.tools) {
     Object.keys(config.tools).forEach(toolName => {

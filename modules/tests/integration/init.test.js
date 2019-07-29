@@ -48,6 +48,14 @@ describe('init command', () => {
     `)
   })
 
+  it('should create .env file', async () => {
+    const envFile = readFile('e2e-tests/.env')
+    expect(envFile).toMatchInlineSnapshot(`
+      "LAUNCH_URL=
+      "
+    `)
+  })
+
   it('should be prettified', () => {
     const { stderr } = spawnSync('yarn', ['prettier', '--check', '**/*.{js,json}'], {
       cwd: path.join(rootDir, 'e2e-tests'),

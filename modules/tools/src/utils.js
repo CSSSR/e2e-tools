@@ -83,12 +83,13 @@ function updateToolConfig(tool, update) {
 function initTemplate({ templatesRoot, root }) {
   return options => {
     const { data } = options
-    const filePath = path.join(root, options.filePath)
+    const filePath = options.filePath
+    const fileFullPath = path.join(root, options.filePath)
     const templatePath = path.join(templatesRoot, options.templatePath || `${filePath}.hbs`)
 
-    fs.mkdirSync(path.dirname(filePath), { recursive: true })
+    fs.mkdirSync(path.dirname(fileFullPath), { recursive: true })
     const render = compile(fs.readFileSync(templatePath, 'utf8'))
-    fs.writeFileSync(filePath, render(data))
+    fs.writeFileSync(fileFullPath, render(data))
   }
 }
 

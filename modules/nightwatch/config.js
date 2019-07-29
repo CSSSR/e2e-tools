@@ -3,6 +3,7 @@ const fs = require('fs')
 const path = require('path')
 const chromedriver = require('chromedriver')
 const nightwatchImageComparison = require('@nitive/nightwatch-image-comparison')
+const packageName = require('./package.json').name
 
 const config = JSON.parse(fs.readFileSync('./e2e-tools.json', { encoding: 'utf-8' }))
 
@@ -17,15 +18,28 @@ function removeEndingSlash(url) {
 }
 
 function getTestSettingsForBrowser(browser) {
-  switch (browser.type) {
+  const { type, ...settings } = browser
+
+  switch (type) {
     case 'webdriver': {
-      const { type, ...rest } = browser
       return {
         webdriver: {
           start_process: true,
           server_path: getChromeDriverPath(),
           port: 9515,
         },
+        ...settings,
+      }
+    }
+
+    case 'selenium': {
+      const { host, port = 80, basicAuth, ...rest } = settings
+
+      return {
+        selenium_port: port,
+        selenium_host: host,
+        username: basicAuth && process.env[basicAuth.username_env],
+        access_key: basicAuth && process.env[basicAuth.password_env],
         ...rest,
       }
     }
@@ -54,7 +68,7 @@ module.exports = {
     },
   },
 
-  test_settings: getTestSettings(config.nightwatch.browsers),
+  test_settings: getTestSettings(config.tools[packageName].browsers),
 
   test_runner: {
     type: 'mocha',
@@ -71,5 +85,5 @@ module.exports = {
   },
   globals_path: path.join(__dirname, 'globals.js'),
   custom_assertions_path: [nightwatchImageComparison.assertionsPath],
-  launch_url: removeEndingSlash(process.env.LAUNCH_URL),
+  launch_url: process.env.LAUNCH_URL && removeEndingSlash(process.env.LAUNCH_URL),
 }

@@ -26,8 +26,8 @@ function checks({ readFile, rootDir }) {
             type: 'selenium',
             host: 'chromedriver.csssr.ru',
             basicAuth: {
-              username_env: 'CHROMEDRIVER_BASIC_AUTH_USERNAME',
-              password_env: 'CHROMEDRIVER_BASIC_AUTH_PASSWORD',
+              username_env: 'CHROMEDRIVER_USERNAME',
+              password_env: 'CHROMEDRIVER_PASSWORD',
             },
 
             desiredCapabilities: {
