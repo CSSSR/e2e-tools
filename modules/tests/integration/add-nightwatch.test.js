@@ -1,3 +1,4 @@
+const fs = require('fs')
 const path = require('path')
 const spawnSync = require('cross-spawn').sync
 const { setupEnvironment } = require('./helpers')
@@ -59,6 +60,35 @@ function checks({ readFile, rootDir }) {
 
     const err = stderr && stderr.toString()
     expect(err).toBe('')
+  })
+
+  it('should add eslint config file', async () => {
+    const eslintConfig = readFile('e2e-tests/nightwatch/.eslintrc.js')
+    expect(eslintConfig).toMatchInlineSnapshot(`
+      "module.exports = {
+        extends: ['@csssr/e2e-tools-nightwatch/eslint'],
+      }
+      "
+    `)
+  })
+
+  it('should add screenshots/.gitignore file', async () => {
+    const gitignore = readFile('e2e-tests/nightwatch/screenshots/.gitignore')
+    expect(gitignore).toMatchInlineSnapshot(`
+      "actual/
+      diff/
+      "
+    `)
+  })
+
+  it('should add example file', async () => {
+    const exist = fs.existsSync(
+      path.join(
+        rootDir,
+        'e2e-tests/nightwatch/tests/Примеры/Переход на страницу авторизации.test.js'
+      )
+    )
+    expect(exist).toBe(true)
   })
 }
 
