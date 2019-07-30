@@ -83,7 +83,7 @@ module.exports = {
       },
     },
   },
-  globals_path: path.join(__dirname, 'globals.js'),
+  globals_path: path.join(__dirname, 'src/globals.js'),
   custom_assertions_path: [nightwatchImageComparison.assertionsPath],
   launch_url: process.env.LAUNCH_URL && removeEndingSlash(process.env.LAUNCH_URL),
 }

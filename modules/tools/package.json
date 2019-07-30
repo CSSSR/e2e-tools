@@ -7,6 +7,15 @@
   "bin": {
     "et": "./bin/et.js"
   },
+  "files": [
+    "/*.js",
+    "src/",
+    "templates/",
+    "bin/"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
   "dependencies": {
     "cross-spawn": "^6.0.5",
     "find-root": "^1.1.0",

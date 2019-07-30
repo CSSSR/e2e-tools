@@ -4,6 +4,14 @@
   "description": "Nightwatch плагин для @csssr/e2e-tools",
   "author": "Maxim Samoilov <nitive@icloud.com>",
   "license": "MIT",
+  "files": [
+    "/*.js",
+    "src/",
+    "templates/"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
   "dependencies": {
     "@nitive/mocha-testrail-ui": "^0.1.2",
     "@nitive/nightwatch-image-comparison": "^0.1.0",

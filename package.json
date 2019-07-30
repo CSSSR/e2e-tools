@@ -10,6 +10,7 @@
     "modules/tests/integration/sandbox/*/e2e-tests"
   ],
   "devDependencies": {
+    "np": "^5.0.3",
     "prettier": "1.18.2"
   }
 }
