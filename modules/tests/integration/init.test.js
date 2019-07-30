@@ -25,9 +25,9 @@ describe('init command', () => {
     const packageJson = JSON.parse(readFile('e2e-tests/package.json'))
     expect(packageJson).toEqual({
       devDependencies: {
-        '@csssr/e2e-tools': '*',
+        '@nitive/e2e-tools': '*',
       },
-      prettier: '@csssr/e2e-tools/prettier',
+      prettier: '@nitive/e2e-tools/prettier',
       private: true,
     })
   })
@@ -36,7 +36,7 @@ describe('init command', () => {
     const eslintFile = readFile('e2e-tests/.eslintrc.js')
     expect(eslintFile).toMatchInlineSnapshot(`
       "module.exports = {
-        extends: ['@csssr/e2e-tools/eslint'],
+        extends: ['@nitive/e2e-tools/eslint'],
       }
       "
     `)

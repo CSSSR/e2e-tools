@@ -7,7 +7,7 @@ function checks({ readFile, rootDir }) {
   it('should add nightwatch with default config to e2e-tools.json', async () => {
     const configFile = JSON.parse(readFile('e2e-tests/e2e-tools.json'))
     expect(configFile.tools).toEqual({
-      '@csssr/e2e-tools-nightwatch': {
+      '@nitive/e2e-tools-nightwatch': {
         browsers: {
           local_chrome: {
             default: true,
@@ -48,7 +48,7 @@ function checks({ readFile, rootDir }) {
 
   it('should add package to devDependencies', async () => {
     const packageJson = JSON.parse(readFile('e2e-tests/package.json'))
-    expect(packageJson.devDependencies).toHaveProperty('@csssr/e2e-tools-nightwatch')
+    expect(packageJson.devDependencies).toHaveProperty('@nitive/e2e-tools-nightwatch')
   })
 
   it.todo('should add tool with specific version')
@@ -66,7 +66,7 @@ function checks({ readFile, rootDir }) {
     const eslintConfig = readFile('e2e-tests/nightwatch/.eslintrc.js')
     expect(eslintConfig).toMatchInlineSnapshot(`
       "module.exports = {
-        extends: ['@csssr/e2e-tools-nightwatch/eslint'],
+        extends: ['@nitive/e2e-tools-nightwatch/eslint'],
       }
       "
     `)
@@ -126,7 +126,7 @@ describe('add-tool command', () => {
   describe('Inside root dir', () => {
     const { run, readFile, rootDir } = setupEnvironment('add-tool-cwd-root')
     run('init')
-    run('add-tool @csssr/e2e-tools-nightwatch', { promptResults })
+    run('add-tool @nitive/e2e-tools-nightwatch', { promptResults })
     checks({ readFile, rootDir })
   })
 
@@ -136,7 +136,7 @@ describe('add-tool command', () => {
     run('init')
     process.chdir(path.join(rootDir, 'e2e-tests'))
 
-    run('add-tool @csssr/e2e-tools-nightwatch', { promptResults })
+    run('add-tool @nitive/e2e-tools-nightwatch', { promptResults })
     checks({ readFile, rootDir })
   })
 })

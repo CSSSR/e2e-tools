@@ -4,7 +4,7 @@ const {
   updateToolConfig,
   initTemplate,
   getTestsRootDir,
-} = require('@csssr/e2e-tools/utils')
+} = require('@nitive/e2e-tools/utils')
 const packageName = require('./package.json').name
 
 /**
@@ -37,7 +37,7 @@ const addNightwatchRunCommand = context => {
           '--env',
           args.browser,
           '--config',
-          require.resolve('@csssr/e2e-tools-nightwatch/config'),
+          require.resolve('@nitive/e2e-tools-nightwatch/config'),
         ],
         { stdio: 'inherit' }
       )

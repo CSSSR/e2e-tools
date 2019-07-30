@@ -1,5 +1,5 @@
 {
-  "name": "@csssr/e2e-tools",
+  "name": "@nitive/e2e-tools",
   "version": "0.1.0",
   "description": "CLI утилита для быстрого добавления e2e тестов в проект",
   "author": "Maxim Samoilov <nitive@icloud.com>",
