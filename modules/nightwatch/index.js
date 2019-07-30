@@ -106,6 +106,7 @@ async function initScript({ inquirer }) {
   createFromTemplate({
     filePath: 'nightwatch/tests/Примеры/Переход на страницу авторизации.test.js',
   })
+  createFromTemplate({ filePath: 'nightwatch/.gitignore' })
   createFromTemplate({ filePath: 'nightwatch/screenshots/.gitignore' })
   createFromTemplate({ filePath: 'nightwatch/Dockerfile' })
 

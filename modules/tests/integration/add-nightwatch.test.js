@@ -72,6 +72,14 @@ function checks({ readFile, rootDir }) {
     `)
   })
 
+  it('should add .gitignore file', async () => {
+    const gitignore = readFile('e2e-tests/nightwatch/.gitignore')
+    expect(gitignore).toMatchInlineSnapshot(`
+      "report/
+      "
+    `)
+  })
+
   it('should add screenshots/.gitignore file', async () => {
     const gitignore = readFile('e2e-tests/nightwatch/screenshots/.gitignore')
     expect(gitignore).toMatchInlineSnapshot(`
