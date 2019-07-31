@@ -7,6 +7,15 @@ const {
 } = require('@nitive/e2e-tools/utils')
 const packageName = require('./package.json').name
 
+function createArgsArrayFromMap(argsMap) {
+  return Object.keys(argsMap)
+    .map(arg => {
+      const value = argsMap[arg]
+      return value ? [`--${arg}`, value] : []
+    })
+    .reduce((acc, x) => acc.concat(x), [])
+}
+
 /**
  * @returns {import('yargs').CommandModule}
  */
@@ -34,10 +43,11 @@ const addNightwatchRunCommand = context => {
         [
           'env-cmd',
           'nightwatch',
-          '--env',
-          args.browser,
-          '--config',
-          require.resolve('@nitive/e2e-tools-nightwatch/config'),
+          ...createArgsArrayFromMap({
+            env: args.browser,
+            test: args.test,
+            config: require.resolve('@nitive/e2e-tools-nightwatch/config'),
+          }),
         ],
         { stdio: 'inherit' }
       )
@@ -113,7 +123,7 @@ async function initScript({ inquirer }) {
   const jenkinsfileData = await inquirer.prompt([
     {
       type: 'input',
-      name: 'defaultLaunchUrl',
+      name: 'launchUrl',
       message: 'Адрес стенда по умолчанию',
     },
     // TODO: get from project's package.json
@@ -134,7 +144,7 @@ async function initScript({ inquirer }) {
     filePath: 'nightwatch/Jenkinsfile',
     data: {
       ...jenkinsfileData,
-      defaultLaunchUrl: normalizeUrl(jenkinsfileData.defaultLaunchUrl),
+      launchUrl: normalizeUrl(jenkinsfileData.launchUrl),
     },
   })
 

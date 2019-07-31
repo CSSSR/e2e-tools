@@ -6,7 +6,7 @@ describe('nightwatch:run command', () => {
   run('init')
   run('add-tool @nitive/e2e-tools-nightwatch', {
     promptResults: {
-      defaultLaunchUrl: 'github.com',
+      launchUrl: 'github.com',
       projectName: 'github',
       repoSshAddress: 'git@github.com:github/web.git',
     },

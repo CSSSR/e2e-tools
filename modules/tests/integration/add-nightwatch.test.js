@@ -125,7 +125,7 @@ function checks({ readFile, rootDir }) {
 }
 
 const promptResults = {
-  defaultLaunchUrl: 'github.com',
+  launchUrl: 'github.com',
   projectName: 'github',
   repoSshAddress: 'git@github.com:github/web.git',
 }
