@@ -19,7 +19,7 @@ pipeline {
             branches: [[name: GIT_BRANCH]],
             doGenerateSubmoduleConfigurations: false,
             extensions: [[$class: 'GitLFSPull']],
-            userRemoteConfigs: [[credentialsId: '{{projectName}}', url: '{{repoSshAddress}}']]
+            userRemoteConfigs: [[url: '{{repoSshAddress}}']]
           ])
         }
         echo "GIT_BRANCH: ${scmVars.GIT_BRANCH}"
@@ -30,7 +30,10 @@ pipeline {
     stage('Install dependencies') {
       steps {
         script {
-          sh "cd e2e-tests/nightwatch && docker build --network host -t {{projectName}}/tests:${scmVars.GIT_COMMIT} ."
+          sh """
+            cd e2e-tests
+            docker build -f nightwatch/Dockerfile --network host -t {{projectName}}/tests:${scmVars.GIT_COMMIT} .
+          """
         }
       }
     }
@@ -41,7 +44,13 @@ pipeline {
           withCredentials([
             usernamePassword(credentialsId: 'chromedriver', usernameVariable: 'CHROMEDRIVER_USERNAME', passwordVariable: 'CHROMEDRIVER_PASSWORD')
           ]) {
-            sh "docker run --network host -e LAUNCH_URL=${params.launch_url} -e CHROMEDRIVER_USERNAME -e CHROMEDRIVER_PASSWORD {{projectName}}/tests:${scmVars.GIT_COMMIT}"
+            sh """
+              docker run --network host \
+                -e LAUNCH_URL=${params.launch_url} \
+                -e CHROMEDRIVER_USERNAME \
+                -e CHROMEDRIVER_PASSWORD \
+                {{projectName}}/tests:${scmVars.GIT_COMMIT}
+            """
           }
         }
       }

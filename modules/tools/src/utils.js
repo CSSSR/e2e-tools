@@ -41,7 +41,7 @@ function getConfig() {
 function getConfigSafe() {
   try {
     return getConfig()
-  } catch {
+  } catch (e) {
     return undefined
   }
 }
