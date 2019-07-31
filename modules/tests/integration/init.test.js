@@ -56,6 +56,29 @@ describe('init command', () => {
     `)
   })
 
+  it('should create .vscode/settings.json file', async () => {
+    const vscodeSettings = JSON.parse(readFile('e2e-tests/.vscode/settings.json'))
+
+    expect(vscodeSettings).toEqual({
+      'editor.formatOnSave': true,
+      'eslint.autoFixOnSave': true,
+      'eslint.validate': [
+        { language: 'javascript', autoFix: true },
+        { language: 'javascriptreact', autoFix: true },
+      ],
+      'git.ignoreLimitWarning': true,
+    })
+  })
+
+  it('should create .vscode/tasks.json file', async () => {
+    const vscodeTasks = JSON.parse(readFile('e2e-tests/.vscode/tasks.json'))
+
+    expect(vscodeTasks).toEqual({
+      version: '2.0.0',
+      tasks: [],
+    })
+  })
+
   it('should be prettified', () => {
     const { stderr } = spawnSync('yarn', ['prettier', '--check', '**/*.{js,json}'], {
       cwd: path.join(rootDir, 'e2e-tests'),

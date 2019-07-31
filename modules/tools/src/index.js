@@ -36,6 +36,27 @@ const initCommand = ({ config }) => ({
 
     createJsonFile({ filePath: path.join(root, 'e2e-tests/e2e-tools.json'), fileContent: {} })
 
+    createJsonFile({
+      filePath: path.join(root, 'e2e-tests/.vscode/settings.json'),
+      fileContent: {
+        'editor.formatOnSave': true,
+        'eslint.autoFixOnSave': true,
+        'eslint.validate': [
+          { language: 'javascript', autoFix: true },
+          { language: 'javascriptreact', autoFix: true },
+        ],
+        'git.ignoreLimitWarning': true,
+      },
+    })
+
+    createJsonFile({
+      filePath: path.join(root, 'e2e-tests/.vscode/tasks.json'),
+      fileContent: {
+        version: '2.0.0',
+        tasks: [],
+      },
+    })
+
     spawn.sync('yarn', ['install'], {
       stdio: 'inherit',
       cwd: getTestsRootDir(),

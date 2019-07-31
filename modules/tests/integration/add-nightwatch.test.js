@@ -1,6 +1,7 @@
 const fs = require('fs')
 const path = require('path')
 const spawnSync = require('cross-spawn').sync
+const uniqBy = require('lodash/uniqBy')
 const { setupEnvironment } = require('./helpers')
 
 function checks({ readFile, rootDir }) {
@@ -64,29 +65,17 @@ function checks({ readFile, rootDir }) {
 
   it('should add eslint config file', async () => {
     const eslintConfig = readFile('e2e-tests/nightwatch/.eslintrc.js')
-    expect(eslintConfig).toMatchInlineSnapshot(`
-      "module.exports = {
-        extends: ['@nitive/e2e-tools-nightwatch/eslint'],
-      }
-      "
-    `)
+    expect(eslintConfig).toMatchSnapshot()
   })
 
   it('should add .gitignore file', async () => {
     const gitignore = readFile('e2e-tests/nightwatch/.gitignore')
-    expect(gitignore).toMatchInlineSnapshot(`
-      "report/
-      "
-    `)
+    expect(gitignore).toMatchSnapshot()
   })
 
   it('should add screenshots/.gitignore file', async () => {
     const gitignore = readFile('e2e-tests/nightwatch/screenshots/.gitignore')
-    expect(gitignore).toMatchInlineSnapshot(`
-      "actual/
-      diff/
-      "
-    `)
+    expect(gitignore).toMatchSnapshot()
   })
 
   it('should add example file', async () => {
@@ -106,21 +95,46 @@ function checks({ readFile, rootDir }) {
 
   it('should add Dockerfile', async () => {
     const dockerfile = readFile('e2e-tests/nightwatch/Dockerfile')
-    expect(dockerfile).toMatchInlineSnapshot(`
-    "FROM node:8
+    expect(dockerfile).toMatchSnapshot()
+  })
 
-    WORKDIR /usr/src/app
+  it('should add tasks', async () => {
+    const vscodeTasks = JSON.parse(readFile('e2e-tests/.vscode/tasks.json'))
 
-    COPY ../package.json ../yarn.lock ./
-    RUN yarn install --frozen-lockfile && yarn cache clean
+    expect(vscodeTasks.tasks).toContainEqual({
+      type: 'shell',
+      label: 'Nightwatch: запустить текущий файл в Chrome локально',
+      command: "yarn et nightwatch:run --browser local_chrome --test='${file}'",
+      problemMatcher: [],
+      presentation: {
+        showReuseMessage: false,
+      },
+      group: 'build',
+    })
 
-    COPY . ./nightwatch
+    expect(vscodeTasks.tasks).toContainEqual({
+      type: 'shell',
+      label: 'Nightwatch: запустить текущий файл в Chrome на удалённом сервере',
+      command: "yarn et nightwatch:run --browser remote_chrome --test='${file}'",
+      problemMatcher: [],
+      presentation: {
+        showReuseMessage: false,
+      },
+      group: 'build',
+    })
 
-    RUN touch .env
+    expect(vscodeTasks.tasks).toContainEqual({
+      type: 'shell',
+      label: 'Nightwatch: Открыть HTML отчёт о последнем прогоне',
+      command: 'open nightwatch/report/mochawesome.html',
+      windows: {
+        command: 'explorer nightwatch/report\\mochawesome.html',
+      },
+      problemMatcher: [],
+      group: 'build',
+    })
 
-    ENTRYPOINT yarn et nightwatch:run --browser remote_chrome
-    "
-  `)
+    expect(uniqBy(vscodeTasks.tasks, task => task.label)).toHaveLength(vscodeTasks.tasks.length)
   })
 }
 

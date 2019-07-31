@@ -48,6 +48,7 @@ function getConfigSafe() {
 
 function createJsonFile({ filePath, fileContent }) {
   const formattedContent = prettier.format(JSON.stringify(fileContent), { parser: 'json' })
+  fs.mkdirSync(path.dirname(filePath), { recursive: true })
   fs.writeFileSync(filePath, formattedContent)
 }
 

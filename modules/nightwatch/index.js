@@ -1,6 +1,7 @@
 const path = require('path')
 const {
   getConfig,
+  updateJsonFile,
   updateToolConfig,
   initTemplate,
   getTestsRootDir,
@@ -149,6 +150,48 @@ async function initScript({ inquirer }) {
   })
 
   updateToolConfig(packageName, createToolConfig)
+
+  updateJsonFile({
+    filePath: path.join(getTestsRootDir(), '.vscode/tasks.json'),
+    update(config) {
+      return {
+        ...config,
+        tasks: [
+          ...config.tasks,
+          {
+            type: 'shell',
+            label: 'Nightwatch: запустить текущий файл в Chrome локально',
+            command: "yarn et nightwatch:run --browser local_chrome --test='${file}'",
+            problemMatcher: [],
+            presentation: {
+              showReuseMessage: false,
+            },
+            group: 'build',
+          },
+          {
+            type: 'shell',
+            label: 'Nightwatch: запустить текущий файл в Chrome на удалённом сервере',
+            command: "yarn et nightwatch:run --browser remote_chrome --test='${file}'",
+            problemMatcher: [],
+            presentation: {
+              showReuseMessage: false,
+            },
+            group: 'build',
+          },
+          {
+            type: 'shell',
+            label: 'Nightwatch: Открыть HTML отчёт о последнем прогоне',
+            command: 'open nightwatch/report/mochawesome.html',
+            windows: {
+              command: 'explorer nightwatch/report\\mochawesome.html',
+            },
+            problemMatcher: [],
+            group: 'build',
+          },
+        ],
+      }
+    },
+  })
 }
 
 module.exports = {
