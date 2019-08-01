@@ -17,6 +17,7 @@ describe('init command', () => {
       .env
       *.log
       package-lock.json
+      !/.vscode/
       "
     `)
   })
