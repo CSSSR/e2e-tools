@@ -4,9 +4,20 @@ const path = require('path')
 const chromedriver = require('chromedriver')
 const nightwatchImageComparison = require('@nitive/nightwatch-image-comparison')
 const packageName = require('./package.json').name
-const { getTestsRootDir } = require('@nitive/e2e-tools/utils')
+const { getTestsRootDir, getConfig } = require('@nitive/e2e-tools/utils')
 
-const config = JSON.parse(fs.readFileSync('./e2e-tools.json', { encoding: 'utf-8' }))
+process.chdir(getTestsRootDir())
+const config = getConfig()
+
+function checkEnvVariable(variableName) {
+  if (!process.env[variableName]) {
+    throw new Error(
+      `Не определена переменная окружения ${variableName}. Создайте файл .env в директории e2e-tests и добавьте туда ${variableName}=<value>`
+    )
+  }
+}
+
+checkEnvVariable('LAUNCH_URL')
 
 function getChromeDriverPath() {
   const nodeModulesPath = chromedriver.path.replace(/(node_modules).*/, '$1')
@@ -35,6 +46,14 @@ function getTestSettingsForBrowser(browser) {
 
     case 'selenium': {
       const { host, port = 80, basicAuth, ...rest } = settings
+
+      if (basicAuth && basicAuth.username_env) {
+        checkEnvVariable(basicAuth.username_env)
+      }
+
+      if (basicAuth && basicAuth.password_env) {
+        checkEnvVariable(basicAuth.password_env)
+      }
 
       return {
         selenium_port: port,
