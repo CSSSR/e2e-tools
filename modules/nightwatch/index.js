@@ -39,7 +39,7 @@ const addNightwatchRunCommand = context => {
     command: 'nightwatch:run',
     describe: 'Run nightwatch',
     handler(args) {
-      context.spawnSync(
+      const result = context.spawnSync(
         'yarn',
         [
           'env-cmd',
@@ -52,6 +52,9 @@ const addNightwatchRunCommand = context => {
         ],
         { stdio: 'inherit' }
       )
+      if (result.status) {
+        process.exit(result.status)
+      }
     },
   }
 }
