@@ -1,6 +1,6 @@
 {
   "name": "@nitive/e2e-tools",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "CLI утилита для быстрого добавления e2e тестов в проект",
   "author": "Maxim Samoilov <nitive@icloud.com>",
   "license": "MIT",
