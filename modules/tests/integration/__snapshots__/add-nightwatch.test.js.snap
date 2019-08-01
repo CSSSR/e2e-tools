@@ -87,7 +87,8 @@ exports[`add-tool command Inside e2e-tests dir should add Jenkinsfile 1`] = `
 
 exports[`add-tool command Inside e2e-tests dir should add eslint config file 1`] = `
 "module.exports = {
-  extends: ['@nitive/e2e-tools-nightwatch/eslint'],
+  root: true,
+  extends: [require.resolve('@nitive/e2e-tools/eslint')],
 }
 "
 `;
@@ -185,7 +186,8 @@ exports[`add-tool command Inside root dir should add Jenkinsfile 1`] = `
 
 exports[`add-tool command Inside root dir should add eslint config file 1`] = `
 "module.exports = {
-  extends: ['@nitive/e2e-tools-nightwatch/eslint'],
+  root: true,
+  extends: [require.resolve('@nitive/e2e-tools/eslint')],
 }
 "
 `;

@@ -1,7 +1,9 @@
+const fs = require('fs')
+const path = require('path')
 const { setupEnvironment } = require('./helpers')
 
 describe('nightwatch:run command', () => {
-  const { run } = setupEnvironment('nightwatch-run')
+  const { run, rootDir } = setupEnvironment('nightwatch-run')
 
   run('init')
   run('add-tool @nitive/e2e-tools-nightwatch', {
@@ -13,6 +15,13 @@ describe('nightwatch:run command', () => {
   })
 
   it('Generated examples should run successfully', async () => {
+    fs.writeFileSync(
+      path.join(rootDir, 'e2e-tests/.env'),
+      `LAUNCH_URL=<value>
+       CHROMEDRIVER_USERNAME=<value>
+       CHROMEDRIVER_PASSWORD=<value>
+      `
+    )
     run('nightwatch:run')
   })
 })
