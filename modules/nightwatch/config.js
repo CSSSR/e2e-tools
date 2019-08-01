@@ -96,7 +96,6 @@ module.exports = {
     type: 'mocha',
     options: {
       ui: '@nitive/mocha-testrail-ui',
-      bail: true,
 
       reporter: 'mochawesome',
       reporterOptions: {

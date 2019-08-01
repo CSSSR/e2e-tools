@@ -285,10 +285,10 @@
     "@types/istanbul-reports" "^1.1.1"
     "@types/yargs" "^12.0.9"
 
-"@nitive/mocha-testrail-ui@^0.1.2":
-  version "0.1.2"
-  resolved "https://registry.yarnpkg.com/@nitive/mocha-testrail-ui/-/mocha-testrail-ui-0.1.2.tgz#ac9aa325721fffd86dbd495a4ae70de62c6e21f5"
-  integrity sha512-FFWBlf7Kx9WKe96Qf/N7KpncGWBKB6ISF0+0h74fMgPjm5/bl/PqC+8D5cPF3pgKkMbg67bhA3SW3JL3dltepQ==
+"@nitive/mocha-testrail-ui@~0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@nitive/mocha-testrail-ui/-/mocha-testrail-ui-0.2.0.tgz#0f37f5fd0c4315f9a1419dcbcd56f8acb7ac0c16"
+  integrity sha512-HmVoqGCogYtuH5WbA7ndojZ493cj+OmE5YQ8nqCEzBdonE8y1712X03DS/M+huvCEHSmtBRB03GFgGUXYuI07w==
   dependencies:
     mocha "^5.2.0"
 
