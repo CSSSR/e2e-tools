@@ -120,6 +120,7 @@ async function initScript({ inquirer }) {
   createFromTemplate({ filePath: 'nightwatch/.gitignore' })
   createFromTemplate({ filePath: 'nightwatch/screenshots/.gitignore' })
   createFromTemplate({ filePath: 'nightwatch/Dockerfile' })
+  createFromTemplate({ filePath: 'nightwatch/tsconfig.json' })
 
   const jenkinsfileData = await inquirer.prompt([
     {

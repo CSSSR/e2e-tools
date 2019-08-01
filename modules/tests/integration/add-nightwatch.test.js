@@ -78,6 +78,13 @@ function checks({ readFile, rootDir }) {
     expect(gitignore).toMatchSnapshot()
   })
 
+  it('should add tsconfig.json', async () => {
+    const tsconfig = JSON.parse(readFile('e2e-tests/nightwatch/tsconfig.json'))
+    expect(tsconfig).toEqual({
+      extends: '@nitive/e2e-tools-nightwatch/ts',
+    })
+  })
+
   it('should add example file', async () => {
     const exist = fs.existsSync(
       path.join(
