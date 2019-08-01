@@ -4,6 +4,7 @@ const path = require('path')
 const chromedriver = require('chromedriver')
 const nightwatchImageComparison = require('@nitive/nightwatch-image-comparison')
 const packageName = require('./package.json').name
+const { getTestsRootDir } = require('@nitive/e2e-tools/utils')
 
 const config = JSON.parse(fs.readFileSync('./e2e-tools.json', { encoding: 'utf-8' }))
 
@@ -57,14 +58,16 @@ function getTestSettings(browsers) {
   return testSettings
 }
 
+const rootDir = getTestsRootDir()
+
 module.exports = {
   output_folder: false,
   src_folders: ['./nightwatch/tests'],
   filter: '**/*.test.js',
   globals: {
     screenshots: {
-      testsRootDir: path.join(__dirname, 'nightwatch/tests'),
-      screenshotsRootDir: path.join(__dirname, 'nightwatch/screenshots'),
+      testsRootDir: path.join(rootDir, 'nightwatch/tests'),
+      screenshotsRootDir: path.join(rootDir, 'nightwatch/screenshots'),
     },
   },
 
