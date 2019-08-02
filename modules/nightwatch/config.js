@@ -4,10 +4,18 @@ const path = require('path')
 const chromedriver = require('chromedriver')
 const nightwatchImageComparison = require('@nitive/nightwatch-image-comparison')
 const packageName = require('./package.json').name
+const mochawesome = require('mochawesome')
 const { getTestsRootDir, getConfig } = require('@nitive/e2e-tools/utils')
+const { argv } = require('yargs')
 
 process.chdir(getTestsRootDir())
 const config = getConfig()
+
+const publishResults = !!(argv.publishResults && config.testrail)
+
+if (publishResults) {
+  console.log('Test run results will be published to TestRail')
+}
 
 function checkEnvVariable(variableName) {
   if (!process.env[variableName]) {
@@ -18,6 +26,11 @@ function checkEnvVariable(variableName) {
 }
 
 checkEnvVariable('LAUNCH_URL')
+
+if (publishResults) {
+  checkEnvVariable(config.testrail.username_env)
+  checkEnvVariable(config.testrail.api_token_env)
+}
 
 function getChromeDriverPath() {
   const nodeModulesPath = chromedriver.path.replace(/(node_modules).*/, '$1')
@@ -79,6 +92,35 @@ function getTestSettings(browsers) {
 
 const rootDir = getTestsRootDir()
 
+const mochawesomeOptions = {
+  reportDir: 'nightwatch/report',
+  json: false,
+}
+
+function getReporter() {
+  if (publishResults) {
+    return {
+      reporter: '@nitive/mocha-testrail-reporter',
+      reporterOptions: {
+        mode: 'publish_ran_tests',
+        domain: config.testrail.domain,
+        username: process.env[config.testrail.username_env],
+        apiToken: process.env[config.testrail.api_token_env],
+        projectId: config.testrail.projectId,
+        testsRootDir: path.join(getTestsRootDir(), 'nightwatch/tests'),
+        casePrefix: 'Автотест: ',
+        additionalReporter: mochawesome,
+        additionalReporterOptions: mochawesomeOptions,
+      },
+    }
+  }
+
+  return {
+    reporter: 'mochawesome',
+    reporterOptions: mochawesomeOptions,
+  }
+}
+
 module.exports = {
   output_folder: false,
   src_folders: ['./nightwatch/tests'],
@@ -96,12 +138,7 @@ module.exports = {
     type: 'mocha',
     options: {
       ui: '@nitive/mocha-testrail-ui',
-
-      reporter: 'mochawesome',
-      reporterOptions: {
-        reportDir: 'nightwatch/report',
-        json: false,
-      },
+      ...getReporter(),
     },
   },
   globals_path: path.join(__dirname, 'src/globals.js'),

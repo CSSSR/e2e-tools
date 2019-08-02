@@ -1,4 +1,5 @@
 const path = require('path')
+const isCI = require('is-ci')
 const {
   getConfig,
   updateJsonFile,
@@ -35,6 +36,15 @@ const addNightwatchRunCommand = context => {
         default: defaultBrowser,
         choices: browsers,
       },
+      test: {
+        describe: 'Test file',
+      },
+      publishResults: {
+        boolean: true,
+        default: isCI,
+        describe:
+          'Publish test run results to TestRail. This option is on by default in most popular CI environments',
+      },
     },
     command: 'nightwatch:run',
     describe: 'Run nightwatch',
@@ -48,10 +58,12 @@ const addNightwatchRunCommand = context => {
             env: args.browser,
             test: args.test,
             config: require.resolve('@nitive/e2e-tools-nightwatch/config'),
+            publishResults: args.publishResults,
           }),
         ],
         { stdio: 'inherit' }
       )
+
       if (result.status) {
         process.exit(result.status)
       }
