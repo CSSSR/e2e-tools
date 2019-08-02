@@ -42,6 +42,7 @@ pipeline {
       steps {
         script {
           withCredentials([
+            usernamePassword(credentialsId: 'testrail', usernameVariable: 'TESTRAIL_USERNAME', passwordVariable: 'TESTRAIL_API_TOKEN'),
             usernamePassword(credentialsId: 'chromedriver', usernameVariable: 'CHROMEDRIVER_USERNAME', passwordVariable: 'CHROMEDRIVER_PASSWORD')
           ]) {
             sh """
@@ -49,6 +50,8 @@ pipeline {
                 -e LAUNCH_URL=${params.launch_url} \
                 -e CHROMEDRIVER_USERNAME \
                 -e CHROMEDRIVER_PASSWORD \
+                -e TESTRAIL_USERNAME \
+                -e TESTRAIL_API_TOKEN \
                 {{projectName}}/tests:${scmVars.GIT_COMMIT}
             """
           }
