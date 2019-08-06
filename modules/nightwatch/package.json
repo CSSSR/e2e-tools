@@ -23,7 +23,7 @@
     "@types/mocha": "^5.2.7",
     "@types/nightwatch": "^1.1.0",
     "@types/node": "^12.6.8",
-    "chromedriver": "^74.0.0",
+    "chromedriver": "*",
     "env-cmd": "^9.0.3",
     "is-ci": "^2.0.0",
     "mocha": "^5.2.0",
