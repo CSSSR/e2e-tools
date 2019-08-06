@@ -9,5 +9,6 @@ COPY e2e-tools.json ./
 COPY nightwatch nightwatch/
 
 RUN touch .env
+ENV CI true
 
 ENTRYPOINT yarn et nightwatch:run --browser remote_chrome
