@@ -2,6 +2,7 @@
 
 exports[`add-tool command Inside e2e-tests dir should add .gitignore file 1`] = `
 "report/
+jenkins-report.xml
 "
 `;
 
@@ -105,6 +106,7 @@ diff/
 
 exports[`add-tool command Inside root dir should add .gitignore file 1`] = `
 "report/
+jenkins-report.xml
 "
 `;
 

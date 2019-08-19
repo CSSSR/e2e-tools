@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/camelcase */
-const fs = require('fs')
 const path = require('path')
+const isCI = require('is-ci')
 const chromedriver = require('chromedriver')
 const nightwatchImageComparison = require('@nitive/nightwatch-image-comparison')
 const packageName = require('./package.json').name
@@ -92,12 +92,25 @@ function getTestSettings(browsers) {
 
 const rootDir = getTestsRootDir()
 
-const mochawesomeOptions = {
-  reportDir: 'nightwatch/report',
-  json: false,
+const mochawesomeReporter = {
+  reporter: mochawesome,
+  reporterOptions: {
+    reportDir: 'nightwatch/report',
+    json: false,
+  },
+}
+
+const junkinsReporter = {
+  reporter: require('mocha-jenkins-reporter'),
+  reporterOptions: {
+    junit_report_path: 'nightwatch/jenkins-report.xml',
+    junit_report_name: 'Nightwatch Tests',
+  },
 }
 
 function getReporter() {
+  const mainReporter = isCI ? junkinsReporter : mochawesomeReporter
+
   if (publishResults) {
     return {
       reporter: '@nitive/mocha-testrail-reporter',
@@ -109,16 +122,13 @@ function getReporter() {
         projectId: config.testrail.projectId,
         testsRootDir: path.join(getTestsRootDir(), 'nightwatch/tests'),
         casePrefix: 'Автотест: ',
-        additionalReporter: mochawesome,
-        additionalReporterOptions: mochawesomeOptions,
+        additionalReporter: mainReporter.reporter,
+        additionalReporterOptions: mainReporter.reporterOptions,
       },
     }
   }
 
-  return {
-    reporter: 'mochawesome',
-    reporterOptions: mochawesomeOptions,
-  }
+  return mainReporter
 }
 
 module.exports = {

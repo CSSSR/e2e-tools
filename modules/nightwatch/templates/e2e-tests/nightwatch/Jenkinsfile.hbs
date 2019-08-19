@@ -59,4 +59,10 @@ pipeline {
       }
     }
   }
+
+  post {
+    always {
+      junit 'e2e-tests/nightwatch/jenkins-report.xml'
+    }
+  }
 }

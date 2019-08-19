@@ -27,6 +27,7 @@
     "env-cmd": "^9.0.3",
     "is-ci": "^2.0.0",
     "mocha": "^5.2.0",
+    "mocha-jenkins-reporter": "^0.4.2",
     "mochawesome": "^4.1.0",
     "nightwatch": "^1.2.1"
   }
