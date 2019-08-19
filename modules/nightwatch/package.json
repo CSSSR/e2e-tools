@@ -19,15 +19,15 @@
   "dependencies": {
     "@nitive/mocha-testrail-reporter": "~0.1.4",
     "@nitive/mocha-testrail-ui": "~0.2.0",
-    "@nitive/nightwatch-image-comparison": "^0.1.0",
+    "@nitive/nightwatch-image-comparison": "^0.1.2",
     "@types/mocha": "^5.2.7",
-    "@types/nightwatch": "^1.1.0",
-    "@types/node": "^12.6.8",
+    "@types/nightwatch": "^1.1.1",
+    "@types/node": "^12.7.2",
     "chromedriver": "*",
     "env-cmd": "^9.0.3",
     "is-ci": "^2.0.0",
     "mocha": "^5.2.0",
-    "mochawesome": "^4.0.1",
-    "nightwatch": "^1.1.13"
+    "mochawesome": "^4.1.0",
+    "nightwatch": "^1.2.1"
   }
 }
