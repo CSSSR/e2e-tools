@@ -17,6 +17,7 @@ COPY e2e-tools.json ./
 COPY nightwatch nightwatch/
 
 RUN touch .env
+ENV CI true
 
 ENTRYPOINT yarn et nightwatch:run --browser remote_chrome
 "
@@ -67,6 +68,7 @@ exports[`add-tool command Inside e2e-tests dir should add Jenkinsfile 1`] = `
       steps {
         script {
           withCredentials([
+            usernamePassword(credentialsId: 'testrail', usernameVariable: 'TESTRAIL_USERNAME', passwordVariable: 'TESTRAIL_API_TOKEN'),
             usernamePassword(credentialsId: 'chromedriver', usernameVariable: 'CHROMEDRIVER_USERNAME', passwordVariable: 'CHROMEDRIVER_PASSWORD')
           ]) {
             sh \\"\\"\\"
@@ -74,6 +76,8 @@ exports[`add-tool command Inside e2e-tests dir should add Jenkinsfile 1`] = `
                 -e LAUNCH_URL=\${params.launch_url} \\\\
                 -e CHROMEDRIVER_USERNAME \\\\
                 -e CHROMEDRIVER_PASSWORD \\\\
+                -e TESTRAIL_USERNAME \\\\
+                -e TESTRAIL_API_TOKEN \\\\
                 github/tests:\${scmVars.GIT_COMMIT}
             \\"\\"\\"
           }
@@ -116,6 +120,7 @@ COPY e2e-tools.json ./
 COPY nightwatch nightwatch/
 
 RUN touch .env
+ENV CI true
 
 ENTRYPOINT yarn et nightwatch:run --browser remote_chrome
 "
@@ -166,6 +171,7 @@ exports[`add-tool command Inside root dir should add Jenkinsfile 1`] = `
       steps {
         script {
           withCredentials([
+            usernamePassword(credentialsId: 'testrail', usernameVariable: 'TESTRAIL_USERNAME', passwordVariable: 'TESTRAIL_API_TOKEN'),
             usernamePassword(credentialsId: 'chromedriver', usernameVariable: 'CHROMEDRIVER_USERNAME', passwordVariable: 'CHROMEDRIVER_PASSWORD')
           ]) {
             sh \\"\\"\\"
@@ -173,6 +179,8 @@ exports[`add-tool command Inside root dir should add Jenkinsfile 1`] = `
                 -e LAUNCH_URL=\${params.launch_url} \\\\
                 -e CHROMEDRIVER_USERNAME \\\\
                 -e CHROMEDRIVER_PASSWORD \\\\
+                -e TESTRAIL_USERNAME \\\\
+                -e TESTRAIL_API_TOKEN \\\\
                 github/tests:\${scmVars.GIT_COMMIT}
             \\"\\"\\"
           }
