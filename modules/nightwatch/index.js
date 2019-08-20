@@ -196,6 +196,14 @@ async function initScript({ inquirer }) {
           },
           {
             type: 'shell',
+            label: 'Nightwatch: запустить все тесты в Chrome на удалённом сервере',
+            command: 'yarn et nightwatch:run --browser remote_chrome',
+            problemMatcher: [],
+            presentation: { showReuseMessage: false },
+            group: 'build',
+          },
+          {
+            type: 'shell',
             label: 'Nightwatch: Открыть HTML отчёт о последнем прогоне',
             command: 'open nightwatch/report/mochawesome.html',
             windows: {
