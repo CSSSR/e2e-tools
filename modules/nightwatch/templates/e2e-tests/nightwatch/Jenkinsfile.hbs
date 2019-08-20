@@ -52,7 +52,7 @@ pipeline {
                 -e CHROMEDRIVER_PASSWORD \
                 -e TESTRAIL_USERNAME \
                 -e TESTRAIL_API_TOKEN \
-                --cidfile tests.cid \
+                --cidfile "$BUILD_TAG-tests.cid" \
                 {{projectName}}/tests:${scmVars.GIT_COMMIT}
             """
           }
@@ -63,12 +63,12 @@ pipeline {
 
   post {
     always {
-      sh "docker cp `cat tests.cid`:/usr/src/app/nightwatch/jenkins-report.xml ."
-      junit 'jenkins-report.xml'
       sh """
-        docker rm `cat tests.cid`
-        rm tests.cid
+        docker cp `cat "$BUILD_TAG-tests.cid"`:/usr/src/app/nightwatch/jenkins-report.xml .
+        docker rm `cat "$BUILD_TAG-tests.cid"`
+        rm "$BUILD_TAG-tests.cid"
       """
+      junit 'jenkins-report.xml'
     }
   }
 }
