@@ -1,4 +1,5 @@
 const path = require('path')
+const chalk = require('chalk').default
 
 function setupHooks() {
   before(function globalBeforeHook(browser, done) {
@@ -6,7 +7,7 @@ function setupHooks() {
     done()
   })
 
-  beforeEach(function globalBeforeEach(browser, done) {
+  beforeEach(function globalBeforeEachHook(browser, done) {
     const ctx = this
 
     // eslint-disable-next-line no-param-reassign
@@ -20,6 +21,48 @@ function setupHooks() {
     }
 
     done()
+  })
+
+  afterEach(function globalAfterEachHook(browser, done) {
+    if (this.currentTest.state === 'failed') {
+      this.failedTest = this.currentTest
+    }
+
+    done()
+  })
+
+  after(function globalAfterHook(browser, done) {
+    if (this.failedTest) {
+      const suite = this.failedTest.parent
+      const screenshotFileName = `nightwatch/failure-screenshots/${suite.title} (${suite.uuid}).png`.replace(
+        /\s/g,
+        '_'
+      )
+      browser.saveScreenshot(screenshotFileName, result => {
+        if (result.status === 0) {
+          console.log(
+            chalk.red(
+              `\nThe test has failed, screenshot of the page saved to '${screenshotFileName}'\n`
+            )
+          )
+        } else {
+          console.log(
+            chalk.red(
+              '\nThe test has failed, and screenshot could not be saved. Unexpected result:'
+            ),
+            result
+          )
+        }
+      })
+    }
+
+    browser.session('get', session => {
+      if (session.status === 0) {
+        browser.end(() => done())
+      } else {
+        done()
+      }
+    })
   })
 }
 

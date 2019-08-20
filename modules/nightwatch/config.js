@@ -132,6 +132,7 @@ function getReporter() {
 }
 
 module.exports = {
+  end_session_on_fail: false,
   output_folder: false,
   src_folders: ['./nightwatch/tests'],
   filter: '**/*.test.js',
