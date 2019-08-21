@@ -1,5 +1,12 @@
+const rimraf = require('rimraf')
 const path = require('path')
 const chalk = require('chalk').default
+
+function cleanFailureScreenshots() {
+  rimraf.sync('nightwatch/failure-screenshots/*.png')
+}
+
+cleanFailureScreenshots()
 
 function setupHooks() {
   before(function globalBeforeHook(browser, done) {

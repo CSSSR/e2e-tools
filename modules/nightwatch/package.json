@@ -30,6 +30,7 @@
     "mocha": "^5.2.0",
     "mocha-jenkins-reporter": "^0.4.2",
     "mochawesome": "^4.1.0",
-    "nightwatch": "^1.2.1"
+    "nightwatch": "^1.2.1",
+    "rimraf": "^3.0.0"
   }
 }
