@@ -64,14 +64,16 @@ pipeline {
   post {
     always {
       sh """
-        docker cp `cat "$BUILD_TAG-tests.cid"`:/usr/src/app/nightwatch/jenkins-report.xml .
-        docker cp `cat "$BUILD_TAG-tests.cid"`:/usr/src/app/nightwatch/failure-screenshots .
+        rm -rf artifacts/
+        mkdir artifacts
+        docker cp `cat "$BUILD_TAG-tests.cid"`:/usr/src/app/nightwatch/jenkins-report.xml artifacts/
+        docker cp `cat "$BUILD_TAG-tests.cid"`:/usr/src/app/nightwatch/failure-screenshots artifacts/
         docker rm `cat "$BUILD_TAG-tests.cid"`
         rm "$BUILD_TAG-tests.cid"
       """
 
-      archiveArtifacts artifacts: 'failure-screenshots/*.png', allowEmptyArchive: true
-      junit 'jenkins-report.xml'
+      archiveArtifacts artifacts: 'artifacts/failure-screenshots/*.png', allowEmptyArchive: true
+      junit 'artifacts/jenkins-report.xml'
     }
   }
 }
