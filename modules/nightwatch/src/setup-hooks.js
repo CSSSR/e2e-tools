@@ -8,6 +8,7 @@ function cleanFailureScreenshots() {
     getTestsRootDir(),
     'nightwatch/failure-screenshots/*.png'
   )
+  console.log(`Removing ${failureScreenshotsPath}`)
   rimraf.sync(failureScreenshotsPath)
 }
 
