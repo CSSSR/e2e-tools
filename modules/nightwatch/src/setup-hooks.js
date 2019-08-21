@@ -3,7 +3,9 @@ const path = require('path')
 const chalk = require('chalk').default
 
 function cleanFailureScreenshots() {
-  rimraf.sync('nightwatch/failure-screenshots/*.png')
+  const failureScreenshotsPath = path.join(process.cwd(), 'nightwatch/failure-screenshots/*.png')
+  console.log(`Removing ${failureScreenshotsPath}`)
+  rimraf.sync(failureScreenshotsPath)
 }
 
 cleanFailureScreenshots()
