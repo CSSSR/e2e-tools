@@ -41,7 +41,10 @@ function setupHooks() {
   after(function globalAfterHook(browser, done) {
     if (this.failedTest) {
       const suite = this.failedTest.parent
-      const screenshotFileName = `nightwatch/failure-screenshots/${suite.title} (${suite.uuid}).png`.replace(
+      const random = Math.random()
+        .toString()
+        .replace('0.', '')
+      const screenshotFileName = `nightwatch/failure-screenshots/${suite.title} (${random}).png`.replace(
         /\s/g,
         '_'
       )
