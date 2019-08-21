@@ -1,10 +1,13 @@
 const rimraf = require('rimraf')
 const path = require('path')
 const chalk = require('chalk').default
+const { getTestsRootDir } = require('@nitive/e2e-tools/utils')
 
 function cleanFailureScreenshots() {
-  const failureScreenshotsPath = path.join(process.cwd(), 'nightwatch/failure-screenshots/*.png')
-  console.log(`Removing ${failureScreenshotsPath}`)
+  const failureScreenshotsPath = path.join(
+    getTestsRootDir(),
+    'nightwatch/failure-screenshots/*.png'
+  )
   rimraf.sync(failureScreenshotsPath)
 }
 
