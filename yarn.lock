@@ -315,10 +315,17 @@
     mocha "^5.2.0"
     strip-ansi "^5.2.0"
 
-"@nitive/mocha-testrail-ui@*", "@nitive/mocha-testrail-ui@~0.2.0":
+"@nitive/mocha-testrail-ui@*":
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/@nitive/mocha-testrail-ui/-/mocha-testrail-ui-0.2.0.tgz#0f37f5fd0c4315f9a1419dcbcd56f8acb7ac0c16"
   integrity sha512-HmVoqGCogYtuH5WbA7ndojZ493cj+OmE5YQ8nqCEzBdonE8y1712X03DS/M+huvCEHSmtBRB03GFgGUXYuI07w==
+  dependencies:
+    mocha "^5.2.0"
+
+"@nitive/mocha-testrail-ui@~0.3.0":
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/@nitive/mocha-testrail-ui/-/mocha-testrail-ui-0.3.0.tgz#24230c22fe15f0a0336dc0bd258c1a90c5da0caa"
+  integrity sha512-xLZbMC1u6MeI37DOY2MA9dTiHxxiDSko9ngnv58+aPJRIdacjKAom5y0VlP5Y1S3d3otJqUIpc6XZ4T6R96MEA==
   dependencies:
     mocha "^5.2.0"
 

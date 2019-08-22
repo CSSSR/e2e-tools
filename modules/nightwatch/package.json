@@ -18,7 +18,7 @@
   },
   "dependencies": {
     "@nitive/mocha-testrail-reporter": "~0.1.4",
-    "@nitive/mocha-testrail-ui": "~0.2.0",
+    "@nitive/mocha-testrail-ui": "~0.3.0",
     "@nitive/nightwatch-image-comparison": "^0.1.2",
     "@types/mocha": "^5.2.7",
     "@types/nightwatch": "^1.1.1",
