@@ -81,25 +81,16 @@ const addToolCommand = context => ({
       },
     })
 
-    if (process.env.NODE_ENV === 'test') {
-      updateJsonFile({
-        filePath: path.join(getTestsRootDir(), 'package.json'),
-        update(packageJson) {
-          return {
-            ...packageJson,
-            devDependencies: {
-              ...packageJson.devDependencies,
-              [packageName]: '*',
-            },
-          }
-        },
-      })
-    } else {
-      spawn.sync('yarn', ['add', '--dev', '--tilde', packageName], {
-        stdio: 'inherit',
-        cwd: getTestsRootDir(),
-      })
-    }
+    // TODO: find a better way
+    const package =
+      process.env.NODE_ENV === 'test'
+        ? `file:${__dirname.replace('tools/src', 'nightwatch')}`
+        : packageName
+
+    spawn.sync('yarn', ['add', '--dev', '--tilde', package], {
+      stdio: 'inherit',
+      cwd: getTestsRootDir(),
+    })
 
     spawn.sync('yarn', ['install'], {
       stdio: 'inherit',

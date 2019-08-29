@@ -131,9 +131,9 @@ async function initScript({ inquirer }) {
   const parentProjectPackageJson = getParentProjectPackageJsonSafe() || {}
 
   async function prompt(question) {
-    const answers = await inquirer.prompt([{ ...question, name: 'field' }])
+    const answers = await inquirer.prompt([question])
 
-    return answers.field
+    return answers[question.name]
   }
 
   const launchUrl = await prompt({
@@ -152,6 +152,7 @@ async function initScript({ inquirer }) {
 
   const projectName = await prompt({
     type: 'input',
+    name: 'projectName',
     default: parentProjectPackageJson.name || getRepoNameByAddress(repoSshAddress),
     message: 'Название проекта (маленькими буквами без пробелов)',
     validate: validatePackageName,

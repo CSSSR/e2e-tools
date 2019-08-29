@@ -13,7 +13,7 @@ function cleanFailureScreenshots() {
 
 cleanFailureScreenshots()
 
-function setupHooks() {
+exports.setupHooksInternal = () => {
   before(function globalBeforeHook(browser, done) {
     global.browser = browser
     done()
@@ -81,4 +81,10 @@ function setupHooks() {
   })
 }
 
-global.setupHooks = setupHooks
+let warningLogged = false
+global.setupHooks = () => {
+  if (!warningLogged) {
+    console.warn('setupHooks() больше не обязательна, её вызовы можно удалить')
+    warningLogged = true
+  }
+}

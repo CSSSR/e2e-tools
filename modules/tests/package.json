@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "test": "rm -rf ./integration/sandbox && jest"
+    "test": "rm -rf ./integration/sandbox && jest --runInBand"
   },
   "devDependencies": {
     "@types/jest": "^24.0.17",
