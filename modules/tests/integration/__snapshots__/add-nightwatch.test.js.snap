@@ -3,6 +3,7 @@
 exports[`add-tool command Inside e2e-tests dir should add .gitignore file 1`] = `
 "report/
 jenkins-report.xml
+failure-screenshots/*.png
 "
 `;
 
@@ -79,11 +80,28 @@ exports[`add-tool command Inside e2e-tests dir should add Jenkinsfile 1`] = `
                 -e CHROMEDRIVER_PASSWORD \\\\
                 -e TESTRAIL_USERNAME \\\\
                 -e TESTRAIL_API_TOKEN \\\\
+                --cidfile \\"$BUILD_TAG-tests.cid\\" \\\\
                 github/tests:\${scmVars.GIT_COMMIT}
             \\"\\"\\"
           }
         }
       }
+    }
+  }
+
+  post {
+    always {
+      sh \\"\\"\\"
+        rm -rf artifacts/
+        mkdir artifacts
+        docker cp \`cat \\"$BUILD_TAG-tests.cid\\"\`:/usr/src/app/nightwatch/jenkins-report.xml artifacts/
+        docker cp \`cat \\"$BUILD_TAG-tests.cid\\"\`:/usr/src/app/nightwatch/failure-screenshots artifacts/
+        docker rm \`cat \\"$BUILD_TAG-tests.cid\\"\`
+        rm \\"$BUILD_TAG-tests.cid\\"
+      \\"\\"\\"
+
+      archiveArtifacts artifacts: 'artifacts/failure-screenshots/*.png', allowEmptyArchive: true
+      junit 'artifacts/jenkins-report.xml'
     }
   }
 }
@@ -107,6 +125,7 @@ diff/
 exports[`add-tool command Inside root dir should add .gitignore file 1`] = `
 "report/
 jenkins-report.xml
+failure-screenshots/*.png
 "
 `;
 
@@ -183,11 +202,28 @@ exports[`add-tool command Inside root dir should add Jenkinsfile 1`] = `
                 -e CHROMEDRIVER_PASSWORD \\\\
                 -e TESTRAIL_USERNAME \\\\
                 -e TESTRAIL_API_TOKEN \\\\
+                --cidfile \\"$BUILD_TAG-tests.cid\\" \\\\
                 github/tests:\${scmVars.GIT_COMMIT}
             \\"\\"\\"
           }
         }
       }
+    }
+  }
+
+  post {
+    always {
+      sh \\"\\"\\"
+        rm -rf artifacts/
+        mkdir artifacts
+        docker cp \`cat \\"$BUILD_TAG-tests.cid\\"\`:/usr/src/app/nightwatch/jenkins-report.xml artifacts/
+        docker cp \`cat \\"$BUILD_TAG-tests.cid\\"\`:/usr/src/app/nightwatch/failure-screenshots artifacts/
+        docker rm \`cat \\"$BUILD_TAG-tests.cid\\"\`
+        rm \\"$BUILD_TAG-tests.cid\\"
+      \\"\\"\\"
+
+      archiveArtifacts artifacts: 'artifacts/failure-screenshots/*.png', allowEmptyArchive: true
+      junit 'artifacts/jenkins-report.xml'
     }
   }
 }

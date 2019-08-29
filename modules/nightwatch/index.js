@@ -147,7 +147,7 @@ async function initScript({ inquirer }) {
     {
       type: 'input',
       name: 'projectName',
-      message: 'Название проекта',
+      message: 'Название проекта (маленькими буквами без пробелов)',
     },
     // TODO: get from project's package.json
     {
