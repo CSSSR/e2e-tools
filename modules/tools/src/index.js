@@ -94,12 +94,12 @@ const addToolCommand = context => ({
       },
     })
 
-    const tool = require(packageName)
-
     spawn.sync('yarn', ['install'], {
       stdio: 'inherit',
       cwd: getTestsRootDir(),
     })
+
+    const tool = require(packageName)
 
     tool.initScript(context)
   },
