@@ -53,6 +53,8 @@ const addNightwatchRunCommand = context => {
     command: 'nightwatch:run',
     describe: 'Run nightwatch',
     handler(args) {
+      context.spawnSync('yarn', ['install', '--frozen-lockfile'], { stdio: 'inherit' })
+
       const result = context.spawnSync(
         'yarn',
         [
