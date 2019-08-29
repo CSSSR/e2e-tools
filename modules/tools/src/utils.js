@@ -2,6 +2,7 @@ const fs = require('fs')
 const path = require('path')
 const findRoot = require('find-root')
 const prettier = require('prettier')
+const validateNpmPackageName = require('validate-npm-package-name')
 const { compile } = require('handlebars')
 
 const getTestsRootDir = () => {
@@ -41,6 +42,14 @@ function getConfig() {
 function getConfigSafe() {
   try {
     return getConfig()
+  } catch (e) {
+    return undefined
+  }
+}
+
+function getParentProjectPackageJsonSafe() {
+  try {
+    return require(path.join(getProjectRootDir(), 'package.json'))
   } catch (e) {
     return undefined
   }
@@ -94,6 +103,28 @@ function initTemplate({ templatesRoot, root }) {
   }
 }
 
+function getRepoNameByAddress(str) {
+  const matched = str.match(/\/(.*).git$/)
+
+  if (!matched) {
+    return undefined
+  }
+
+  return matched[1]
+}
+
+function validateRepoAddress(str) {
+  return str.startsWith('git@') && str.endsWith('.git')
+}
+
+function validatePackageName(name) {
+  if (name.startsWith('@')) {
+    return false
+  }
+
+  return validateNpmPackageName(name).validForNewPackages
+}
+
 module.exports = {
   getTestsRootDir,
   getProjectRootDir,
@@ -103,4 +134,8 @@ module.exports = {
   updateJsonFile,
   updateToolConfig,
   initTemplate,
+  getParentProjectPackageJsonSafe,
+  getRepoNameByAddress,
+  validateRepoAddress,
+  validatePackageName,
 }

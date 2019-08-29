@@ -6,6 +6,10 @@ const {
   updateToolConfig,
   initTemplate,
   getTestsRootDir,
+  getParentProjectPackageJsonSafe,
+  getRepoNameByAddress,
+  validateRepoAddress,
+  validatePackageName,
 } = require('@nitive/e2e-tools/utils')
 const packageName = require('./package.json').name
 
@@ -123,6 +127,35 @@ function normalizeUrl(input) {
 }
 
 async function initScript({ inquirer }) {
+  const parentProjectPackageJson = getParentProjectPackageJsonSafe() || {}
+
+  async function prompt(question) {
+    const answers = await inquirer.prompt([{ ...question, name: 'field' }])
+
+    return answers.field
+  }
+
+  const launchUrl = await prompt({
+    type: 'input',
+    name: 'launchUrl',
+    message: 'Адрес стенда по умолчанию',
+  })
+
+  const repoSshAddress = await prompt({
+    type: 'input',
+    name: 'repoSshAddress',
+    default: parentProjectPackageJson.repository,
+    message: 'Адрес GitHub-репозитория (ssh):',
+    validate: validateRepoAddress,
+  })
+
+  const projectName = await prompt({
+    type: 'input',
+    default: parentProjectPackageJson.name || getRepoNameByAddress(repoSshAddress),
+    message: 'Название проекта (маленькими буквами без пробелов)',
+    validate: validatePackageName,
+  })
+
   const createFromTemplate = initTemplate({
     root: getTestsRootDir(),
     templatesRoot: path.join(__dirname, 'templates/e2e-tests'),
@@ -137,31 +170,12 @@ async function initScript({ inquirer }) {
   createFromTemplate({ filePath: 'nightwatch/Dockerfile' })
   createFromTemplate({ filePath: 'nightwatch/tsconfig.json' })
 
-  const jenkinsfileData = await inquirer.prompt([
-    {
-      type: 'input',
-      name: 'launchUrl',
-      message: 'Адрес стенда по умолчанию',
-    },
-    // TODO: get from project's package.json
-    {
-      type: 'input',
-      name: 'projectName',
-      message: 'Название проекта (маленькими буквами без пробелов)',
-    },
-    // TODO: get from project's package.json
-    {
-      type: 'input',
-      name: 'repoSshAddress',
-      message: 'Адрес GitHub-репозитория (ssh):',
-    },
-  ])
-
   createFromTemplate({
     filePath: 'nightwatch/Jenkinsfile',
     data: {
-      ...jenkinsfileData,
-      launchUrl: normalizeUrl(jenkinsfileData.launchUrl),
+      projectName,
+      repoSshAddress,
+      launchUrl: normalizeUrl(launchUrl),
     },
   })
 
