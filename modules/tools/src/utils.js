@@ -1,5 +1,7 @@
 const fs = require('fs')
 const path = require('path')
+const dotenv = require('dotenv')
+const readlineSync = require('readline-sync')
 const findRoot = require('find-root')
 const prettier = require('prettier')
 const validateNpmPackageName = require('validate-npm-package-name')
@@ -125,6 +127,32 @@ function validatePackageName(name) {
   return validateNpmPackageName(name).validForNewPackages
 }
 
+function getEnvVariable(variable, description) {
+  const envFilePath = path.join(getTestsRootDir(), '.env')
+
+  if (!fs.existsSync(envFilePath)) {
+    fs.writeFileSync(envFilePath, '\n')
+  }
+
+  const config = dotenv.config()
+  if (process.env[variable]) {
+    return process.env[variable]
+  }
+
+  const value = readlineSync.question(`${description} (${variable}) `)
+
+  const newConfig = { ...config.parsed, [variable]: value }
+
+  const envFileContent =
+    Object.keys(newConfig)
+      .map(key => `${key}=${newConfig[key]}`)
+      .join('\n') + '\n'
+
+  fs.writeFileSync(envFilePath, envFileContent)
+
+  return newConfig[variable]
+}
+
 module.exports = {
   getTestsRootDir,
   getProjectRootDir,
@@ -138,4 +166,5 @@ module.exports = {
   getRepoNameByAddress,
   validateRepoAddress,
   validatePackageName,
+  getEnvVariable,
 }

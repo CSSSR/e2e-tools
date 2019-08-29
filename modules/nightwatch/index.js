@@ -56,7 +56,6 @@ const addNightwatchRunCommand = context => {
       const result = context.spawnSync(
         'yarn',
         [
-          'env-cmd',
           'nightwatch',
           ...createArgsArrayFromMap({
             env: args.browser,

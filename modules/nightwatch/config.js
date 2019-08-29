@@ -5,32 +5,11 @@ const chromedriver = require('chromedriver')
 const nightwatchImageComparison = require('@nitive/nightwatch-image-comparison')
 const packageName = require('./package.json').name
 const mochawesome = require('mochawesome')
-const { getTestsRootDir, getConfig } = require('@nitive/e2e-tools/utils')
+const { getTestsRootDir, getConfig, getEnvVariable } = require('@nitive/e2e-tools/utils')
 const { argv } = require('yargs')
 
 process.chdir(getTestsRootDir())
 const config = getConfig()
-
-const publishResults = !!(argv.publishResults && config.testrail)
-
-if (publishResults) {
-  console.log('Test run results will be published to TestRail')
-}
-
-function checkEnvVariable(variableName) {
-  if (!process.env[variableName]) {
-    throw new Error(
-      `Не определена переменная окружения ${variableName}. Создайте файл .env в директории e2e-tests и добавьте туда ${variableName}=<value>`
-    )
-  }
-}
-
-checkEnvVariable('LAUNCH_URL')
-
-if (publishResults) {
-  checkEnvVariable(config.testrail.username_env)
-  checkEnvVariable(config.testrail.api_token_env)
-}
 
 function getChromeDriverPath() {
   const nodeModulesPath = chromedriver.path.replace(/(node_modules).*/, '$1')
@@ -59,20 +38,13 @@ function getTestSettingsForBrowser(browser) {
 
     case 'selenium': {
       const { host, port = 80, basicAuth, ...rest } = settings
-
-      if (basicAuth && basicAuth.username_env) {
-        checkEnvVariable(basicAuth.username_env)
-      }
-
-      if (basicAuth && basicAuth.password_env) {
-        checkEnvVariable(basicAuth.password_env)
-      }
+      const serverName = `${host}${port !== 80 ? `:${port}` : ''}`
 
       return {
         selenium_port: port,
         selenium_host: host,
-        username: basicAuth && process.env[basicAuth.username_env],
-        access_key: basicAuth && process.env[basicAuth.password_env],
+        username: basicAuth && getEnvVariable(basicAuth.username_env, `Логин от ${serverName}`),
+        access_key: basicAuth && getEnvVariable(basicAuth.password_env, `Пароль от ${serverName}`),
         ...rest,
       }
     }
@@ -83,6 +55,10 @@ function getTestSettings(browsers) {
   const testSettings = {}
 
   Object.keys(browsers).forEach(browserName => {
+    if (browserName !== argv.env) {
+      return
+    }
+
     const browser = browsers[browserName]
     testSettings[browserName] = getTestSettingsForBrowser(browser)
   })
@@ -110,15 +86,18 @@ const junkinsReporter = {
 
 function getReporter() {
   const mainReporter = isCI ? junkinsReporter : mochawesomeReporter
+  const publishResults = !!(argv.publishResults && config.testrail)
 
   if (publishResults) {
+    console.log('Test run results will be published to TestRail')
+
     return {
       reporter: '@nitive/mocha-testrail-reporter',
       reporterOptions: {
         mode: 'publish_ran_tests',
         domain: config.testrail.domain,
-        username: process.env[config.testrail.username_env],
-        apiToken: process.env[config.testrail.api_token_env],
+        username: getEnvVariable(config.testrail.username_env, 'TestRail логин'),
+        apiToken: getEnvVariable(config.testrail.api_token_env, 'TestRail API токен'),
         projectId: config.testrail.projectId,
         testsRootDir: path.join(getTestsRootDir(), 'nightwatch/tests'),
         casePrefix: 'Автотест: ',
@@ -154,5 +133,5 @@ module.exports = {
   },
   globals_path: path.join(__dirname, 'src/globals.js'),
   custom_assertions_path: [nightwatchImageComparison.assertionsPath],
-  launch_url: process.env.LAUNCH_URL && removeEndingSlash(process.env.LAUNCH_URL),
+  launch_url: removeEndingSlash(getEnvVariable('LAUNCH_URL', 'Адрес, на котором запускать тесты')),
 }
