@@ -26,7 +26,7 @@ describe('init command', () => {
     const packageJson = JSON.parse(readFile('e2e-tests/package.json'))
     expect(packageJson).toEqual({
       devDependencies: {
-        '@nitive/e2e-tools': '*',
+        '@nitive/e2e-tools': 'file:/Users/nitive/Work/e2e-tools/modules/tools',
       },
       prettier: '@nitive/e2e-tools/prettier',
       private: true,

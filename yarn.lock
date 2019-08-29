@@ -322,10 +322,10 @@
   dependencies:
     mocha "^5.2.0"
 
-"@nitive/mocha-testrail-ui@~0.3.0":
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/@nitive/mocha-testrail-ui/-/mocha-testrail-ui-0.3.0.tgz#24230c22fe15f0a0336dc0bd258c1a90c5da0caa"
-  integrity sha512-xLZbMC1u6MeI37DOY2MA9dTiHxxiDSko9ngnv58+aPJRIdacjKAom5y0VlP5Y1S3d3otJqUIpc6XZ4T6R96MEA==
+"@nitive/mocha-testrail-ui@~0.3.1":
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/@nitive/mocha-testrail-ui/-/mocha-testrail-ui-0.3.1.tgz#2cf5336d884f75c3b83ef3cdf638770df2757d32"
+  integrity sha512-H8DDHZxNa/i2Cyrw6812TWAnUBgLJwJ5lEg1b6Agg8LdtKljSJQykJkxTXbKqO03KZfD8flKYIh3P7rfesNAhg==
   dependencies:
     mocha "^5.2.0"
 

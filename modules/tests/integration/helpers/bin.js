@@ -5,7 +5,7 @@ const spawnSync = require('cross-spawn').sync
 const { main } = require('@nitive/e2e-tools/src')
 
 const config = {
-  version: '*',
+  version: `file:${__dirname.replace('tests/integration/helpers', 'tools')}`,
 }
 
 const inquirer = {

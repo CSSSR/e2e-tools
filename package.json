@@ -5,9 +5,7 @@
     "fix": "prettier --write '**/*.{js,js.hbs,json,json.hbs}'"
   },
   "workspaces": [
-    "modules/*",
-    "modules/tests/integration/sandbox/*",
-    "modules/tests/integration/sandbox/*/e2e-tests"
+    "modules/*"
   ],
   "devDependencies": {
     "np": "^5.0.3",
