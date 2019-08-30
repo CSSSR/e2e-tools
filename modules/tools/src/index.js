@@ -1,13 +1,11 @@
-const fs = require('fs')
 const path = require('path')
 const spawn = require('cross-spawn')
 const {
   getTestsRootDir,
   getProjectRootDir,
-  createJsonFile,
   updateJsonFile,
   getConfigSafe,
-  initTemplate,
+  createFilesFromTemplates,
 } = require('./utils')
 
 const initCommand = ({ config }) => ({
@@ -17,44 +15,11 @@ const initCommand = ({ config }) => ({
     if (path.basename(process.cwd()) === 'e2e-tests') {
       throw new Error('Already inited')
     }
-    const root = getProjectRootDir()
 
-    const createFromTemplate = initTemplate({
-      root,
+    createFilesFromTemplates({
+      templatesData: { toolsVersion: config.version },
       templatesRoot: path.join(__dirname, '../templates'),
-    })
-
-    createFromTemplate({ filePath: 'e2e-tests/.gitignore' })
-    createFromTemplate({
-      filePath: 'e2e-tests/package.json',
-      data: { toolsVersion: config.version },
-    })
-
-    createFromTemplate({ filePath: 'e2e-tests/.eslintrc.js' })
-    createFromTemplate({ filePath: 'e2e-tests/.eslintignore' })
-    createFromTemplate({ filePath: 'e2e-tests/.env' })
-
-    createJsonFile({ filePath: path.join(root, 'e2e-tests/e2e-tools.json'), fileContent: {} })
-
-    createJsonFile({
-      filePath: path.join(root, 'e2e-tests/.vscode/settings.json'),
-      fileContent: {
-        'editor.formatOnSave': true,
-        'eslint.autoFixOnSave': true,
-        'eslint.validate': [
-          { language: 'javascript', autoFix: true },
-          { language: 'javascriptreact', autoFix: true },
-        ],
-        'git.ignoreLimitWarning': true,
-      },
-    })
-
-    createJsonFile({
-      filePath: path.join(root, 'e2e-tests/.vscode/tasks.json'),
-      fileContent: {
-        version: '2.0.0',
-        tasks: [],
-      },
+      destinationRoot: getProjectRootDir(),
     })
 
     spawn.sync('yarn', ['install'], {
@@ -88,11 +53,6 @@ const addToolCommand = context => ({
         : packageName
 
     spawn.sync('yarn', ['add', '--dev', '--tilde', package], {
-      stdio: 'inherit',
-      cwd: getTestsRootDir(),
-    })
-
-    spawn.sync('yarn', ['install'], {
       stdio: 'inherit',
       cwd: getTestsRootDir(),
     })
