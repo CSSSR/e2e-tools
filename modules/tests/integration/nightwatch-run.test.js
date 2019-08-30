@@ -10,7 +10,7 @@ describe('nightwatch:run command', () => {
     promptResults: {
       launchUrl: 'github.com',
       projectName: 'github',
-      repoSshAddress: 'git@github.com:github/web.git',
+      repositorySshAddress: 'git@github.com:github/web.git',
     },
   })
 

@@ -184,7 +184,7 @@ function createFilesFromTemplates({ templatesData, templatesRoot, destinationRoo
     const destinationPath = templatePath.replace(/\.hbs$/, '')
     const destinationAbsolutePath = path.join(destinationRoot, destinationPath)
 
-    fs.mkdirSync(path.dirname(destinationPath), { recursive: true })
+    fs.mkdirSync(path.dirname(destinationAbsolutePath), { recursive: true })
     const render = compile(fs.readFileSync(templateAbsolutePath, 'utf8'))
     fs.writeFileSync(destinationAbsolutePath, render(templatesData))
     formatFile(destinationAbsolutePath)

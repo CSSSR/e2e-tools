@@ -6,7 +6,7 @@ pipeline {
   }
 
   parameters {
-    string(defaultValue: '{{launchUrl}}', description: 'Адрес стенда', name: 'launch_url', trim: true)
+    string(defaultValue: '{{config.defaultLaunchUrl}}', description: 'Адрес стенда', name: 'launch_url', trim: true)
   }
 
   stages {
@@ -19,7 +19,7 @@ pipeline {
             branches: [[name: GIT_BRANCH]],
             doGenerateSubmoduleConfigurations: false,
             extensions: [[$class: 'GitLFSPull']],
-            userRemoteConfigs: [[url: '{{repoSshAddress}}']]
+            userRemoteConfigs: [[url: '{{config.repositorySshAddress}}']]
           ])
         }
         echo "GIT_BRANCH: ${scmVars.GIT_BRANCH}"
@@ -32,7 +32,7 @@ pipeline {
         script {
           sh """
             cd e2e-tests
-            docker build -f nightwatch/Dockerfile --network host -t {{projectName}}/tests:${scmVars.GIT_COMMIT} .
+            docker build -f nightwatch/Dockerfile --network host -t {{config.projectName}}/tests:${scmVars.GIT_COMMIT} .
           """
         }
       }
@@ -53,7 +53,7 @@ pipeline {
                 -e TESTRAIL_USERNAME \
                 -e TESTRAIL_API_TOKEN \
                 --cidfile "$BUILD_TAG-tests.cid" \
-                {{projectName}}/tests:${scmVars.GIT_COMMIT}
+                {{config.projectName}}/tests:${scmVars.GIT_COMMIT}
             """
           }
         }
