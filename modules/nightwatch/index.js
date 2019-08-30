@@ -1,15 +1,17 @@
+const uniqBy = require('lodash/uniqBy')
 const path = require('path')
 const isCI = require('is-ci')
 const {
   getConfig,
   updateJsonFile,
   updateToolConfig,
-  initTemplate,
   getTestsRootDir,
   getParentProjectPackageJsonSafe,
   getRepoNameByAddress,
   validateRepoAddress,
   validatePackageName,
+  createFilesFromTemplates,
+  getProjectRootDir,
 } = require('@nitive/e2e-tools/utils')
 const packageName = require('./package.json').name
 
@@ -135,50 +137,58 @@ async function initScript({ inquirer }) {
 
     return answers[question.name]
   }
+  const config = getConfig()
 
-  const launchUrl = await prompt({
-    type: 'input',
-    name: 'launchUrl',
-    message: 'Адрес стенда по умолчанию',
-  })
+  const launchUrl =
+    config.defaultLaunchUrl ||
+    (await prompt({
+      type: 'input',
+      name: 'launchUrl',
+      message: 'Адрес стенда по умолчанию',
+    }))
 
-  const repoSshAddress = await prompt({
-    type: 'input',
-    name: 'repoSshAddress',
-    default: parentProjectPackageJson.repository,
-    message: 'Адрес GitHub-репозитория (ssh):',
-    validate: validateRepoAddress,
-  })
+  const repositorySshAddress =
+    config.repositorySshAddress ||
+    (await prompt({
+      type: 'input',
+      name: 'repositorySshAddress',
+      default: parentProjectPackageJson.repository,
+      message: 'Адрес GitHub-репозитория (ssh):',
+      validate: validateRepoAddress,
+    }))
 
-  const projectName = await prompt({
-    type: 'input',
-    name: 'projectName',
-    default: parentProjectPackageJson.name || getRepoNameByAddress(repoSshAddress),
-    message: 'Название проекта (маленькими буквами без пробелов)',
-    validate: validatePackageName,
-  })
+  const projectName =
+    config.projectName ||
+    (await prompt({
+      type: 'input',
+      name: 'projectName',
+      default: parentProjectPackageJson.name || getRepoNameByAddress(repositorySshAddress),
+      message: 'Название проекта (маленькими буквами без пробелов)',
+      validate: validatePackageName,
+    }))
 
-  const createFromTemplate = initTemplate({
-    root: getTestsRootDir(),
-    templatesRoot: path.join(__dirname, 'templates/e2e-tests'),
-  })
+  const configNewFields = {
+    projectName,
+    repositorySshAddress,
+    defaultLaunchUrl: normalizeUrl(launchUrl),
+  }
 
-  createFromTemplate({ filePath: 'nightwatch/.eslintrc.js' })
-  createFromTemplate({
-    filePath: 'nightwatch/tests/Примеры/Переход на страницу авторизации.test.js',
-  })
-  createFromTemplate({ filePath: 'nightwatch/.gitignore' })
-  createFromTemplate({ filePath: 'nightwatch/screenshots/.gitignore' })
-  createFromTemplate({ filePath: 'nightwatch/Dockerfile' })
-  createFromTemplate({ filePath: 'nightwatch/tsconfig.json' })
-
-  createFromTemplate({
-    filePath: 'nightwatch/Jenkinsfile',
-    data: {
-      projectName,
-      repoSshAddress,
-      launchUrl: normalizeUrl(launchUrl),
+  updateJsonFile({
+    filePath: path.join(getTestsRootDir(), 'e2e-tools.json'),
+    update(prevConfig) {
+      return {
+        ...prevConfig,
+        ...configNewFields,
+      }
     },
+  })
+
+  createFilesFromTemplates({
+    templatesData: {
+      config: { ...config, ...configNewFields },
+    },
+    templatesRoot: path.join(__dirname, 'templates'),
+    destinationRoot: getProjectRootDir(),
   })
 
   updateToolConfig(packageName, createToolConfig)
@@ -188,47 +198,50 @@ async function initScript({ inquirer }) {
     update(config) {
       return {
         ...config,
-        tasks: [
-          ...config.tasks,
-          {
-            type: 'shell',
-            label: 'Nightwatch: запустить текущий файл в Chrome локально',
-            command: "yarn et nightwatch:run --browser local_chrome --test='${file}'",
-            problemMatcher: [],
-            presentation: {
-              showReuseMessage: false,
+        tasks: uniqBy(
+          [
+            ...config.tasks,
+            {
+              type: 'shell',
+              label: 'Nightwatch: запустить текущий файл в Chrome локально',
+              command: "yarn et nightwatch:run --browser local_chrome --test='${file}'",
+              problemMatcher: [],
+              presentation: {
+                showReuseMessage: false,
+              },
+              group: 'build',
             },
-            group: 'build',
-          },
-          {
-            type: 'shell',
-            label: 'Nightwatch: запустить текущий файл в Chrome на удалённом сервере',
-            command: "yarn et nightwatch:run --browser remote_chrome --test='${file}'",
-            problemMatcher: [],
-            presentation: {
-              showReuseMessage: false,
+            {
+              type: 'shell',
+              label: 'Nightwatch: запустить текущий файл в Chrome на удалённом сервере',
+              command: "yarn et nightwatch:run --browser remote_chrome --test='${file}'",
+              problemMatcher: [],
+              presentation: {
+                showReuseMessage: false,
+              },
+              group: 'build',
             },
-            group: 'build',
-          },
-          {
-            type: 'shell',
-            label: 'Nightwatch: запустить все тесты в Chrome на удалённом сервере',
-            command: 'yarn et nightwatch:run --browser remote_chrome',
-            problemMatcher: [],
-            presentation: { showReuseMessage: false },
-            group: 'build',
-          },
-          {
-            type: 'shell',
-            label: 'Nightwatch: Открыть HTML отчёт о последнем прогоне',
-            command: 'open nightwatch/report/mochawesome.html',
-            windows: {
-              command: 'explorer nightwatch/report\\mochawesome.html',
+            {
+              type: 'shell',
+              label: 'Nightwatch: запустить все тесты в Chrome на удалённом сервере',
+              command: 'yarn et nightwatch:run --browser remote_chrome',
+              problemMatcher: [],
+              presentation: { showReuseMessage: false },
+              group: 'build',
             },
-            problemMatcher: [],
-            group: 'build',
-          },
-        ],
+            {
+              type: 'shell',
+              label: 'Nightwatch: Открыть HTML отчёт о последнем прогоне',
+              command: 'open nightwatch/report/mochawesome.html',
+              windows: {
+                command: 'explorer nightwatch/report\\mochawesome.html',
+              },
+              problemMatcher: [],
+              group: 'build',
+            },
+          ],
+          task => task.label
+        ),
       }
     },
   })

@@ -1,5 +1,127 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`add-tool command Adding nightwatch two times should be okey should add .gitignore file 1`] = `
+"report/
+jenkins-report.xml
+failure-screenshots/*.png
+"
+`;
+
+exports[`add-tool command Adding nightwatch two times should be okey should add Dockerfile 1`] = `
+"FROM node:10
+
+WORKDIR /usr/src/app
+
+COPY package.json yarn.lock ./
+RUN yarn install --frozen-lockfile && yarn cache clean
+
+COPY e2e-tools.json ./
+COPY nightwatch nightwatch/
+
+RUN touch .env
+ENV CI true
+
+ENTRYPOINT yarn et nightwatch:run --browser remote_chrome
+"
+`;
+
+exports[`add-tool command Adding nightwatch two times should be okey should add Jenkinsfile 1`] = `
+"pipeline {
+  agent any
+
+  environment {
+    scmVars = \\"\\"
+  }
+
+  parameters {
+    string(defaultValue: 'http://github.com', description: 'Адрес стенда', name: 'launch_url', trim: true)
+  }
+
+  stages {
+    stage('Clone') {
+      steps {
+        echo \\"Branch: \${GIT_BRANCH}\\"
+        script {
+          scmVars = checkout([
+            $class: 'GitSCM',
+            branches: [[name: GIT_BRANCH]],
+            doGenerateSubmoduleConfigurations: false,
+            extensions: [[$class: 'GitLFSPull']],
+            userRemoteConfigs: [[url: 'git@github.com:github/web.git']]
+          ])
+        }
+        echo \\"GIT_BRANCH: \${scmVars.GIT_BRANCH}\\"
+        echo \\"GIT_COMMIT: \${scmVars.GIT_COMMIT}\\"
+      }
+    }
+
+    stage('Install dependencies') {
+      steps {
+        script {
+          sh \\"\\"\\"
+            cd e2e-tests
+            docker build -f nightwatch/Dockerfile --network host -t github/tests:\${scmVars.GIT_COMMIT} .
+          \\"\\"\\"
+        }
+      }
+    }
+
+    stage('Run tests') {
+      steps {
+        script {
+          withCredentials([
+            usernamePassword(credentialsId: 'testrail', usernameVariable: 'TESTRAIL_USERNAME', passwordVariable: 'TESTRAIL_API_TOKEN'),
+            usernamePassword(credentialsId: 'chromedriver', usernameVariable: 'CHROMEDRIVER_USERNAME', passwordVariable: 'CHROMEDRIVER_PASSWORD')
+          ]) {
+            sh \\"\\"\\"
+              docker run --network host \\\\
+                -e LAUNCH_URL=\${params.launch_url} \\\\
+                -e CHROMEDRIVER_USERNAME \\\\
+                -e CHROMEDRIVER_PASSWORD \\\\
+                -e TESTRAIL_USERNAME \\\\
+                -e TESTRAIL_API_TOKEN \\\\
+                --cidfile \\"$BUILD_TAG-tests.cid\\" \\\\
+                github/tests:\${scmVars.GIT_COMMIT}
+            \\"\\"\\"
+          }
+        }
+      }
+    }
+  }
+
+  post {
+    always {
+      sh \\"\\"\\"
+        rm -rf artifacts/
+        mkdir artifacts
+        docker cp \`cat \\"$BUILD_TAG-tests.cid\\"\`:/usr/src/app/nightwatch/jenkins-report.xml artifacts/
+        docker cp \`cat \\"$BUILD_TAG-tests.cid\\"\`:/usr/src/app/nightwatch/failure-screenshots artifacts/
+        docker rm \`cat \\"$BUILD_TAG-tests.cid\\"\`
+        rm \\"$BUILD_TAG-tests.cid\\"
+      \\"\\"\\"
+
+      archiveArtifacts artifacts: 'artifacts/failure-screenshots/*.png', allowEmptyArchive: true
+      junit 'artifacts/jenkins-report.xml'
+    }
+  }
+}
+"
+`;
+
+exports[`add-tool command Adding nightwatch two times should be okey should add eslint config file 1`] = `
+"module.exports = {
+  root: true,
+  extends: [require.resolve('@nitive/e2e-tools/eslint')],
+}
+"
+`;
+
+exports[`add-tool command Adding nightwatch two times should be okey should add screenshots/.gitignore file 1`] = `
+"actual/
+diff/
+"
+`;
+
 exports[`add-tool command Inside e2e-tests dir should add .gitignore file 1`] = `
 "report/
 jenkins-report.xml

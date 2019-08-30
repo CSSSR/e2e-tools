@@ -157,7 +157,7 @@ function checks({ readFile, rootDir }) {
 const promptResults = {
   launchUrl: 'github.com',
   projectName: 'github',
-  repoSshAddress: 'git@github.com:github/web.git',
+  repositorySshAddress: 'git@github.com:github/web.git',
 }
 
 describe('add-tool command', () => {
@@ -174,6 +174,17 @@ describe('add-tool command', () => {
     run('init')
     process.chdir(path.join(rootDir, 'e2e-tests'))
 
+    run('add-tool @nitive/e2e-tools-nightwatch', { promptResults })
+    checks({ readFile, rootDir })
+  })
+
+  describe('Adding nightwatch two times should be okey', () => {
+    const { run, readFile, rootDir } = setupEnvironment('add-tool-two-times')
+
+    run('init')
+    process.chdir(path.join(rootDir, 'e2e-tests'))
+
+    run('add-tool @nitive/e2e-tools-nightwatch', { promptResults })
     run('add-tool @nitive/e2e-tools-nightwatch', { promptResults })
     checks({ readFile, rootDir })
   })
