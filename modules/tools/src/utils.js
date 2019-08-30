@@ -6,6 +6,8 @@ const findRoot = require('find-root')
 const prettier = require('prettier')
 const validateNpmPackageName = require('validate-npm-package-name')
 const { compile } = require('handlebars')
+const glob = require('fast-glob')
+const prettierConfig = require('../prettier')
 
 const getTestsRootDir = () => {
   const foundRoot = findRoot(process.cwd())
@@ -58,8 +60,26 @@ function getParentProjectPackageJsonSafe() {
 }
 
 function createJsonFile({ filePath, fileContent }) {
-  const formattedContent = prettier.format(JSON.stringify(fileContent), { parser: 'json' })
+  const formattedContent = prettier.format(JSON.stringify(fileContent), {
+    parser: 'json',
+  })
   fs.mkdirSync(path.dirname(filePath), { recursive: true })
+  fs.writeFileSync(filePath, formattedContent)
+}
+
+function formatFile(filePath) {
+  const ext = path.extname(filePath)
+  const parser = {
+    '.js': 'babel',
+    '.json': 'json',
+  }[ext]
+
+  if (!parser) {
+    return
+  }
+
+  const fileContent = fs.readFileSync(filePath, 'utf8')
+  const formattedContent = prettier.format(fileContent, { ...prettierConfig, parser })
   fs.writeFileSync(filePath, formattedContent)
 }
 
@@ -153,6 +173,24 @@ function getEnvVariable(variable, description) {
   return newConfig[variable]
 }
 
+function createFilesFromTemplates({ templatesData, templatesRoot, destinationRoot }) {
+  const templatesPaths = glob.sync('**/*.hbs', {
+    dot: true,
+    cwd: templatesRoot,
+  })
+
+  templatesPaths.forEach(templatePath => {
+    const templateAbsolutePath = path.join(templatesRoot, templatePath)
+    const destinationPath = templatePath.replace(/\.hbs$/, '')
+    const destinationAbsolutePath = path.join(destinationRoot, destinationPath)
+
+    fs.mkdirSync(path.dirname(destinationPath), { recursive: true })
+    const render = compile(fs.readFileSync(templateAbsolutePath, 'utf8'))
+    fs.writeFileSync(destinationAbsolutePath, render(templatesData))
+    formatFile(destinationAbsolutePath)
+  })
+}
+
 module.exports = {
   getTestsRootDir,
   getProjectRootDir,
@@ -167,4 +205,5 @@ module.exports = {
   validateRepoAddress,
   validatePackageName,
   getEnvVariable,
+  createFilesFromTemplates,
 }

@@ -49,14 +49,6 @@ describe('init command', () => {
     `)
   })
 
-  it('should create .env file', async () => {
-    const envFile = readFile('e2e-tests/.env')
-    expect(envFile).toMatchInlineSnapshot(`
-      "LAUNCH_URL=
-      "
-    `)
-  })
-
   it('should create .vscode/settings.json file', async () => {
     const vscodeSettings = JSON.parse(readFile('e2e-tests/.vscode/settings.json'))
 
