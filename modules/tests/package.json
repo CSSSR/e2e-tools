@@ -1,6 +1,5 @@
 {
   "name": "tests",
-  "version": "0.1.0",
   "private": true,
   "scripts": {
     "test": "rm -rf ./integration/sandbox && jest --runInBand"
