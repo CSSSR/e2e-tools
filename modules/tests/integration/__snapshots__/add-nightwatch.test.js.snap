@@ -1,14 +1,18 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`add-tool command Adding nightwatch two times should be okey should add .gitignore file 1`] = `
-"report/
+"# Этот файл сгенерирован автоматически, не редактируйте его вручную
+
+report/
 jenkins-report.xml
 failure-screenshots/*.png
 "
 `;
 
 exports[`add-tool command Adding nightwatch two times should be okey should add Dockerfile 1`] = `
-"FROM node:10
+"# Этот файл сгенерирован автоматически, не редактируйте его вручную
+
+FROM node:10
 
 WORKDIR /usr/src/app
 
@@ -26,7 +30,11 @@ ENTRYPOINT yarn et nightwatch:run --browser remote_chrome
 `;
 
 exports[`add-tool command Adding nightwatch two times should be okey should add Jenkinsfile 1`] = `
-"pipeline {
+"// Этот файл сгенерирован автоматически, не редактируйте его вручную
+// Если вы хотите поменять дефолтный адрес стенда или адрес репозитория,
+// сделайте это в e2e-tools.json и затем обновите этот файл командой upgrade
+
+pipeline {
   agent any
 
   environment {
@@ -109,28 +117,57 @@ exports[`add-tool command Adding nightwatch two times should be okey should add 
 `;
 
 exports[`add-tool command Adding nightwatch two times should be okey should add eslint config file 1`] = `
-"module.exports = {
+"// Этот файл сгенерирован автоматически, не редактируйте его вручную
+
+module.exports = {
   root: true,
-  extends: [require.resolve('@nitive/e2e-tools/eslint')],
+  extends: [require.resolve('@csssr/e2e-tools/eslint')],
+}
+"
+`;
+
+exports[`add-tool command Adding nightwatch two times should be okey should add package to devDependencies 1`] = `
+"{
+  \\"private\\": true,
+  \\"prettier\\": \\"@csssr/e2e-tools/prettier\\",
+  \\"devDependencies\\": {
+    \\"@csssr/e2e-tools\\": \\"file:/Users/nitive/Work/e2e-tools/modules/tools\\",
+    \\"@csssr/e2e-tools-nightwatch\\": \\"file:/Users/nitive/Work/e2e-tools/modules/nightwatch\\"
+  }
 }
 "
 `;
 
 exports[`add-tool command Adding nightwatch two times should be okey should add screenshots/.gitignore file 1`] = `
-"actual/
+"# Этот файл сгенерирован автоматически, не редактируйте его вручную
+
+actual/
 diff/
 "
 `;
 
+exports[`add-tool command Adding nightwatch two times should be okey should add tsconfig.json 1`] = `
+"// Этот файл сгенерирован автоматически, не редактируйте его вручную
+
+{
+  \\"extends\\": \\"@csssr/e2e-tools-nightwatch/ts\\"
+}
+"
+`;
+
 exports[`add-tool command Inside e2e-tests dir should add .gitignore file 1`] = `
-"report/
+"# Этот файл сгенерирован автоматически, не редактируйте его вручную
+
+report/
 jenkins-report.xml
 failure-screenshots/*.png
 "
 `;
 
 exports[`add-tool command Inside e2e-tests dir should add Dockerfile 1`] = `
-"FROM node:10
+"# Этот файл сгенерирован автоматически, не редактируйте его вручную
+
+FROM node:10
 
 WORKDIR /usr/src/app
 
@@ -148,7 +185,11 @@ ENTRYPOINT yarn et nightwatch:run --browser remote_chrome
 `;
 
 exports[`add-tool command Inside e2e-tests dir should add Jenkinsfile 1`] = `
-"pipeline {
+"// Этот файл сгенерирован автоматически, не редактируйте его вручную
+// Если вы хотите поменять дефолтный адрес стенда или адрес репозитория,
+// сделайте это в e2e-tools.json и затем обновите этот файл командой upgrade
+
+pipeline {
   agent any
 
   environment {
@@ -231,28 +272,57 @@ exports[`add-tool command Inside e2e-tests dir should add Jenkinsfile 1`] = `
 `;
 
 exports[`add-tool command Inside e2e-tests dir should add eslint config file 1`] = `
-"module.exports = {
+"// Этот файл сгенерирован автоматически, не редактируйте его вручную
+
+module.exports = {
   root: true,
-  extends: [require.resolve('@nitive/e2e-tools/eslint')],
+  extends: [require.resolve('@csssr/e2e-tools/eslint')],
+}
+"
+`;
+
+exports[`add-tool command Inside e2e-tests dir should add package to devDependencies 1`] = `
+"{
+  \\"private\\": true,
+  \\"prettier\\": \\"@csssr/e2e-tools/prettier\\",
+  \\"devDependencies\\": {
+    \\"@csssr/e2e-tools\\": \\"file:/Users/nitive/Work/e2e-tools/modules/tools\\",
+    \\"@csssr/e2e-tools-nightwatch\\": \\"file:/Users/nitive/Work/e2e-tools/modules/nightwatch\\"
+  }
 }
 "
 `;
 
 exports[`add-tool command Inside e2e-tests dir should add screenshots/.gitignore file 1`] = `
-"actual/
+"# Этот файл сгенерирован автоматически, не редактируйте его вручную
+
+actual/
 diff/
 "
 `;
 
+exports[`add-tool command Inside e2e-tests dir should add tsconfig.json 1`] = `
+"// Этот файл сгенерирован автоматически, не редактируйте его вручную
+
+{
+  \\"extends\\": \\"@csssr/e2e-tools-nightwatch/ts\\"
+}
+"
+`;
+
 exports[`add-tool command Inside root dir should add .gitignore file 1`] = `
-"report/
+"# Этот файл сгенерирован автоматически, не редактируйте его вручную
+
+report/
 jenkins-report.xml
 failure-screenshots/*.png
 "
 `;
 
 exports[`add-tool command Inside root dir should add Dockerfile 1`] = `
-"FROM node:10
+"# Этот файл сгенерирован автоматически, не редактируйте его вручную
+
+FROM node:10
 
 WORKDIR /usr/src/app
 
@@ -270,7 +340,11 @@ ENTRYPOINT yarn et nightwatch:run --browser remote_chrome
 `;
 
 exports[`add-tool command Inside root dir should add Jenkinsfile 1`] = `
-"pipeline {
+"// Этот файл сгенерирован автоматически, не редактируйте его вручную
+// Если вы хотите поменять дефолтный адрес стенда или адрес репозитория,
+// сделайте это в e2e-tools.json и затем обновите этот файл командой upgrade
+
+pipeline {
   agent any
 
   environment {
@@ -353,15 +427,40 @@ exports[`add-tool command Inside root dir should add Jenkinsfile 1`] = `
 `;
 
 exports[`add-tool command Inside root dir should add eslint config file 1`] = `
-"module.exports = {
+"// Этот файл сгенерирован автоматически, не редактируйте его вручную
+
+module.exports = {
   root: true,
-  extends: [require.resolve('@nitive/e2e-tools/eslint')],
+  extends: [require.resolve('@csssr/e2e-tools/eslint')],
+}
+"
+`;
+
+exports[`add-tool command Inside root dir should add package to devDependencies 1`] = `
+"{
+  \\"private\\": true,
+  \\"prettier\\": \\"@csssr/e2e-tools/prettier\\",
+  \\"devDependencies\\": {
+    \\"@csssr/e2e-tools\\": \\"file:/Users/nitive/Work/e2e-tools/modules/tools\\",
+    \\"@csssr/e2e-tools-nightwatch\\": \\"file:/Users/nitive/Work/e2e-tools/modules/nightwatch\\"
+  }
 }
 "
 `;
 
 exports[`add-tool command Inside root dir should add screenshots/.gitignore file 1`] = `
-"actual/
+"# Этот файл сгенерирован автоматически, не редактируйте его вручную
+
+actual/
 diff/
+"
+`;
+
+exports[`add-tool command Inside root dir should add tsconfig.json 1`] = `
+"// Этот файл сгенерирован автоматически, не редактируйте его вручную
+
+{
+  \\"extends\\": \\"@csssr/e2e-tools-nightwatch/ts\\"
+}
 "
 `;

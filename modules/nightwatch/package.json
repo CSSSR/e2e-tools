@@ -1,7 +1,7 @@
 {
-  "name": "@nitive/e2e-tools-nightwatch",
+  "name": "@csssr/e2e-tools-nightwatch",
   "version": "0.3.0",
-  "description": "Nightwatch плагин для @nitive/e2e-tools",
+  "description": "Nightwatch плагин для @csssr/e2e-tools",
   "author": "Maxim Samoilov <nitive@icloud.com>",
   "license": "MIT",
   "main": "./index.js",

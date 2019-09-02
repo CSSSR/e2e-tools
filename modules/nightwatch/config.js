@@ -5,7 +5,7 @@ const chromedriver = require('chromedriver')
 const nightwatchImageComparison = require('@nitive/nightwatch-image-comparison')
 const packageName = require('./package.json').name
 const mochawesome = require('mochawesome')
-const { getTestsRootDir, getConfig, getEnvVariable } = require('@nitive/e2e-tools/utils')
+const { getTestsRootDir, getConfig, getEnvVariable } = require('@csssr/e2e-tools/utils')
 const { argv } = require('yargs')
 
 process.chdir(getTestsRootDir())
