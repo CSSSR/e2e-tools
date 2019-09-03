@@ -38,19 +38,15 @@ pipeline {
 
     stage('Run CI script (tests, publishing)') {
       steps {
-        script {
-          if (scmVars.GIT_BRANCH == 'origin/master') {
-            withCredentials([
-              string(credentialsId: 'npm-token', variable: 'NPM_TOKEN'),
-            ]) {
-              sh """
-                docker run --network host \
-                  -e NPM_TOKEN \
-                  --cidfile "$BUILD_TAG-tests.cid" \
-                  e2e-tools/ci:${scmVars.GIT_COMMIT}
-              """
-            }
-          }
+        withCredentials([
+          string(credentialsId: 'npm-token', variable: 'NPM_TOKEN'),
+        ]) {
+          sh """
+            docker run --network host \
+              -e NPM_TOKEN \
+              --cidfile "$BUILD_TAG-tests.cid" \
+              e2e-tools/ci:${scmVars.GIT_COMMIT}
+          """
         }
       }
     }
