@@ -1,4 +1,2 @@
 node_modules/
 modules/tests/integration/sandbox
-Dockerfile
-Jenkinsfile
