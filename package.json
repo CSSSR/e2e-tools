@@ -10,7 +10,6 @@
   ],
   "devDependencies": {
     "lerna": "^3.16.4",
-    "np": "^5.0.3",
     "prettier": "1.18.2"
   }
 }

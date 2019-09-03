@@ -1,4 +1,6 @@
-ls node_modules
+ls node_modules | grep lerna || echo "lerna not found"
+
+tree -I node_modules . -L 4
 
 # up versions
 yarn lerna version --conventional-commits --yes
