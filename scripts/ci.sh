@@ -1,3 +1,5 @@
+ls node_modules
+
 # up versions
 yarn lerna version --conventional-commits --yes
 
