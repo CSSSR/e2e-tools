@@ -3,7 +3,7 @@ ls node_modules | grep lerna || echo "lerna not found"
 tree -I node_modules . -L 4
 
 # up versions
-yarn lerna version --conventional-commits --yes
+yarn lerna version --conventional-commits --allow-branch=master --yes
 
 # auth in npm
 printf "//registry.npmjs.org/:_authToken="%s"\n@csssr:registry=https://registry.npmjs.org/\n" "$NPM_TOKEN" >.npmrc
