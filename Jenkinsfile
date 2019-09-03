@@ -14,7 +14,8 @@ pipeline {
             $class: 'GitSCM',
             branches: [[name: GIT_BRANCH]],
             doGenerateSubmoduleConfigurations: false,
-            userRemoteConfigs: [[credentialsId: 'e2e-tools-repo', url: 'git@github.com:csssr-team/e2e-tools.git']]
+            userRemoteConfigs: [[credentialsId: 'e2e-tools-repo', url: 'git@github.com:csssr-team/e2e-tools.git']],
+            extensions: [[$class: 'LocalBranch', localBranch: "**"]]
           ])
         }
         echo "GIT_BRANCH: ${scmVars.GIT_BRANCH}"
