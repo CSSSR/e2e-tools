@@ -2,13 +2,14 @@ const fs = require('fs')
 const path = require('path')
 const spawnSync = require('cross-spawn').sync
 const uniqBy = require('lodash/uniqBy')
+const JSONWithComments = require('comment-json')
 const { setupEnvironment } = require('./helpers')
 
 function checks({ readFile, rootDir }) {
   it('should add nightwatch with default config to e2e-tools.json', async () => {
-    const configFile = JSON.parse(readFile('e2e-tests/e2e-tools.json'))
+    const configFile = JSONWithComments.parse(readFile('e2e-tests/e2e-tools.json'))
     expect(configFile.tools).toEqual({
-      '@nitive/e2e-tools-nightwatch': {
+      '@csssr/e2e-tools-nightwatch': {
         browsers: {
           local_chrome: {
             default: true,
@@ -48,8 +49,7 @@ function checks({ readFile, rootDir }) {
   })
 
   it('should add package to devDependencies', async () => {
-    const packageJson = JSON.parse(readFile('e2e-tests/package.json'))
-    expect(packageJson.devDependencies).toHaveProperty('@nitive/e2e-tools-nightwatch')
+    expect(readFile('e2e-tests/package.json')).toMatchSnapshot()
   })
 
   it.todo('should add tool with specific version')
@@ -79,10 +79,7 @@ function checks({ readFile, rootDir }) {
   })
 
   it('should add tsconfig.json', async () => {
-    const tsconfig = JSON.parse(readFile('e2e-tests/nightwatch/tsconfig.json'))
-    expect(tsconfig).toEqual({
-      extends: '@nitive/e2e-tools-nightwatch/ts',
-    })
+    expect(readFile('e2e-tests/nightwatch/tsconfig.json')).toMatchSnapshot()
   })
 
   it('should add example file', async () => {
@@ -106,7 +103,7 @@ function checks({ readFile, rootDir }) {
   })
 
   it('should add tasks', async () => {
-    const vscodeTasks = JSON.parse(readFile('e2e-tests/.vscode/tasks.json'))
+    const vscodeTasks = JSONWithComments.parse(readFile('e2e-tests/.vscode/tasks.json'))
 
     expect(vscodeTasks.tasks).toContainEqual({
       type: 'shell',
@@ -164,7 +161,7 @@ describe('add-tool command', () => {
   describe('Inside root dir', () => {
     const { run, readFile, rootDir } = setupEnvironment('add-tool-cwd-root')
     run('init')
-    run('add-tool @nitive/e2e-tools-nightwatch', { promptResults })
+    run('add-tool @csssr/e2e-tools-nightwatch', { promptResults })
     checks({ readFile, rootDir })
   })
 
@@ -174,7 +171,7 @@ describe('add-tool command', () => {
     run('init')
     process.chdir(path.join(rootDir, 'e2e-tests'))
 
-    run('add-tool @nitive/e2e-tools-nightwatch', { promptResults })
+    run('add-tool @csssr/e2e-tools-nightwatch', { promptResults })
     checks({ readFile, rootDir })
   })
 
@@ -184,8 +181,8 @@ describe('add-tool command', () => {
     run('init')
     process.chdir(path.join(rootDir, 'e2e-tests'))
 
-    run('add-tool @nitive/e2e-tools-nightwatch', { promptResults })
-    run('add-tool @nitive/e2e-tools-nightwatch', { promptResults })
+    run('add-tool @csssr/e2e-tools-nightwatch', { promptResults })
+    run('add-tool @csssr/e2e-tools-nightwatch', { promptResults })
     checks({ readFile, rootDir })
   })
 })

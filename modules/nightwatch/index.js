@@ -12,7 +12,7 @@ const {
   validatePackageName,
   createFilesFromTemplates,
   getProjectRootDir,
-} = require('@nitive/e2e-tools/utils')
+} = require('@csssr/e2e-tools/utils')
 const packageName = require('./package.json').name
 
 function createArgsArrayFromMap(argsMap) {
@@ -64,7 +64,7 @@ const addNightwatchRunCommand = context => {
           ...createArgsArrayFromMap({
             env: args.browser,
             test: args.test,
-            config: require.resolve('@nitive/e2e-tools-nightwatch/config'),
+            config: require.resolve('@csssr/e2e-tools-nightwatch/config'),
             publishResults: args.publishResults,
           }),
         ],

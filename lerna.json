@@ -1,0 +1,4 @@
+{
+  "packages": ["modules/tools", "modules/nightwatch"],
+  "version": "independent"
+}

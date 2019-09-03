@@ -7,13 +7,17 @@ describe('init command', () => {
   run('init')
 
   it('should create config file', () => {
-    const config = JSON.parse(readFile('e2e-tests/e2e-tools.json'))
-    expect(config).toEqual({})
+    expect(readFile('e2e-tests/e2e-tools.json')).toMatchInlineSnapshot(`
+      "{}
+      "
+    `)
   })
 
   it('should create .gitignore', () => {
     expect(readFile('e2e-tests/.gitignore')).toMatchInlineSnapshot(`
-      "node_modules/
+      "# Этот файл сгенерирован автоматически, не редактируйте его вручную
+
+      node_modules/
       .env
       *.log
       package-lock.json
@@ -23,53 +27,63 @@ describe('init command', () => {
   })
 
   it('should create package.json', async () => {
-    const packageJson = JSON.parse(readFile('e2e-tests/package.json'))
-    expect(packageJson).toEqual({
-      devDependencies: {
-        '@nitive/e2e-tools': 'file:/Users/nitive/Work/e2e-tools/modules/tools',
-      },
-      prettier: '@nitive/e2e-tools/prettier',
-      private: true,
-    })
+    expect(readFile('e2e-tests/package.json')).toMatchInlineSnapshot(`
+      "{
+        \\"private\\": true,
+        \\"prettier\\": \\"@csssr/e2e-tools/prettier\\",
+        \\"devDependencies\\": {
+          \\"@csssr/e2e-tools\\": \\"file:/Users/nitive/Work/e2e-tools/modules/tools\\"
+        }
+      }
+      "
+    `)
   })
 
   it('should create eslint files', async () => {
     const eslintFile = readFile('e2e-tests/.eslintrc.js')
     expect(eslintFile).toMatchInlineSnapshot(`
-      "module.exports = {
-        extends: ['@nitive/e2e-tools/eslint'],
+      "// Этот файл сгенерирован автоматически, не редактируйте его вручную
+
+      module.exports = {
+        extends: ['@csssr/e2e-tools/eslint'],
       }
       "
     `)
 
     const eslintIgnoreFile = readFile('e2e-tests/.eslintignore')
     expect(eslintIgnoreFile).toMatchInlineSnapshot(`
-      "!.eslintrc.js
+      "# Этот файл сгенерирован автоматически, не редактируйте его вручную
+
+      !.eslintrc.js
       "
     `)
   })
 
   it('should create .vscode/settings.json file', async () => {
-    const vscodeSettings = JSON.parse(readFile('e2e-tests/.vscode/settings.json'))
-
-    expect(vscodeSettings).toEqual({
-      'editor.formatOnSave': true,
-      'eslint.autoFixOnSave': true,
-      'eslint.validate': [
-        { language: 'javascript', autoFix: true },
-        { language: 'javascriptreact', autoFix: true },
-      ],
-      'git.ignoreLimitWarning': true,
-    })
+    expect(readFile('e2e-tests/.vscode/settings.json')).toMatchInlineSnapshot(`
+      "// Этот файл сгенерирован автоматически, не редактируйте его вручную
+      {
+        \\"editor.formatOnSave\\": true,
+        \\"eslint.autoFixOnSave\\": true,
+        \\"eslint.validate\\": [
+          { \\"language\\": \\"javascript\\", \\"autoFix\\": true },
+          { \\"language\\": \\"javascriptreact\\", \\"autoFix\\": true }
+        ],
+        \\"git.ignoreLimitWarning\\": true
+      }
+      "
+    `)
   })
 
   it('should create .vscode/tasks.json file', async () => {
-    const vscodeTasks = JSON.parse(readFile('e2e-tests/.vscode/tasks.json'))
-
-    expect(vscodeTasks).toEqual({
-      version: '2.0.0',
-      tasks: [],
-    })
+    expect(readFile('e2e-tests/.vscode/tasks.json')).toMatchInlineSnapshot(`
+      "// Этот файл сгенерирован автоматически, не редактируйте его вручную
+      {
+        \\"version\\": \\"2.0.0\\",
+        \\"tasks\\": []
+      }
+      "
+    `)
   })
 
   it('should be prettified', () => {
