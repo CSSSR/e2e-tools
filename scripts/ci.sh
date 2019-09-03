@@ -1,3 +1,5 @@
+yarn install --frozen-lockfile
+
 # up versions
 yarn lerna version --conventional-commits --allow-branch=master --yes
 
