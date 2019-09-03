@@ -1,7 +1,7 @@
 const rimraf = require('rimraf')
 const path = require('path')
 const chalk = require('chalk').default
-const { getTestsRootDir } = require('@nitive/e2e-tools/utils')
+const { getTestsRootDir } = require('@csssr/e2e-tools/utils')
 
 function cleanFailureScreenshots() {
   const failureScreenshotsPath = path.join(

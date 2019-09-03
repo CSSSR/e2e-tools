@@ -7,9 +7,9 @@
 
 ## Добавление тестов
 1. Переходим в папку проекта `cd ./some-project`
-1. Скачиваем e2e-tools и выполняем первичную инициализацию `npx -p @nitive/e2e-tools et init`
+1. Скачиваем e2e-tools и выполняем первичную инициализацию `npx -p @csssr/e2e-tools et init`
 1. Переходим в сгенерированную папку `cd e2e-tests/`
-1. Добавляем Nightwatch `yarn et add-tool @nitive/e2e-tools-nightwatch`
+1. Добавляем Nightwatch `yarn et add-tool @csssr/e2e-tools-nightwatch`
 1. Проверяем, что тесты запускаются `yarn et nightwatch:run`
 1. Изолируем папку `e2e-tests/` от остального проекта: добавляем её в .eslintignore, .prettierignore, в `coverageIgnore` в конфиге jest и т. д.
 1. Настраиваем дженкинс ↓

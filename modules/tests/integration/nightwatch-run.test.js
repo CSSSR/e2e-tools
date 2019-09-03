@@ -6,7 +6,7 @@ describe('nightwatch:run command', () => {
   const { run, rootDir } = setupEnvironment('nightwatch-run')
 
   run('init')
-  run('add-tool @nitive/e2e-tools-nightwatch', {
+  run('add-tool @csssr/e2e-tools-nightwatch', {
     promptResults: {
       launchUrl: 'github.com',
       projectName: 'github',

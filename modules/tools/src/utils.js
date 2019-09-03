@@ -7,6 +7,7 @@ const prettier = require('prettier')
 const validateNpmPackageName = require('validate-npm-package-name')
 const { compile } = require('handlebars')
 const glob = require('fast-glob')
+const JSONWithComments = require('comment-json')
 const prettierConfig = require('../prettier')
 
 const getTestsRootDir = () => {
@@ -33,7 +34,7 @@ function getConfig() {
       encoding: 'utf-8',
     })
 
-    return JSON.parse(configFile)
+    return JSONWithComments.parse(configFile)
   } catch (err) {
     if (err && err.code === 'ENOENT') {
       throw new Error(`Config file ${err.path} was not found`)
@@ -60,7 +61,7 @@ function getParentProjectPackageJsonSafe() {
 }
 
 function createJsonFile({ filePath, fileContent }) {
-  const formattedContent = prettier.format(JSON.stringify(fileContent), {
+  const formattedContent = prettier.format(JSONWithComments.stringify(fileContent), {
     parser: 'json',
   })
   fs.mkdirSync(path.dirname(filePath), { recursive: true })
@@ -85,7 +86,7 @@ function formatFile(filePath) {
 
 function updateJsonFile({ filePath, update }) {
   const file = fs.readFileSync(filePath, { encoding: 'utf-8' })
-  const fileContent = JSON.parse(file)
+  const fileContent = JSONWithComments.parse(file)
   createJsonFile({ filePath, fileContent: update(fileContent) })
 }
 
