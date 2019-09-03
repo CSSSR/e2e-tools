@@ -26,12 +26,9 @@ pipeline {
     stage('Install dependencies') {
       steps {
         script {
-          sh """
-            docker build \
-              -f Dockerfile \
-              --network host \
-              -t e2e-tools/ci:${scmVars.GIT_COMMIT} \
-              .
+          sh """#!/bin/bash
+            source ~/.bashrc
+            yarn install --frozen-lockfile
           """
         }
       }
@@ -39,26 +36,25 @@ pipeline {
 
     stage('Run CI script (tests, publishing)') {
       steps {
-        withCredentials([
-          string(credentialsId: 'npm-token', variable: 'NPM_TOKEN'),
-        ]) {
-          sh """
-            docker run --network host \
-              -e NPM_TOKEN \
-              --cidfile "$BUILD_TAG-tests.cid" \
-              e2e-tools/ci:${scmVars.GIT_COMMIT}
-          """
+        sshagent(credentials: ['e2e-tools-repo']) {
+          withCredentials([
+            string(credentialsId: 'npm-token', variable: 'NPM_TOKEN'),
+          ]) {
+            sh """#!/bin/bash
+              source ~/.bashrc
+
+              # up versions
+              yarn lerna version --conventional-commits --allow-branch=master --yes
+
+              # auth in npm
+              printf "//registry.npmjs.org/:_authToken="%s"\n@csssr:registry=https://registry.npmjs.org/\n" "$NPM_TOKEN" >.npmrc
+
+              # publish
+              yarn lerna publish from-git --yes --registry https://registry.npmjs.org/
+            """
+          }
         }
       }
-    }
-  }
-
-  post {
-    always {
-      sh """
-        docker rm `cat "$BUILD_TAG-tests.cid"`
-        rm "$BUILD_TAG-tests.cid"
-      """
     }
   }
 }
