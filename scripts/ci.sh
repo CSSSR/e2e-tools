@@ -1,5 +1,5 @@
 ls node_modules | grep lerna || echo "lerna not found"
-cat package.json
+ls node_modules/.bin
 
 # up versions
 yarn lerna version --conventional-commits --allow-branch=master --yes
