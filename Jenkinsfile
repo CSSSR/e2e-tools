@@ -42,6 +42,7 @@ pipeline {
           ]) {
             sh """#!/bin/bash
               source ~/.bashrc
+              set -e
 
               # up versions
               yarn lerna version --conventional-commits --allow-branch=master --yes
