@@ -1,7 +1,7 @@
 yarn install --frozen-lockfile
 
 # up versions
-yarn lerna version --conventional-commits --allow-branch=master --yes
+yarn lerna version --conventional-commits --allow-branch=origin/master --yes
 
 # auth in npm
 printf "//registry.npmjs.org/:_authToken="%s"\n@csssr:registry=https://registry.npmjs.org/\n" "$NPM_TOKEN" >.npmrc
