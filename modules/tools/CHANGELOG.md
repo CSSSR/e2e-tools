@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.1](https://github.com/csssr-team/e2e-tools/compare/@csssr/e2e-tools@1.0.0...@csssr/e2e-tools@1.0.1) (2019-09-05)
+
+
+### Bug Fixes
+
+* Если не удалось получить переменную окружения, выводим об этом сообщение в терминал ([f365a27](https://github.com/csssr-team/e2e-tools/commit/f365a27))
+
+
+
+
+
 # 1.0.0 (2019-09-03)
 
 
