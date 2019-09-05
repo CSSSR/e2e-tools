@@ -149,29 +149,34 @@ function validatePackageName(name) {
 }
 
 function getEnvVariable(variable, description) {
-  const envFilePath = path.join(getTestsRootDir(), '.env')
+  try {
+    const envFilePath = path.join(getTestsRootDir(), '.env')
 
-  if (!fs.existsSync(envFilePath)) {
-    fs.writeFileSync(envFilePath, '\n')
+    if (!fs.existsSync(envFilePath)) {
+      fs.writeFileSync(envFilePath, '\n')
+    }
+
+    const config = dotenv.config()
+    if (process.env[variable]) {
+      return process.env[variable]
+    }
+
+    const value = readlineSync.question(`${description} (${variable}) `)
+
+    const newConfig = { ...config.parsed, [variable]: value }
+
+    const envFileContent =
+      Object.keys(newConfig)
+        .map(key => `${key}=${newConfig[key]}`)
+        .join('\n') + '\n'
+
+    fs.writeFileSync(envFilePath, envFileContent)
+
+    return newConfig[variable]
+  } catch (err) {
+    console.log(`Произошла ошибка при получении ${variable}`)
+    throw err
   }
-
-  const config = dotenv.config()
-  if (process.env[variable]) {
-    return process.env[variable]
-  }
-
-  const value = readlineSync.question(`${description} (${variable}) `)
-
-  const newConfig = { ...config.parsed, [variable]: value }
-
-  const envFileContent =
-    Object.keys(newConfig)
-      .map(key => `${key}=${newConfig[key]}`)
-      .join('\n') + '\n'
-
-  fs.writeFileSync(envFilePath, envFileContent)
-
-  return newConfig[variable]
 }
 
 function defaultGetDestinationPath(templatePath) {
