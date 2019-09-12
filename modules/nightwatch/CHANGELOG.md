@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.2.0](https://github.com/csssr-team/e2e-tools/compare/@csssr/e2e-tools-nightwatch@1.0.0...@csssr/e2e-tools-nightwatch@1.2.0) (2019-09-12)
+
+
+### Features
+
+* **jenkins:** Теперь скриншоты с дифами изображений линкуются к результатам билда в дженкинсе ([1be6d4c](https://github.com/csssr-team/e2e-tools/commit/1be6d4c))
+
+
+
+
+
 # [1.1.0](https://github.com/csssr-team/e2e-tools/compare/@csssr/e2e-tools-nightwatch@1.0.0...@csssr/e2e-tools-nightwatch@1.1.0) (2019-09-12)
 
 
