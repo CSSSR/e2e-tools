@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.3.0](https://github.com/csssr-team/e2e-tools/compare/@csssr/e2e-tools-nightwatch@1.2.0...@csssr/e2e-tools-nightwatch@1.3.0) (2019-09-12)
+
+
+### Features
+
+* **vscode:** Добавил таск для обновления зависимостей ([4ea92fe](https://github.com/csssr-team/e2e-tools/commit/4ea92fe))
+
+
+
+
+
 # [1.2.0](https://github.com/csssr-team/e2e-tools/compare/@csssr/e2e-tools-nightwatch@1.0.0...@csssr/e2e-tools-nightwatch@1.2.0) (2019-09-12)
 
 
