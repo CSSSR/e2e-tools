@@ -240,6 +240,13 @@ async function initScript({ inquirer }) {
               problemMatcher: [],
               group: 'build',
             },
+            {
+              type: 'shell',
+              label: 'Обновить @csssr/e2e-tools',
+              command: 'yarn et upgrade',
+              problemMatcher: [],
+              group: 'build',
+            },
           ],
           task => task.label
         ),

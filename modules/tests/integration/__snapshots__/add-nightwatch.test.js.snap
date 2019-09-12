@@ -67,6 +67,7 @@ pipeline {
       steps {
         script {
           sh \\"\\"\\"
+            git clean -fdx .
             cd e2e-tests
             docker build -f nightwatch/Dockerfile --network host -t github/tests:\${scmVars.GIT_COMMIT} .
           \\"\\"\\"
@@ -100,15 +101,17 @@ pipeline {
   post {
     always {
       sh \\"\\"\\"
-        rm -rf artifacts/
-        mkdir artifacts
+        mkdir -p artifacts/failure-screenshots
+        mkdir -p artifacts/screenshots
         docker cp \`cat \\"$BUILD_TAG-tests.cid\\"\`:/usr/src/app/nightwatch/jenkins-report.xml artifacts/
         docker cp \`cat \\"$BUILD_TAG-tests.cid\\"\`:/usr/src/app/nightwatch/failure-screenshots artifacts/
+        docker cp \`cat \\"$BUILD_TAG-tests.cid\\"\`:/usr/src/app/nightwatch/screenshots artifacts/
         docker rm \`cat \\"$BUILD_TAG-tests.cid\\"\`
         rm \\"$BUILD_TAG-tests.cid\\"
       \\"\\"\\"
 
       archiveArtifacts artifacts: 'artifacts/failure-screenshots/*.png', allowEmptyArchive: true
+      archiveArtifacts artifacts: 'artifacts/screenshots/diff/**/*.png', allowEmptyArchive: true
       junit 'artifacts/jenkins-report.xml'
     }
   }
@@ -222,6 +225,7 @@ pipeline {
       steps {
         script {
           sh \\"\\"\\"
+            git clean -fdx .
             cd e2e-tests
             docker build -f nightwatch/Dockerfile --network host -t github/tests:\${scmVars.GIT_COMMIT} .
           \\"\\"\\"
@@ -255,15 +259,17 @@ pipeline {
   post {
     always {
       sh \\"\\"\\"
-        rm -rf artifacts/
-        mkdir artifacts
+        mkdir -p artifacts/failure-screenshots
+        mkdir -p artifacts/screenshots
         docker cp \`cat \\"$BUILD_TAG-tests.cid\\"\`:/usr/src/app/nightwatch/jenkins-report.xml artifacts/
         docker cp \`cat \\"$BUILD_TAG-tests.cid\\"\`:/usr/src/app/nightwatch/failure-screenshots artifacts/
+        docker cp \`cat \\"$BUILD_TAG-tests.cid\\"\`:/usr/src/app/nightwatch/screenshots artifacts/
         docker rm \`cat \\"$BUILD_TAG-tests.cid\\"\`
         rm \\"$BUILD_TAG-tests.cid\\"
       \\"\\"\\"
 
       archiveArtifacts artifacts: 'artifacts/failure-screenshots/*.png', allowEmptyArchive: true
+      archiveArtifacts artifacts: 'artifacts/screenshots/diff/**/*.png', allowEmptyArchive: true
       junit 'artifacts/jenkins-report.xml'
     }
   }
@@ -377,6 +383,7 @@ pipeline {
       steps {
         script {
           sh \\"\\"\\"
+            git clean -fdx .
             cd e2e-tests
             docker build -f nightwatch/Dockerfile --network host -t github/tests:\${scmVars.GIT_COMMIT} .
           \\"\\"\\"
@@ -410,15 +417,17 @@ pipeline {
   post {
     always {
       sh \\"\\"\\"
-        rm -rf artifacts/
-        mkdir artifacts
+        mkdir -p artifacts/failure-screenshots
+        mkdir -p artifacts/screenshots
         docker cp \`cat \\"$BUILD_TAG-tests.cid\\"\`:/usr/src/app/nightwatch/jenkins-report.xml artifacts/
         docker cp \`cat \\"$BUILD_TAG-tests.cid\\"\`:/usr/src/app/nightwatch/failure-screenshots artifacts/
+        docker cp \`cat \\"$BUILD_TAG-tests.cid\\"\`:/usr/src/app/nightwatch/screenshots artifacts/
         docker rm \`cat \\"$BUILD_TAG-tests.cid\\"\`
         rm \\"$BUILD_TAG-tests.cid\\"
       \\"\\"\\"
 
       archiveArtifacts artifacts: 'artifacts/failure-screenshots/*.png', allowEmptyArchive: true
+      archiveArtifacts artifacts: 'artifacts/screenshots/diff/**/*.png', allowEmptyArchive: true
       junit 'artifacts/jenkins-report.xml'
     }
   }
