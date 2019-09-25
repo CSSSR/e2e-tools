@@ -11,7 +11,7 @@
 1. Переходим в сгенерированную папку `cd e2e-tests/`
 1. Добавляем Nightwatch `yarn et add-tool @csssr/e2e-tools-nightwatch`
 1. Проверяем, что тесты запускаются `yarn et nightwatch:run`
-1. Изолируем папку `e2e-tests/` от остального проекта: добавляем её в .eslintignore, .prettierignore, в `coverageIgnore` в конфиге jest и т. д.
+1. Изолируем папку `e2e-tests/` от остального проекта: добавляем её в `.eslintignore`, `.prettierignore`, в `coverageIgnore` в конфиге jest и т. д.
 1. Настраиваем дженкинс ↓
 
 ### Настройка дженкинса
