@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.3.1](https://github.com/csssr-team/e2e-tools/compare/@csssr/e2e-tools-nightwatch@1.3.0...@csssr/e2e-tools-nightwatch@1.3.1) (2019-09-25)
+
+
+### Bug Fixes
+
+* удалил browser.end() из примера теста, так как он больше не необходим ([4bee94c](https://github.com/csssr-team/e2e-tools/commit/4bee94c))
+
+
+
+
+
 # [1.3.0](https://github.com/csssr-team/e2e-tools/compare/@csssr/e2e-tools-nightwatch@1.2.0...@csssr/e2e-tools-nightwatch@1.3.0) (2019-09-12)
 
 
