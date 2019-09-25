@@ -129,6 +129,20 @@ function normalizeUrl(input) {
   return `http://${input}`
 }
 
+function getDefaultRepoSshAddress(packageJson) {
+  if (packageJson.repository) {
+    if (typeof packageJson.repository === 'string') {
+      return packageJson.repository
+    }
+
+    if (typeof packageJson.repository.url === 'string') {
+      return packageJson.repository.url
+    }
+  }
+
+  return undefined
+}
+
 async function initScript({ inquirer }) {
   const parentProjectPackageJson = getParentProjectPackageJsonSafe() || {}
 
@@ -152,7 +166,7 @@ async function initScript({ inquirer }) {
     (await prompt({
       type: 'input',
       name: 'repositorySshAddress',
-      default: parentProjectPackageJson.repository,
+      default: getDefaultRepoSshAddress(parentProjectPackageJson),
       message: 'Адрес GitHub-репозитория (ssh):',
       validate: validateRepoAddress,
     }))
