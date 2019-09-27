@@ -215,33 +215,31 @@ async function initScript({ inquirer }) {
   }
   const config = getConfig()
 
-  const launchUrl =
-    config.defaultLaunchUrl ||
-    (await prompt({
-      type: 'input',
-      name: 'launchUrl',
-      message: 'Адрес стенда по умолчанию',
-    }))
+  const launchUrl = await prompt({
+    type: 'input',
+    name: 'launchUrl',
+    default: config.defaultLaunchUrl,
+    message: 'Адрес стенда по умолчанию',
+  })
 
-  const repositorySshAddress =
-    config.repositorySshAddress ||
-    (await prompt({
-      type: 'input',
-      name: 'repositorySshAddress',
-      default: getDefaultRepoSshAddress(parentProjectPackageJson),
-      message: 'Адрес GitHub-репозитория (ssh):',
-      validate: validateRepoAddress,
-    }))
+  const repositorySshAddress = await prompt({
+    type: 'input',
+    name: 'repositorySshAddress',
+    default: config.repositorySshAddress || getDefaultRepoSshAddress(parentProjectPackageJson),
+    message: 'Адрес GitHub-репозитория (ssh):',
+    validate: validateRepoAddress,
+  })
 
-  const projectName =
-    config.projectName ||
-    (await prompt({
-      type: 'input',
-      name: 'projectName',
-      default: parentProjectPackageJson.name || getRepoNameByAddress(repositorySshAddress),
-      message: 'Название проекта (маленькими буквами без пробелов)',
-      validate: validatePackageName,
-    }))
+  const projectName = await prompt({
+    type: 'input',
+    name: 'projectName',
+    default:
+      config.projectName ||
+      parentProjectPackageJson.name ||
+      getRepoNameByAddress(repositorySshAddress),
+    message: 'Название проекта (маленькими буквами без пробелов)',
+    validate: validatePackageName,
+  })
 
   const configNewFields = {
     projectName,
