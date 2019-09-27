@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.3](https://github.com/csssr-team/e2e-tools/compare/@csssr/e2e-tools@1.0.2...@csssr/e2e-tools@1.0.3) (2019-09-27)
+
+
+### Bug Fixes
+
+* Улучшение UX при инициализации проекта ([f0da514](https://github.com/csssr-team/e2e-tools/commit/f0da514))
+
+
+
+
+
 ## [1.0.2](https://github.com/csssr-team/e2e-tools/compare/@csssr/e2e-tools@1.0.1...@csssr/e2e-tools@1.0.2) (2019-09-25)
 
 
