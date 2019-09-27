@@ -8,7 +8,8 @@ const validateNpmPackageName = require('validate-npm-package-name')
 const { compile } = require('handlebars')
 const glob = require('fast-glob')
 const JSONWithComments = require('comment-json')
-const prettierConfig = require('../prettier')
+const prettierConfig = require('../../prettier')
+const { isValidRepoSshAddress, getRepoSshAddress } = require('./repo-address')
 
 const getTestsRootDir = () => {
   const foundRoot = findRoot(process.cwd())
@@ -136,10 +137,6 @@ function getRepoNameByAddress(str) {
   return matched[1]
 }
 
-function validateRepoAddress(str) {
-  return str.startsWith('git@') && str.endsWith('.git')
-}
-
 function validatePackageName(name) {
   if (name.startsWith('@')) {
     return false
@@ -218,8 +215,9 @@ module.exports = {
   initTemplate,
   getParentProjectPackageJsonSafe,
   getRepoNameByAddress,
-  validateRepoAddress,
   validatePackageName,
   getEnvVariable,
   createFilesFromTemplates,
+  isValidRepoSshAddress,
+  getRepoSshAddress,
 }

@@ -2,14 +2,18 @@
   "name": "e2e-tools",
   "private": true,
   "scripts": {
-    "test": "yarn workspace tests test",
-    "fix": "prettier --write '**/*.{js,js.hbs,json,json.hbs}'"
+    "fix": "prettier --write '**/*.{js,js.hbs,json,json.hbs}'",
+    "test": "rm -rf modules/tests/integration/sandbox && jest --runInBand"
   },
   "workspaces": [
     "modules/*"
   ],
   "devDependencies": {
     "lerna": "^3.16.4",
-    "prettier": "1.18.2"
+    "prettier": "1.18.2",
+    "@types/jest": "^24.0.18",
+    "@types/node": "^12.7.8",
+    "jest": "^24.9.0",
+    "lodash": "^4.17.15"
   }
 }

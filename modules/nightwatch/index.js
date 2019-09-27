@@ -8,10 +8,11 @@ const {
   getTestsRootDir,
   getParentProjectPackageJsonSafe,
   getRepoNameByAddress,
-  validateRepoAddress,
+  isValidRepoSshAddress,
   validatePackageName,
   createFilesFromTemplates,
   getProjectRootDir,
+  getRepoSshAddress,
 } = require('@csssr/e2e-tools/utils')
 const packageName = require('./package.json').name
 
@@ -25,11 +26,16 @@ function createArgsArrayFromMap(argsMap) {
 }
 
 /**
- * @returns {import('yargs').CommandModule}
+ * @returns {import('yargs').CommandModule | undefined}
  */
 const addNightwatchRunCommand = context => {
   const config = getConfig()
   const browsersConfig = config.tools[packageName].browsers
+
+  if (!browsersConfig) {
+    return undefined
+  }
+
   const defaultBrowser = Object.entries(browsersConfig).find(([_, browser]) => browser.default)[0]
   const browsers = Object.keys(browsersConfig)
 
@@ -118,7 +124,7 @@ function createToolConfig() {
 }
 
 function getCommands(context) {
-  return [addNightwatchRunCommand(context)]
+  return [addNightwatchRunCommand(context)].filter(Boolean)
 }
 
 function normalizeUrl(input) {
@@ -127,20 +133,6 @@ function normalizeUrl(input) {
   }
 
   return `http://${input}`
-}
-
-function getDefaultRepoSshAddress(packageJson) {
-  if (packageJson.repository) {
-    if (typeof packageJson.repository === 'string') {
-      return packageJson.repository
-    }
-
-    if (typeof packageJson.repository.url === 'string') {
-      return packageJson.repository.url
-    }
-  }
-
-  return undefined
 }
 
 function updateVsCodeTasks() {
@@ -205,6 +197,10 @@ function updateVsCodeTasks() {
   })
 }
 
+function falseToError(error, func) {
+  return str => (func(str) ? true : error)
+}
+
 async function initScript({ inquirer }) {
   const parentProjectPackageJson = getParentProjectPackageJsonSafe() || {}
 
@@ -225,9 +221,9 @@ async function initScript({ inquirer }) {
   const repositorySshAddress = await prompt({
     type: 'input',
     name: 'repositorySshAddress',
-    default: config.repositorySshAddress || getDefaultRepoSshAddress(parentProjectPackageJson),
+    default: config.repositorySshAddress || getRepoSshAddress(parentProjectPackageJson.repository),
     message: 'Адрес GitHub-репозитория (ssh):',
-    validate: validateRepoAddress,
+    validate: falseToError('Невалидный адрес репозитория', isValidRepoSshAddress),
   })
 
   const projectName = await prompt({
@@ -238,7 +234,7 @@ async function initScript({ inquirer }) {
       parentProjectPackageJson.name ||
       getRepoNameByAddress(repositorySshAddress),
     message: 'Название проекта (маленькими буквами без пробелов)',
-    validate: validatePackageName,
+    validate: falseToError('Навалидное название пакета', validatePackageName),
   })
 
   const configNewFields = {

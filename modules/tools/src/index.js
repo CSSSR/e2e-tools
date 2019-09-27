@@ -68,7 +68,7 @@ const addToolCommand = context => ({
 
     const tool = require(packageName)
 
-    tool.initScript(context)
+    tool.initScript(context).catch(console.error)
   },
 })
 
