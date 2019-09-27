@@ -24,11 +24,8 @@ pipeline {
     }
 
     stage("Check if build is required") {
-      environment {
-        IS_PUBLISH_COMMIT = sh script: "git log -1 | grep 'Publish'", returnStatus: true
-      }
       when {
-        expression { "${IS_PUBLISH_COMMIT}" == "0" }
+        changelog "^Publish"
       }
       steps {
           script {
