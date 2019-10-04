@@ -2,6 +2,7 @@
 const path = require('path')
 const isCI = require('is-ci')
 const chromedriver = require('chromedriver')
+const geckodriver = require('geckodriver')
 const nightwatchImageComparison = require('@nitive/nightwatch-image-comparison')
 const packageName = require('./package.json').name
 const mochawesome = require('mochawesome')
@@ -11,9 +12,10 @@ const { argv } = require('yargs')
 process.chdir(getTestsRootDir())
 const config = getConfig()
 
-function getChromeDriverPath() {
-  const nodeModulesPath = chromedriver.path.replace(/(node_modules).*/, '$1')
-  const unixPath = path.join(nodeModulesPath, '.bin/chromedriver')
+// Пути на Windows отпределяются неправильно, эта функция фиксит ихЊ
+function getDriverPath({ executableName, executablePath }) {
+  const nodeModulesPath = executablePath.replace(/(node_modules).*/, '$1')
+  const unixPath = path.join(nodeModulesPath, `.bin/${executableName}`)
   return process.platform === 'win32' ? `${unixPath}.cmd` : unixPath
 }
 
@@ -21,17 +23,51 @@ function removeEndingSlash(url) {
   return url.replace(/\/$/, '')
 }
 
-function getTestSettingsForBrowser(browser) {
+function getWebdriverOptions(settings, browserKeyName) {
+  const { browserName } = (settings || {}).desiredCapabilities || {}
+
+  if (!browserName) {
+    throw new Error(
+      `Не найдено имя браузера в конфигурации браузера (browsers.${browserKeyName}.desiredCapabilities.browserName)`
+    )
+  }
+
+  switch (browserName.toLowerCase()) {
+    case 'chrome':
+      return {
+        start_process: true,
+        server_path: getDriverPath({
+          executableName: 'chromedriver',
+          executablePath: chromedriver.path,
+        }),
+        port: 9515,
+      }
+
+    case 'firefox':
+      return {
+        start_process: true,
+        server_path: getDriverPath({
+          executableName: 'geckodriver',
+          executablePath: geckodriver.path,
+        }),
+        port: 4444,
+      }
+
+    default:
+      throw new Error(
+        `Невалидное имя браузера ${browserName} для локального запуска. Валидные значения: chrome и firefox.` +
+          'Исправьте desiredCapabilities.browserName в e2e-config.json'
+      )
+  }
+}
+
+function getTestSettingsForBrowser(browser, browserName) {
   const { type, ...settings } = browser
 
   switch (type) {
     case 'webdriver': {
       return {
-        webdriver: {
-          start_process: true,
-          server_path: getChromeDriverPath(),
-          port: 9515,
-        },
+        webdriver: getWebdriverOptions(settings, browserName),
         ...settings,
       }
     }
@@ -60,7 +96,7 @@ function getTestSettings(browsers) {
     }
 
     const browser = browsers[browserName]
-    testSettings[browserName] = getTestSettingsForBrowser(browser)
+    testSettings[browserName] = getTestSettingsForBrowser(browser, browserName)
   })
 
   return testSettings
@@ -131,7 +167,7 @@ module.exports = {
       ...getReporter(),
     },
   },
-  globals_path: path.join(__dirname, 'src/globals.js'),
+  globals_path: path.join(__dirname, 'src/nightwatch-settings/globals.js'),
   custom_assertions_path: [nightwatchImageComparison.assertionsPath],
   launch_url: removeEndingSlash(getEnvVariable('LAUNCH_URL', 'Адрес, на котором запускать тесты')),
 }

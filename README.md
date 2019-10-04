@@ -1,6 +1,7 @@
 # Инструменты для e2e тестирования
 
 ## Добавление тестов в проект
+
 [Инструкция для разработчиков](./SETUP.md)
 
 ## Старт (для QA)
@@ -13,6 +14,7 @@
 1. Открыть папку `e2e-tests` в редакторе кода
 
 ## Документация
+
 Этот файл — минидокументация по использованию для QA. Полная документация находится в [Confluence](https://confluence.csssr.io/x/6AANAQ)
 
 ## Доступы
@@ -100,6 +102,16 @@ code --install-extension EditorConfig.EditorConfig
 При нажатии `Ctrl+Shift+B` или `Cmd+Shift+B` появляются различные предопределённые таски для запуска тестов и не только.
 При запуске таска VSCode может писать «Task is already active», тогда из предложенных действий выбираем «Restart Task».
 
-## Генерация тестов
+## Добавление браузеров в проект
 
-Генерации тестов пока нет :(
+Firefox, запуск локально
+
+```bash
+yarn et nightwatch:add-browser --name local_firefox --configUrl https://bit.ly/2pNgzGd
+```
+
+Firefox, запуск на удалённом Линукс-сервере
+
+```bash
+yarn et nightwatch:add-browser --name remote_firefox --configUrl https://bit.ly/2Mb8thW
+```

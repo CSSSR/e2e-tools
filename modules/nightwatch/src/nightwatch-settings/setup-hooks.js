@@ -15,6 +15,7 @@ cleanFailureScreenshots()
 
 exports.setupHooksInternal = () => {
   before(function globalBeforeHook(browser, done) {
+    // @ts-ignore
     global.browser = browser
     done()
   })
@@ -82,6 +83,8 @@ exports.setupHooksInternal = () => {
 }
 
 let warningLogged = false
+
+// @ts-ignore
 global.setupHooks = () => {
   if (!warningLogged) {
     console.warn('setupHooks() больше не обязательна, её вызовы можно удалить')
