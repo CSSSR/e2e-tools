@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.4](https://github.com/csssr-team/e2e-tools/compare/@csssr/e2e-tools@1.0.3...@csssr/e2e-tools@1.0.4) (2019-10-07)
+
+
+### Bug Fixes
+
+* Иногда создавались вложенные папки e2e-tests/, поправил ([bfb1b46](https://github.com/csssr-team/e2e-tools/commit/bfb1b46))
+
+
+
+
+
 ## [1.0.3](https://github.com/csssr-team/e2e-tools/compare/@csssr/e2e-tools@1.0.2...@csssr/e2e-tools@1.0.3) (2019-09-27)
 
 
