@@ -13,7 +13,12 @@ const { isValidRepoSshAddress, getRepoSshAddress } = require('./repo-address')
 
 const getTestsRootDir = () => {
   const foundRoot = findRoot(process.cwd())
+  if (foundRoot.endsWith('e2e-tests')) {
+    return foundRoot
+  }
+
   const testsPackagePath = path.join(foundRoot, 'e2e-tests')
+
   if (fs.existsSync(testsPackagePath)) {
     return testsPackagePath
   }
@@ -22,7 +27,7 @@ const getTestsRootDir = () => {
 }
 
 function getProjectRootDir() {
-  return getTestsRootDir().replace(/\/e2e-tests$/, '')
+  return getTestsRootDir().replace(/[\/\\]e2e-tests$/, '')
 }
 
 function getConfigPath() {
