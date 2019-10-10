@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.5.1](https://github.com/csssr-team/e2e-tools/compare/@csssr/e2e-tools-nightwatch@1.5.0...@csssr/e2e-tools-nightwatch@1.5.1) (2019-10-10)
+
+
+### Bug Fixes
+
+* Исправил автогенерацию gitattributes (фича прошлого релиза) ([4fd2512](https://github.com/csssr-team/e2e-tools/commit/4fd2512))
+
+
+
+
+
 # [1.5.0](https://github.com/csssr-team/e2e-tools/compare/@csssr/e2e-tools-nightwatch@1.4.3...@csssr/e2e-tools-nightwatch@1.5.0) (2019-10-10)
 
 
