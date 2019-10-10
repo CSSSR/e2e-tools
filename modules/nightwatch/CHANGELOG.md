@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.5.0](https://github.com/csssr-team/e2e-tools/compare/@csssr/e2e-tools-nightwatch@1.4.3...@csssr/e2e-tools-nightwatch@1.5.0) (2019-10-10)
+
+
+### Features
+
+* Сделал, чтобы скриншоты коммитились в git lfs — это сделает репозиторий меньше ([7c9cc0b](https://github.com/csssr-team/e2e-tools/commit/7c9cc0b))
+
+
+
+
+
 ## [1.4.3](https://github.com/csssr-team/e2e-tools/compare/@csssr/e2e-tools-nightwatch@1.4.2...@csssr/e2e-tools-nightwatch@1.4.3) (2019-10-07)
 
 
