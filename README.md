@@ -107,11 +107,11 @@ code --install-extension EditorConfig.EditorConfig
 Firefox, запуск локально
 
 ```bash
-yarn et nightwatch:add-browser --name local_firefox --configUrl https://bit.ly/2pNgzGd
+yarn et nightwatch:add-browser --name remote_firefox --configUrl https://csssr-team.github.io/selenium-servers/browsers/local_firefox.json
 ```
 
 Firefox, запуск на удалённом Линукс-сервере
 
 ```bash
-yarn et nightwatch:add-browser --name remote_firefox --configUrl https://bit.ly/2Mb8thW
+yarn et nightwatch:add-browser --name remote_firefox --configUrl https://csssr-team.github.io/selenium-servers/browsers/remote_firefox.json
 ```
