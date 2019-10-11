@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.6.2](https://github.com/csssr-team/e2e-tools/compare/@csssr/e2e-tools-nightwatch@1.6.1...@csssr/e2e-tools-nightwatch@1.6.2) (2019-10-11)
+
+
+### Bug Fixes
+
+* Переделал очистку браузера в конце теста, чтобы это работало с Firefox ([d017f2c](https://github.com/csssr-team/e2e-tools/commit/d017f2c))
+
+
+
+
+
 ## [1.6.1](https://github.com/csssr-team/e2e-tools/compare/@csssr/e2e-tools-nightwatch@1.6.0...@csssr/e2e-tools-nightwatch@1.6.1) (2019-10-11)
 
 **Note:** Version bump only for package @csssr/e2e-tools-nightwatch
