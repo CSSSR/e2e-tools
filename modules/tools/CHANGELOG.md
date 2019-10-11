@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1.0](https://github.com/csssr-team/e2e-tools/compare/@csssr/e2e-tools@1.0.4...@csssr/e2e-tools@1.1.0) (2019-10-11)
+
+
+### Features
+
+* добавил генерацию editorconfig ([df13a11](https://github.com/csssr-team/e2e-tools/commit/df13a11))
+
+
+
+
+
 ## [1.0.4](https://github.com/csssr-team/e2e-tools/compare/@csssr/e2e-tools@1.0.3...@csssr/e2e-tools@1.0.4) (2019-10-07)
 
 
