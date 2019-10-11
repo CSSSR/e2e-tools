@@ -1,4 +1,3 @@
-const uniqBy = require('lodash/uniqBy')
 const path = require('path')
 const {
   getConfig,
@@ -13,8 +12,10 @@ const {
   getProjectRootDir,
   getRepoSshAddress,
 } = require('@csssr/e2e-tools/utils')
-const { getCommands } = require('./commands')
 const packageName = require('../package.json').name
+const { getCommands } = require('./commands')
+const { updateVsCodeTasks } = require('./upgrades/vscode-tasks')
+const { upgradeRemoteBrowsersConfig } = require('./upgrades/upgrade-remote-browsers-config')
 
 function createToolConfig() {
   return {
@@ -33,9 +34,12 @@ function createToolConfig() {
         },
       },
       remote_chrome: {
+        remote: true,
         type: 'selenium',
-        host: 'chromedriver.csssr.ru',
+        host: 'selenium-linux.csssr.ru',
+
         basicAuth: {
+          credentialsId: 'chromedriver',
           username_env: 'CHROMEDRIVER_USERNAME',
           password_env: 'CHROMEDRIVER_PASSWORD',
         },
@@ -44,12 +48,10 @@ function createToolConfig() {
           browserName: 'chrome',
           'goog:chromeOptions': {
             w3c: false,
-            args: ['--headless', '--disable-gpu', '--window-size=1200,800'],
+            args: ['--headless', '--no-sandbox', '--disable-gpu', '--window-size=1200,800'],
           },
         },
-        globals: {
-          skipScreenshotAssertions: false,
-        },
+        globals: { skipScreenshotAssertions: false },
       },
     },
   }
@@ -61,68 +63,6 @@ function normalizeUrl(input) {
   }
 
   return `http://${input}`
-}
-
-function updateVsCodeTasks() {
-  updateJsonFile({
-    filePath: path.join(getTestsRootDir(), '.vscode/tasks.json'),
-    update(config) {
-      return {
-        ...config,
-        tasks: uniqBy(
-          [
-            ...config.tasks,
-            {
-              type: 'shell',
-              label: 'Nightwatch: запустить текущий файл в Chrome локально',
-              command: "yarn et nightwatch:run --browser local_chrome --test='${file}'",
-              problemMatcher: [],
-              presentation: {
-                showReuseMessage: false,
-              },
-              group: 'build',
-            },
-            {
-              type: 'shell',
-              label: 'Nightwatch: запустить текущий файл в Chrome на удалённом сервере',
-              command: "yarn et nightwatch:run --browser remote_chrome --test='${file}'",
-              problemMatcher: [],
-              presentation: {
-                showReuseMessage: false,
-              },
-              group: 'build',
-            },
-            {
-              type: 'shell',
-              label: 'Nightwatch: запустить все тесты в Chrome на удалённом сервере',
-              command: 'yarn et nightwatch:run --browser remote_chrome',
-              problemMatcher: [],
-              presentation: { showReuseMessage: false },
-              group: 'build',
-            },
-            {
-              type: 'shell',
-              label: 'Nightwatch: Открыть HTML отчёт о последнем прогоне',
-              command: 'open nightwatch/report/mochawesome.html',
-              windows: {
-                command: 'explorer nightwatch/report\\mochawesome.html',
-              },
-              problemMatcher: [],
-              group: 'build',
-            },
-            {
-              type: 'shell',
-              label: 'Обновить @csssr/e2e-tools',
-              command: 'yarn et upgrade',
-              problemMatcher: [],
-              group: 'build',
-            },
-          ],
-          task => task.label
-        ),
-      }
-    },
-  })
 }
 
 function falseToError(error, func) {
@@ -204,6 +144,7 @@ function upgrade() {
   })
 
   updateVsCodeTasks()
+  upgradeRemoteBrowsersConfig()
 }
 
 module.exports = {

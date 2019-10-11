@@ -22,7 +22,8 @@ const addNightwatchRunCommand = context => {
     return undefined
   }
 
-  const defaultBrowser = Object.entries(browsersConfig).find(([_, browser]) => browser.default)[0]
+  const defaultBrowser =
+    process.env.BROWSER || Object.entries(browsersConfig).find(([_, browser]) => browser.default)[0]
   const browsers = Object.keys(browsersConfig)
 
   return {
