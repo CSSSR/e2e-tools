@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.6.0](https://github.com/csssr-team/e2e-tools/compare/@csssr/e2e-tools-nightwatch@1.5.1...@csssr/e2e-tools-nightwatch@1.6.0) (2019-10-11)
+
+
+### Features
+
+* Запуск тестов в Firefox в дженкинсе ([d6c4ba6](https://github.com/csssr-team/e2e-tools/commit/d6c4ba6))
+
+
+
+
+
 ## [1.5.1](https://github.com/csssr-team/e2e-tools/compare/@csssr/e2e-tools-nightwatch@1.5.0...@csssr/e2e-tools-nightwatch@1.5.1) (2019-10-10)
 
 
