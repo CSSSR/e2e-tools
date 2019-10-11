@@ -5,6 +5,8 @@
 1. Создаём multibranch pipeline [в дженкинсе](https://jenkins.csssr.ru/view/all/newJob), называем `{название проекта}-nightwatch-e2e`
 1. В последнем поле «Copy from» указываем `professionals-nightwatch-e2e`, нажимаем OK
 1. Меняем Display Name на `{читаемое название проекта}: Тесты Nightwatch`
-1. Заполняем Repository HTTPS URL, сохраняем
+1. Заполняем Repository HTTPS URL
+1. Если у пользователя csssr-team нет доступа к репозиторию, выдаём его (проверить можно кнопкой Validate)
+1. Сохраняем форму
 1. Даём людям доступ ко всем джобам с префиксом `{название проекта}`
 1. Даём Максиму Самойлову (ник в дженкинсе maxim-samoilov) доступ конкретно к джобе с тестами
