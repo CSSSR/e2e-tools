@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.6.3](https://github.com/csssr-team/e2e-tools/compare/@csssr/e2e-tools-nightwatch@1.6.2...@csssr/e2e-tools-nightwatch@1.6.3) (2019-10-14)
+
+
+### Bug Fixes
+
+* Исправил проверку на необходимость завершения браузерной сессии ([cfcac7c](https://github.com/csssr-team/e2e-tools/commit/cfcac7c))
+
+
+
+
+
 ## [1.6.2](https://github.com/csssr-team/e2e-tools/compare/@csssr/e2e-tools-nightwatch@1.6.1...@csssr/e2e-tools-nightwatch@1.6.2) (2019-10-11)
 
 
