@@ -23,27 +23,6 @@ pipeline {
       }
     }
 
-    stage("Check if build is required") {
-      steps {
-          script {
-            def checkCommit = $/"git log -1 --pretty=%s | grep ^Publish$"/$
-
-            isPublishCommit = sh (
-              script: checkCommit,
-              returnStatus: true
-            )
-
-            echo "isPublishCommit ${isPublishCommit}"
-
-            if (isPublishCommit == 0) {
-              currentBuild.result = "ABORTED"
-              error('Publish commit, cancel execution')
-            }
-          }
-      }
-    }
-
-
     stage('Install dependencies') {
       steps {
         script {
@@ -85,8 +64,11 @@ pipeline {
                   source ~/.bashrc
                   set -e
 
+                  # up versions
+                  yarn lerna version --conventional-commits --conventional-prerelease --allow-branch=canary --yes
+
                   # publish
-                  yarn lerna publish --yes --registry https://registry.npmjs.org/ --canary
+                  yarn lerna publish from-git --yes --registry https://registry.npmjs.org/ --canary
                 """
               }
             }
