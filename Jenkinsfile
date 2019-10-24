@@ -52,10 +52,12 @@ pipeline {
                   set -e
 
                   # up versions
-                  yarn lerna version --conventional-commits --allow-branch=master --yes
+                  yarn lerna version --conventional-commits --allow-branch=master --yes --no-push
 
                   # publish
                   yarn lerna publish from-git --yes --registry https://registry.npmjs.org/
+
+                  git push origin master --follow-tags
                 """
               }
 
@@ -65,10 +67,12 @@ pipeline {
                   set -e
 
                   # up versions
-                  yarn lerna version --conventional-commits --conventional-prerelease --allow-branch=canary --yes
+                  yarn lerna version --conventional-commits --conventional-prerelease --allow-branch=canary --yes --no-push
 
                   # publish
                   yarn lerna publish from-git --yes --registry https://registry.npmjs.org/ --canary
+
+                  git push origin canary --follow-tags
                 """
               }
             }
