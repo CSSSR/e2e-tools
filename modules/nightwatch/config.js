@@ -12,13 +12,6 @@ const { argv } = require('yargs')
 process.chdir(getTestsRootDir())
 const config = getConfig()
 
-// Пути на Windows отпределяются неправильно, эта функция фиксит ихЊ
-function getDriverPath({ executableName, executablePath }) {
-  const nodeModulesPath = executablePath.replace(/(node_modules).*/, '$1')
-  const unixPath = path.join(nodeModulesPath, `.bin/${executableName}`)
-  return process.platform === 'win32' ? `${unixPath}.cmd` : unixPath
-}
-
 function removeEndingSlash(url) {
   return url.replace(/\/$/, '')
 }
@@ -36,20 +29,14 @@ function getWebdriverOptions(settings, browserKeyName) {
     case 'chrome':
       return {
         start_process: true,
-        server_path: getDriverPath({
-          executableName: 'chromedriver',
-          executablePath: chromedriver.path,
-        }),
+        server_path: chromedriver.path,
         port: 9515,
       }
 
     case 'firefox':
       return {
         start_process: true,
-        server_path: getDriverPath({
-          executableName: 'geckodriver',
-          executablePath: geckodriver.path,
-        }),
+        server_path: geckodriver.path,
         port: 4444,
       }
 
