@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.6.4](https://github.com/csssr-team/e2e-tools/compare/@csssr/e2e-tools-nightwatch@1.6.3...@csssr/e2e-tools-nightwatch@1.6.4) (2019-10-24)
+
+
+### Bug Fixes
+
+* Убрал фикс путь к вебдрайверу для Windows ([7f0dec4](https://github.com/csssr-team/e2e-tools/commit/7f0dec4))
+
+
+
+
+
 ## [1.6.3](https://github.com/csssr-team/e2e-tools/compare/@csssr/e2e-tools-nightwatch@1.6.2...@csssr/e2e-tools-nightwatch@1.6.3) (2019-10-14)
 
 
