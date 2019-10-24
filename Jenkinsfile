@@ -24,13 +24,19 @@ pipeline {
     }
 
     stage("Check if build is required") {
-      when {
-        changelog "^Publish"
-      }
       steps {
           script {
+            def checkCommit = $/"git log -1 --pretty=%s | grep ^Publish$"/$
+
+            isPublishCommit = sh (
+              script: checkCommit,
+              returnStatus: true
+            )
+
+            if (isPublishCommit == 0) {
               currentBuild.result = "ABORTED"
               error('Publish commit, cancel execution')
+            }
           }
       }
     }
