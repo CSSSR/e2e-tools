@@ -15,6 +15,7 @@
 1. Проверяем, что тесты запускаются `yarn et nightwatch:run`
 1. Изолируем папку `e2e-tests/` от остального проекта: добавляем её в `.eslintignore`, `.prettierignore`, в `coverageIgnore` в конфиге jest и т. д.
 1. Настраиваем дженкинс ↓
+1. Просим всех разработчиков установить себе [Git LFS](https://git-lfs.github.com)
 
 ### Настройка дженкинса
 
