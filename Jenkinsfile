@@ -53,19 +53,38 @@ pipeline {
           withCredentials([
             string(credentialsId: 'npm-token', variable: 'NPM_TOKEN'),
           ]) {
-            sh """#!/bin/bash
-              source ~/.bashrc
-              set -e
-
-              # up versions
-              yarn lerna version --conventional-commits --allow-branch=master --yes
-
+            sh """
               # auth in npm
               printf "//registry.npmjs.org/:_authToken="%s"\n@csssr:registry=https://registry.npmjs.org/\n" "$NPM_TOKEN" >.npmrc
-
-              # publish
-              yarn lerna publish from-git --yes --registry https://registry.npmjs.org/
             """
+
+            script {
+              if (scmVars.GIT_BRANCH == 'origin/master') {
+                sh """#!/bin/bash
+                  source ~/.bashrc
+                  set -e
+
+                  # up versions
+                  yarn lerna version --conventional-commits --allow-branch=master --yes
+
+                  # publish
+                  yarn lerna publish from-git --yes --registry https://registry.npmjs.org/
+                """
+              }
+
+              if (scmVars.GIT_BRANCH == 'origin/canary') {
+                sh """#!/bin/bash
+                  source ~/.bashrc
+                  set -e
+
+                  # up versions
+                  yarn lerna version --conventional-commits --allow-branch=canary --yes
+
+                  # publish
+                  yarn lerna publish from-git --yes --registry https://registry.npmjs.org/ --canary
+                """
+              }
+            }
           }
         }
       }
