@@ -14,8 +14,10 @@
 1. Добавляем Nightwatch `yarn et add-tool @csssr/e2e-tools-nightwatch`
 1. Проверяем, что тесты запускаются `yarn et nightwatch:run`
 1. Изолируем папку `e2e-tests/` от остального проекта: добавляем её в `.eslintignore`, `.prettierignore`, в `coverageIgnore` в конфиге jest и т. д.
-1. Настраиваем дженкинс ↓
+1. Настраиваем дженкинс [↓](https://github.com/csssr-team/e2e-tools/blob/master/SETUP.md#настройка-дженкинса)
 1. Просим всех разработчиков установить себе [Git LFS](https://git-lfs.github.com)
+1. Желательно дать доступ на чтение к репозиторию команде [QA (e2e)](https://github.com/orgs/CSSSR/teams/qa-e2e/repositories), чтобы QA было легче делиться с друг другом наработками
+1. Рекомендую включить автоудаление веток после мёржа PR в настройках репозитория и удалить старые ветки, чтобы сканирование веток в дженкинсе проходило быстрее
 
 ### Настройка дженкинса
 
