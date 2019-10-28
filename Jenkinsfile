@@ -52,7 +52,7 @@ pipeline {
                   set -e
 
                   # up versions
-                  yarn lerna version --conventional-commits --allow-branch=master --yes --no-push
+                  yarn lerna version --conventional-commits --conventional-graduate --allow-branch=master --yes --no-push
 
                   # publish
                   yarn lerna publish from-git --yes --registry https://registry.npmjs.org/
