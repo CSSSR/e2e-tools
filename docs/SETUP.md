@@ -14,8 +14,8 @@
 1. Добавляем Nightwatch `yarn et add-tool @csssr/e2e-tools-nightwatch`
 1. Проверяем, что тесты запускаются `yarn et nightwatch:run`
 1. Изолируем папку `e2e-tests/` от остального проекта: добавляем её в `.eslintignore`, `.prettierignore`, в `coverageIgnore` в конфиге jest и т. д.
-1. Настраиваем дженкинс [↓](https://github.com/csssr-team/e2e-tools/blob/master/SETUP.md#настройка-дженкинса)
-1. Просим всех разработчиков установить себе [Git LFS](https://git-lfs.github.com)
+1. Настраиваем дженкинс [↓](https://github.com/csssr-team/e2e-tools/blob/master/docs/SETUP.md#настройка-дженкинса)
+1. Просим всех разработчиков установить себе [Git LFS](https://git-lfs.github.com) и почитать [документацию](./DEVELOPERS_DOC.md)
 1. Желательно дать доступ на чтение к репозиторию команде [QA (e2e)](https://github.com/orgs/CSSSR/teams/qa-e2e/repositories), чтобы QA было легче делиться с друг другом наработками
 1. Рекомендую включить автоудаление веток после мёржа PR в настройках репозитория и удалить старые ветки, чтобы сканирование веток в дженкинсе проходило быстрее
 
@@ -25,7 +25,7 @@
 
 Просим в #servers создать джобу для запуска сервера, прикладываем
 
-- Ссылку на [инструкцию для devops](https://github.com/csssr-team/e2e-tools/blob/master/SETUP_JENKINS.md)
+- Ссылку на [инструкцию для devops](https://github.com/csssr-team/e2e-tools/blob/master/docs/SETUP_JENKINS.md)
 - Название проекта в формате «слова, разделённые дефисами» (например, csssr-store)
 - Читаемое название проекта (например, CSSSR.store)
 - Список людей, которым нужен доступ к запуску тестов (и прочим сборкам проекта в дженкинсе)
@@ -37,7 +37,7 @@
 @qtm @Anton Rogozin
 Привет! Создайте, пожалуйста, дженкинс джобу для запуска e2e тестов
 
-– Инструкция: https://github.com/csssr-team/e2e-tools/blob/master/SETUP_JENKINS.md
+– Инструкция: https://github.com/csssr-team/e2e-tools/blob/master/docs/SETUP_JENKINS.md
 – Машиночитаемое название проекта:
 – Человекочитаемое название проекта:
 – Доступ понадобится:
