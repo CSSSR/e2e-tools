@@ -13,4 +13,6 @@ COPY nightwatch nightwatch/
 RUN touch .env
 ENV CI true
 
+LABEL e2e-tools="true" e2e-tools.project="{{ config.projectName }}"
+
 ENTRYPOINT yarn et nightwatch:run --browser remote_chrome

@@ -107,6 +107,10 @@ pipeline {
             docker cp `cat "${scmVars.GIT_COMMIT}.cid"`:/usr/src/app/nightwatch/failure-screenshots artifacts/
             docker cp `cat "${scmVars.GIT_COMMIT}.cid"`:/usr/src/app/nightwatch/screenshots artifacts/
             docker rm `cat "${scmVars.GIT_COMMIT}.cid"`
+            docker system prune \
+              --filter label=e2e-tools="true" \
+              --filter label=e2e-tools.project="${config.projectName}" \
+              --force
             rm "${scmVars.GIT_COMMIT}.cid"
           """
 
