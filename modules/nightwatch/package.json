@@ -22,7 +22,7 @@
     "@nitive/mocha-testrail-ui": "~0.3.1",
     "@nitive/nightwatch-image-comparison": "^0.1.2",
     "@types/mocha": "^5.2.7",
-    "@types/nightwatch": "^1.1.1",
+    "@types/nightwatch": "^1.1.2",
     "@types/node": "^12.7.2",
     "axios": "^0.19.0",
     "chalk": "^2.4.2",
@@ -32,7 +32,7 @@
     "mocha": "^5.2.0",
     "mocha-jenkins-reporter": "^0.4.2",
     "mochawesome": "^4.1.0",
-    "nightwatch": "^1.2.1",
+    "nightwatch": "^1.2.4",
     "rimraf": "^3.0.0"
   }
 }
