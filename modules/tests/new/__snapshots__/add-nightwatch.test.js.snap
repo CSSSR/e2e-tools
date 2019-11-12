@@ -1,0 +1,395 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`add-tool command Adding nightwatch two times should be okey should add .gitignore file 1`] = `
+"# Этот файл сгенерирован автоматически, не редактируйте его вручную
+
+report/
+jenkins-report.xml
+failure-screenshots/*.png
+"
+`;
+
+exports[`add-tool command Adding nightwatch two times should be okey should add Dockerfile 1`] = `
+"# Этот файл сгенерирован автоматически, не редактируйте его вручную
+
+FROM node:10
+
+WORKDIR /usr/src/app
+
+COPY package.json yarn.lock ./
+RUN yarn install --frozen-lockfile && yarn cache clean
+
+COPY e2e-tools.json ./
+COPY nightwatch nightwatch/
+
+RUN touch .env
+ENV CI true
+
+LABEL e2e-tools=\\"true\\" e2e-tools.project=\\"github\\"
+
+ENTRYPOINT yarn et nightwatch:run --browser remote_chrome
+"
+`;
+
+exports[`add-tool command Adding nightwatch two times should be okey should add Jenkinsfile 1`] = `
+"// Этот файл сгенерирован автоматически, не редактируйте его вручную
+
+def config
+def browserNames
+def scmVars
+def runTestsCredentials
+def runTestsEnvs
+
+node {
+  scmVars = checkout scm
+  config = readJSON file: 'e2e-tests/e2e-tools.json'
+
+  def browsers = config.tools['@csssr/e2e-tools-nightwatch'].browsers
+  browserNames = browsers.keySet().findAll { browsers[it].remote } as List
+
+  def basicAuths = browsers.values()
+      .findAll { it.basicAuth?.credentialsId }
+      .collect { it.basicAuth }
+
+  browserCredentials = basicAuths
+    .collect {
+      usernamePassword(
+        credentialsId: it.credentialsId,
+        usernameVariable: it.username_env,
+        passwordVariable: it.password_env
+      )
+    } as List
+
+  runTestsCredentials = [
+    usernamePassword(credentialsId: 'testrail', usernameVariable: 'TESTRAIL_USERNAME', passwordVariable: 'TESTRAIL_API_TOKEN')
+  ]
+
+  runTestsCredentials.addAll(browserCredentials)
+
+  runTestsEnvs = [
+    'LAUNCH_URL',
+    'TESTRAIL_USERNAME',
+    'TESTRAIL_API_TOKEN',
+    'BROWSER',
+  ]
+
+  runTestsEnvs.addAll(basicAuths.collectMany { [it.username_env, it.password_env] })
+}
+
+pipeline {
+  agent any
+
+  environment {
+    scmVars = \\"\\"
+  }
+
+  parameters {
+    string(defaultValue: config.defaultLaunchUrl, description: 'Адрес стенда', name: 'LAUNCH_URL', trim: true)
+    choice(name: 'BROWSER', choices: browserNames, description: 'Браузер, в котором запускать тесты')
+  }
+
+  options {
+    skipDefaultCheckout(true)
+    timeout(time: 1, unit: 'HOURS')
+  }
+
+  stages {
+    stage('Install dependencies') {
+      when {
+        triggeredBy \\"UserIdCause\\"
+      }
+
+      steps {
+        script {
+          sh \\"\\"\\"
+            git clean -fdx .
+            cd e2e-tests
+            docker build -f nightwatch/Dockerfile --network host -t \${config.projectName}/tests:\${scmVars.GIT_COMMIT} .
+          \\"\\"\\"
+        }
+      }
+    }
+
+    stage('Run tests') {
+      when {
+        triggeredBy \\"UserIdCause\\"
+      }
+
+      steps {
+        script {
+          withCredentials(runTestsCredentials) {
+            sh \\"\\"\\"
+              docker run --network host \\\\
+                \${ runTestsEnvs.collect { \\"-e \${it}\\" } .join(' ') } \\\\
+                --cidfile \\"\${scmVars.GIT_COMMIT}.cid\\" \\\\
+                \${config.projectName}/tests:\${scmVars.GIT_COMMIT}
+            \\"\\"\\"
+          }
+        }
+      }
+    }
+  }
+
+  post {
+    always {
+      script {
+        if (currentBuild.getBuildCauses('hudson.model.Cause$UserIdCause').size() > 0) {
+          sh \\"\\"\\"
+            mkdir -p artifacts/failure-screenshots
+            mkdir -p artifacts/screenshots
+            docker cp \`cat \\"\${scmVars.GIT_COMMIT}.cid\\"\`:/usr/src/app/nightwatch/jenkins-report.xml artifacts/
+            docker cp \`cat \\"\${scmVars.GIT_COMMIT}.cid\\"\`:/usr/src/app/nightwatch/failure-screenshots artifacts/
+            docker cp \`cat \\"\${scmVars.GIT_COMMIT}.cid\\"\`:/usr/src/app/nightwatch/screenshots artifacts/
+            docker rm \`cat \\"\${scmVars.GIT_COMMIT}.cid\\"\`
+            docker system prune \\\\
+              --filter label=e2e-tools=\\"true\\" \\\\
+              --filter label=e2e-tools.project=\\"\${config.projectName}\\" \\\\
+              --force
+            rm \\"\${scmVars.GIT_COMMIT}.cid\\"
+          \\"\\"\\"
+
+          archiveArtifacts artifacts: 'artifacts/failure-screenshots/*.png', allowEmptyArchive: true
+          archiveArtifacts artifacts: 'artifacts/screenshots/diff/**/*.png', allowEmptyArchive: true
+          junit 'artifacts/jenkins-report.xml'
+        }
+      }
+    }
+  }
+}
+"
+`;
+
+exports[`add-tool command Adding nightwatch two times should be okey should add eslint config file 1`] = `
+"// Этот файл сгенерирован автоматически, не редактируйте его вручную
+
+module.exports = {
+  root: true,
+  extends: [require.resolve('@csssr/e2e-tools/eslint')],
+}
+"
+`;
+
+exports[`add-tool command Adding nightwatch two times should be okey should add package to devDependencies 1`] = `
+"{
+  \\"private\\": true,
+  \\"prettier\\": \\"@csssr/e2e-tools/prettier\\",
+  \\"devDependencies\\": {
+    \\"@csssr/e2e-tools\\": \\"0.0.0\\"
+  }
+}
+"
+`;
+
+exports[`add-tool command Adding nightwatch two times should be okey should add screenshots/.gitignore file 1`] = `
+"# Этот файл сгенерирован автоматически, не редактируйте его вручную
+
+actual/
+diff/
+"
+`;
+
+exports[`add-tool command Adding nightwatch two times should be okey should add tsconfig.json 1`] = `
+"// Этот файл сгенерирован автоматически, не редактируйте его вручную
+
+{
+  \\"extends\\": \\"@csssr/e2e-tools-nightwatch/ts\\"
+}
+"
+`;
+
+exports[`add-tool command Inside e2e-tests dir should add .gitignore file 1`] = `
+"# Этот файл сгенерирован автоматически, не редактируйте его вручную
+
+report/
+jenkins-report.xml
+failure-screenshots/*.png
+"
+`;
+
+exports[`add-tool command Inside e2e-tests dir should add Dockerfile 1`] = `
+"# Этот файл сгенерирован автоматически, не редактируйте его вручную
+
+FROM node:10
+
+WORKDIR /usr/src/app
+
+COPY package.json yarn.lock ./
+RUN yarn install --frozen-lockfile && yarn cache clean
+
+COPY e2e-tools.json ./
+COPY nightwatch nightwatch/
+
+RUN touch .env
+ENV CI true
+
+LABEL e2e-tools=\\"true\\" e2e-tools.project=\\"github\\"
+
+ENTRYPOINT yarn et nightwatch:run --browser remote_chrome
+"
+`;
+
+exports[`add-tool command Inside e2e-tests dir should add Jenkinsfile 1`] = `
+"// Этот файл сгенерирован автоматически, не редактируйте его вручную
+
+def config
+def browserNames
+def scmVars
+def runTestsCredentials
+def runTestsEnvs
+
+node {
+  scmVars = checkout scm
+  config = readJSON file: 'e2e-tests/e2e-tools.json'
+
+  def browsers = config.tools['@csssr/e2e-tools-nightwatch'].browsers
+  browserNames = browsers.keySet().findAll { browsers[it].remote } as List
+
+  def basicAuths = browsers.values()
+      .findAll { it.basicAuth?.credentialsId }
+      .collect { it.basicAuth }
+
+  browserCredentials = basicAuths
+    .collect {
+      usernamePassword(
+        credentialsId: it.credentialsId,
+        usernameVariable: it.username_env,
+        passwordVariable: it.password_env
+      )
+    } as List
+
+  runTestsCredentials = [
+    usernamePassword(credentialsId: 'testrail', usernameVariable: 'TESTRAIL_USERNAME', passwordVariable: 'TESTRAIL_API_TOKEN')
+  ]
+
+  runTestsCredentials.addAll(browserCredentials)
+
+  runTestsEnvs = [
+    'LAUNCH_URL',
+    'TESTRAIL_USERNAME',
+    'TESTRAIL_API_TOKEN',
+    'BROWSER',
+  ]
+
+  runTestsEnvs.addAll(basicAuths.collectMany { [it.username_env, it.password_env] })
+}
+
+pipeline {
+  agent any
+
+  environment {
+    scmVars = \\"\\"
+  }
+
+  parameters {
+    string(defaultValue: config.defaultLaunchUrl, description: 'Адрес стенда', name: 'LAUNCH_URL', trim: true)
+    choice(name: 'BROWSER', choices: browserNames, description: 'Браузер, в котором запускать тесты')
+  }
+
+  options {
+    skipDefaultCheckout(true)
+    timeout(time: 1, unit: 'HOURS')
+  }
+
+  stages {
+    stage('Install dependencies') {
+      when {
+        triggeredBy \\"UserIdCause\\"
+      }
+
+      steps {
+        script {
+          sh \\"\\"\\"
+            git clean -fdx .
+            cd e2e-tests
+            docker build -f nightwatch/Dockerfile --network host -t \${config.projectName}/tests:\${scmVars.GIT_COMMIT} .
+          \\"\\"\\"
+        }
+      }
+    }
+
+    stage('Run tests') {
+      when {
+        triggeredBy \\"UserIdCause\\"
+      }
+
+      steps {
+        script {
+          withCredentials(runTestsCredentials) {
+            sh \\"\\"\\"
+              docker run --network host \\\\
+                \${ runTestsEnvs.collect { \\"-e \${it}\\" } .join(' ') } \\\\
+                --cidfile \\"\${scmVars.GIT_COMMIT}.cid\\" \\\\
+                \${config.projectName}/tests:\${scmVars.GIT_COMMIT}
+            \\"\\"\\"
+          }
+        }
+      }
+    }
+  }
+
+  post {
+    always {
+      script {
+        if (currentBuild.getBuildCauses('hudson.model.Cause$UserIdCause').size() > 0) {
+          sh \\"\\"\\"
+            mkdir -p artifacts/failure-screenshots
+            mkdir -p artifacts/screenshots
+            docker cp \`cat \\"\${scmVars.GIT_COMMIT}.cid\\"\`:/usr/src/app/nightwatch/jenkins-report.xml artifacts/
+            docker cp \`cat \\"\${scmVars.GIT_COMMIT}.cid\\"\`:/usr/src/app/nightwatch/failure-screenshots artifacts/
+            docker cp \`cat \\"\${scmVars.GIT_COMMIT}.cid\\"\`:/usr/src/app/nightwatch/screenshots artifacts/
+            docker rm \`cat \\"\${scmVars.GIT_COMMIT}.cid\\"\`
+            docker system prune \\\\
+              --filter label=e2e-tools=\\"true\\" \\\\
+              --filter label=e2e-tools.project=\\"\${config.projectName}\\" \\\\
+              --force
+            rm \\"\${scmVars.GIT_COMMIT}.cid\\"
+          \\"\\"\\"
+
+          archiveArtifacts artifacts: 'artifacts/failure-screenshots/*.png', allowEmptyArchive: true
+          archiveArtifacts artifacts: 'artifacts/screenshots/diff/**/*.png', allowEmptyArchive: true
+          junit 'artifacts/jenkins-report.xml'
+        }
+      }
+    }
+  }
+}
+"
+`;
+
+exports[`add-tool command Inside e2e-tests dir should add eslint config file 1`] = `
+"// Этот файл сгенерирован автоматически, не редактируйте его вручную
+
+module.exports = {
+  root: true,
+  extends: [require.resolve('@csssr/e2e-tools/eslint')],
+}
+"
+`;
+
+exports[`add-tool command Inside e2e-tests dir should add package to devDependencies 1`] = `
+"{
+  \\"private\\": true,
+  \\"prettier\\": \\"@csssr/e2e-tools/prettier\\",
+  \\"devDependencies\\": {
+    \\"@csssr/e2e-tools\\": \\"0.0.0\\"
+  }
+}
+"
+`;
+
+exports[`add-tool command Inside e2e-tests dir should add screenshots/.gitignore file 1`] = `
+"# Этот файл сгенерирован автоматически, не редактируйте его вручную
+
+actual/
+diff/
+"
+`;
+
+exports[`add-tool command Inside e2e-tests dir should add tsconfig.json 1`] = `
+"// Этот файл сгенерирован автоматически, не редактируйте его вручную
+
+{
+  \\"extends\\": \\"@csssr/e2e-tools-nightwatch/ts\\"
+}
+"
+`;

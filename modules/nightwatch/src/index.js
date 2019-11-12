@@ -69,50 +69,33 @@ function falseToError(error, func) {
   return str => (func(str) ? true : error)
 }
 
-async function initScript({ inquirer }) {
-  const parentProjectPackageJson = getParentProjectPackageJsonSafe() || {}
+async function initScript(ctx) {
+  const parentProjectPackageJson = getParentProjectPackageJsonSafe(ctx) || {}
 
-  async function prompt(question) {
-    const answers = await inquirer.prompt([question])
+  const config = getConfig(ctx)
 
-    return answers[question.name]
-  }
-  const config = getConfig()
-
-  const launchUrl = await prompt({
+  const launchUrl = await ctx.prompt({
     type: 'input',
     name: 'launchUrl',
     default: config.defaultLaunchUrl,
     message: 'Адрес стенда по умолчанию',
   })
 
-  const repositorySshAddress = await prompt({
-    type: 'input',
-    name: 'repositorySshAddress',
-    default: config.repositorySshAddress || getRepoSshAddress(parentProjectPackageJson.repository),
-    message: 'Адрес GitHub-репозитория (ssh):',
-    validate: falseToError('Невалидный адрес репозитория', isValidRepoSshAddress),
-  })
-
-  const projectName = await prompt({
+  const projectName = await ctx.prompt({
     type: 'input',
     name: 'projectName',
-    default:
-      config.projectName ||
-      parentProjectPackageJson.name ||
-      getRepoNameByAddress(repositorySshAddress),
+    default: config.projectName || parentProjectPackageJson.name,
     message: 'Название проекта (маленькими буквами без пробелов)',
     validate: falseToError('Навалидное название пакета', validatePackageName),
   })
 
   const configNewFields = {
     projectName,
-    repositorySshAddress,
     defaultLaunchUrl: normalizeUrl(launchUrl),
   }
 
-  updateJsonFile({
-    filePath: path.join(getTestsRootDir(), 'e2e-tools.json'),
+  updateJsonFile(ctx, {
+    filePath: path.join(getTestsRootDir(ctx), 'e2e-tools.json'),
     update(prevConfig) {
       return {
         ...prevConfig,
@@ -121,18 +104,18 @@ async function initScript({ inquirer }) {
     },
   })
 
-  createFilesFromTemplates({
+  createFilesFromTemplates(ctx, {
     templatesGlob: '**/*.hbs',
     templatesData: {
       config: { ...config, ...configNewFields },
     },
     templatesRoot: path.join(__dirname, '../templates'),
-    destinationRoot: getProjectRootDir(),
+    destinationRoot: getProjectRootDir(ctx),
   })
 
-  updateToolConfig(packageName, createToolConfig)
+  updateToolConfig(ctx, packageName, createToolConfig)
 
-  updateVsCodeTasks()
+  updateVsCodeTasks(ctx)
 }
 
 function upgrade() {

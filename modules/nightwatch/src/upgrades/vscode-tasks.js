@@ -2,9 +2,9 @@ const uniqBy = require('lodash/uniqBy')
 const path = require('path')
 const { updateJsonFile, getTestsRootDir } = require('@csssr/e2e-tools/utils')
 
-function updateVsCodeTasks() {
-  updateJsonFile({
-    filePath: path.join(getTestsRootDir(), '.vscode/tasks.json'),
+function updateVsCodeTasks(ctx) {
+  updateJsonFile(ctx, {
+    filePath: path.join(getTestsRootDir(ctx), '.vscode/tasks.json'),
     update(config) {
       return {
         ...config,

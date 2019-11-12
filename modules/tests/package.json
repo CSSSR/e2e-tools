@@ -1,5 +1,9 @@
 {
   "name": "tests",
   "version": "0.0.0",
-  "private": true
+  "private": true,
+  "dependencies": {
+    "memfs": "^2.16.1",
+    "yargs": "^14.2.0"
+  }
 }

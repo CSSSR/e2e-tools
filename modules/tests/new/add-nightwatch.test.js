@@ -1,13 +1,14 @@
-const fs = require('fs')
-const path = require('path')
-const spawnSync = require('cross-spawn').sync
 const uniqBy = require('lodash/uniqBy')
 const JSONWithComments = require('comment-json')
-const { setupEnvironment } = require('./helpers')
+const { createInitedApp, checkThatFilesPrettified } = require('./test-utils')
 
-function checks({ readFile, rootDir }) {
+function checks(appPromise) {
   it('should add nightwatch with default config to e2e-tools.json', async () => {
-    const configFile = JSONWithComments.parse(readFile('e2e-tests/e2e-tools.json'))
+    const app = await appPromise
+    const configFile = JSONWithComments.parse(
+      app.fs.readFileSync('/project/e2e-tests/e2e-tools.json', 'utf8')
+    )
+
     expect(configFile.tools).toEqual({
       '@csssr/e2e-tools-nightwatch': {
         browsers: {
@@ -26,8 +27,10 @@ function checks({ readFile, rootDir }) {
           },
           remote_chrome: {
             type: 'selenium',
-            host: 'chromedriver.csssr.ru',
+            host: 'selenium-linux.csssr.ru',
+            remote: true,
             basicAuth: {
+              credentialsId: 'chromedriver',
               username_env: 'CHROMEDRIVER_USERNAME',
               password_env: 'CHROMEDRIVER_PASSWORD',
             },
@@ -36,7 +39,7 @@ function checks({ readFile, rootDir }) {
               browserName: 'chrome',
               'goog:chromeOptions': {
                 w3c: false,
-                args: ['--headless', '--disable-gpu', '--window-size=1200,800'],
+                args: ['--headless', '--no-sandbox', '--disable-gpu', '--window-size=1200,800'],
               },
             },
             globals: {
@@ -49,61 +52,70 @@ function checks({ readFile, rootDir }) {
   })
 
   it('should add package to devDependencies', async () => {
-    expect(readFile('e2e-tests/package.json')).toMatchSnapshot()
+    const app = await appPromise
+    expect(app.fs.readFileSync('/project/e2e-tests/package.json', 'utf8')).toMatchSnapshot()
   })
 
-  it.todo('should add tool with specific version')
+  // it.todo('should add tool with specific version')
 
-  it('should be prettified', () => {
-    const { stderr } = spawnSync('yarn', ['prettier', '--check', '**/*.{js,json}'], {
-      cwd: path.join(rootDir, 'e2e-tests'),
-    })
-
-    const err = stderr && stderr.toString()
-    expect(err).toBe('')
+  it('should be prettified', async () => {
+    const app = await appPromise
+    checkThatFilesPrettified(app.volume.toJSON())
   })
 
   it('should add eslint config file', async () => {
-    const eslintConfig = readFile('e2e-tests/nightwatch/.eslintrc.js')
+    const app = await appPromise
+    const eslintConfig = app.fs.readFileSync('/project/e2e-tests/nightwatch/.eslintrc.js', 'utf8')
     expect(eslintConfig).toMatchSnapshot()
   })
 
   it('should add .gitignore file', async () => {
-    const gitignore = readFile('e2e-tests/nightwatch/.gitignore')
+    const app = await appPromise
+    const gitignore = app.fs.readFileSync('/project/e2e-tests/nightwatch/.gitignore', 'utf8')
     expect(gitignore).toMatchSnapshot()
   })
 
   it('should add screenshots/.gitignore file', async () => {
-    const gitignore = readFile('e2e-tests/nightwatch/screenshots/.gitignore')
+    const app = await appPromise
+    const gitignore = app.fs.readFileSync(
+      '/project/e2e-tests/nightwatch/screenshots/.gitignore',
+      'utf8'
+    )
     expect(gitignore).toMatchSnapshot()
   })
 
   it('should add tsconfig.json', async () => {
-    expect(readFile('e2e-tests/nightwatch/tsconfig.json')).toMatchSnapshot()
+    const app = await appPromise
+    expect(
+      app.fs.readFileSync('/project/e2e-tests/nightwatch/tsconfig.json', 'utf8')
+    ).toMatchSnapshot()
   })
 
   it('should add example file', async () => {
-    const exist = fs.existsSync(
-      path.join(
-        rootDir,
-        'e2e-tests/nightwatch/tests/Примеры/Переход на страницу авторизации.test.js'
-      )
+    const app = await appPromise
+    const exists = app.fs.existsSync(
+      '/project/e2e-tests/nightwatch/tests/Примеры/Переход на страницу авторизации.test.js'
     )
-    expect(exist).toBe(true)
+    expect(exists).toBe(true)
   })
 
   it('should add Jenkinsfile', async () => {
-    const jenkinsfile = readFile('e2e-tests/nightwatch/Jenkinsfile')
+    const app = await appPromise
+    const jenkinsfile = app.fs.readFileSync('/project/e2e-tests/nightwatch/Jenkinsfile', 'utf8')
     expect(jenkinsfile).toMatchSnapshot()
   })
 
   it('should add Dockerfile', async () => {
-    const dockerfile = readFile('e2e-tests/nightwatch/Dockerfile')
+    const app = await appPromise
+    const dockerfile = app.fs.readFileSync('/project/e2e-tests/nightwatch/Dockerfile', 'utf8')
     expect(dockerfile).toMatchSnapshot()
   })
 
   it('should add tasks', async () => {
-    const vscodeTasks = JSONWithComments.parse(readFile('e2e-tests/.vscode/tasks.json'))
+    const app = await appPromise
+    const vscodeTasks = JSONWithComments.parse(
+      app.fs.readFileSync('/project/e2e-tests/.vscode/tasks.json', 'utf8')
+    )
 
     expect(vscodeTasks.tasks).toContainEqual({
       type: 'shell',
@@ -151,38 +163,25 @@ function checks({ readFile, rootDir }) {
   })
 }
 
-const promptResults = {
+const answers = {
   launchUrl: 'github.com',
   projectName: 'github',
-  repositorySshAddress: 'git@github.com:github/web.git',
 }
 
 describe('add-tool command', () => {
-  describe('Inside root dir', () => {
-    const { run, readFile, rootDir } = setupEnvironment('add-tool-cwd-root')
-    run('init')
-    run('add-tool @csssr/e2e-tools-nightwatch', { promptResults })
-    checks({ readFile, rootDir })
-  })
+  describe('Inside e2e-tests dir', () => {
+    const appP = createInitedApp({ answers }).then(app =>
+      app.run('add-tool @csssr/e2e-tools-nightwatch')
+    )
 
-  describe(`Inside e2e-tests dir`, () => {
-    const { run, readFile, rootDir } = setupEnvironment('add-tool-cwd-e2e-tests')
-
-    run('init')
-    process.chdir(path.join(rootDir, 'e2e-tests'))
-
-    run('add-tool @csssr/e2e-tools-nightwatch', { promptResults })
-    checks({ readFile, rootDir })
+    checks(appP)
   })
 
   describe('Adding nightwatch two times should be okey', () => {
-    const { run, readFile, rootDir } = setupEnvironment('add-tool-two-times')
+    const appP = createInitedApp({ answers })
+      .then(app => app.run('add-tool @csssr/e2e-tools-nightwatch'))
+      .then(app => app.run('add-tool @csssr/e2e-tools-nightwatch'))
 
-    run('init')
-    process.chdir(path.join(rootDir, 'e2e-tests'))
-
-    run('add-tool @csssr/e2e-tools-nightwatch', { promptResults })
-    run('add-tool @csssr/e2e-tools-nightwatch', { promptResults })
-    checks({ readFile, rootDir })
+    checks(appP)
   })
 })

@@ -11,32 +11,36 @@ const JSONWithComments = require('comment-json')
 const prettierConfig = require('../../prettier')
 const { isValidRepoSshAddress, getRepoSshAddress } = require('./repo-address')
 
-const getTestsRootDir = () => {
-  const foundRoot = findRoot(process.cwd())
-  if (foundRoot.endsWith('e2e-tests')) {
-    return foundRoot
-  }
-
-  const testsPackagePath = path.join(foundRoot, 'e2e-tests')
-
-  if (fs.existsSync(testsPackagePath)) {
-    return testsPackagePath
-  }
-
-  return foundRoot
-}
-
-function getProjectRootDir() {
-  return getTestsRootDir().replace(/[\/\\]e2e-tests$/, '')
-}
-
-function getConfigPath() {
-  return path.join(getTestsRootDir(), 'e2e-tools.json')
-}
-
-function getConfig() {
+const getTestsRootDir = ctx => {
   try {
-    const configFile = fs.readFileSync(getConfigPath(), {
+    return findRoot(ctx.cwd, dir => path.basename(dir) === 'e2e-tests')
+  } catch (e) {
+    throw new Error(`Could not find e2e-tests/ folder in parents of ${ctx.cwd}`)
+  }
+}
+
+function getProjectRootDir(ctx) {
+  try {
+    const result = findRoot(ctx.cwd, dir => {
+      const gitExists = ctx.fs.existsSync(path.join(dir, '.git'))
+      const packageJsonExists =
+        ctx.fs.existsSync(path.join(dir, 'package.json')) && path.basename(dir) !== 'e2e-tests'
+      return gitExists || packageJsonExists
+    })
+
+    return result
+  } catch (e) {
+    throw new Error(`Could not find project root`)
+  }
+}
+
+function getConfigPath(ctx) {
+  return path.join(getTestsRootDir(ctx), 'e2e-tools.json')
+}
+
+function getConfig(ctx) {
+  try {
+    const configFile = ctx.fs.readFileSync(getConfigPath(ctx), {
       encoding: 'utf-8',
     })
 
@@ -58,23 +62,23 @@ function getConfigSafe() {
   }
 }
 
-function getParentProjectPackageJsonSafe() {
+function getParentProjectPackageJsonSafe(ctx) {
   try {
-    return require(path.join(getProjectRootDir(), 'package.json'))
+    return require(path.join(getProjectRootDir(ctx), 'package.json'))
   } catch (e) {
     return undefined
   }
 }
 
-function createJsonFile({ filePath, fileContent }) {
+function createJsonFile(ctx, { filePath, fileContent }) {
   const formattedContent = prettier.format(JSONWithComments.stringify(fileContent), {
     parser: 'json',
   })
-  fs.mkdirSync(path.dirname(filePath), { recursive: true })
-  fs.writeFileSync(filePath, formattedContent)
+  ctx.fs.mkdirSync(path.dirname(filePath), { recursive: true })
+  ctx.fs.writeFileSync(filePath, formattedContent)
 }
 
-function formatFile(filePath) {
+function formatFile(ctx, filePath) {
   const ext = path.extname(filePath)
   const parser = {
     '.js': 'babel',
@@ -85,20 +89,20 @@ function formatFile(filePath) {
     return
   }
 
-  const fileContent = fs.readFileSync(filePath, 'utf8')
+  const fileContent = ctx.fs.readFileSync(filePath, 'utf8')
   const formattedContent = prettier.format(fileContent, { ...prettierConfig, parser })
-  fs.writeFileSync(filePath, formattedContent)
+  ctx.fs.writeFileSync(filePath, formattedContent)
 }
 
-function updateJsonFile({ filePath, update }) {
-  const file = fs.readFileSync(filePath, { encoding: 'utf-8' })
+function updateJsonFile(ctx, { filePath, update }) {
+  const file = ctx.fs.readFileSync(filePath, { encoding: 'utf-8' })
   const fileContent = JSONWithComments.parse(file)
-  createJsonFile({ filePath, fileContent: update(fileContent) })
+  createJsonFile(ctx, { filePath, fileContent: update(fileContent) })
 }
 
-function updateToolConfig(tool, update) {
-  updateJsonFile({
-    filePath: getConfigPath(),
+function updateToolConfig(ctx, tool, update) {
+  updateJsonFile(ctx, {
+    filePath: getConfigPath(ctx),
     update(config) {
       const toolSettings = config.tools[tool]
 
@@ -119,19 +123,6 @@ function updateToolConfig(tool, update) {
   })
 }
 
-function initTemplate({ templatesRoot, root }) {
-  return options => {
-    const { data } = options
-    const filePath = options.filePath
-    const fileFullPath = path.join(root, options.filePath)
-    const templatePath = path.join(templatesRoot, options.templatePath || `${filePath}.hbs`)
-
-    fs.mkdirSync(path.dirname(fileFullPath), { recursive: true })
-    const render = compile(fs.readFileSync(templatePath, 'utf8'))
-    fs.writeFileSync(fileFullPath, render(data))
-  }
-}
-
 function getRepoNameByAddress(str) {
   const matched = str.match(/\/(.*).git$/)
 
@@ -150,12 +141,12 @@ function validatePackageName(name) {
   return validateNpmPackageName(name).validForNewPackages
 }
 
-function getEnvVariable(variable, description) {
+function getEnvVariable(ctx, variable, description) {
   try {
-    const envFilePath = path.join(getTestsRootDir(), '.env')
+    const envFilePath = path.join(getTestsRootDir(ctx), '.env')
 
-    if (!fs.existsSync(envFilePath)) {
-      fs.writeFileSync(envFilePath, '\n')
+    if (!ctx.fs.existsSync(envFilePath)) {
+      ctx.fs.writeFileSync(envFilePath, '\n')
     }
 
     const config = dotenv.config()
@@ -172,7 +163,7 @@ function getEnvVariable(variable, description) {
         .map(key => `${key}=${newConfig[key]}`)
         .join('\n') + '\n'
 
-    fs.writeFileSync(envFilePath, envFileContent)
+    ctx.fs.writeFileSync(envFilePath, envFileContent)
 
     return newConfig[variable]
   } catch (err) {
@@ -185,7 +176,7 @@ function defaultGetDestinationPath(templatePath) {
   return templatePath.replace(/\.hbs$/, '').replace(/\.autogenerated$/, '')
 }
 
-function createFilesFromTemplates({
+function createFilesFromTemplates_old({
   templatesGlob,
   templatesData,
   templatesRoot,
@@ -209,6 +200,33 @@ function createFilesFromTemplates({
   })
 }
 
+function createFilesFromTemplates(
+  ctx,
+  {
+    templatesGlob,
+    templatesData,
+    templatesRoot,
+    destinationRoot,
+    getDestinationPath = defaultGetDestinationPath,
+  }
+) {
+  const templatesPaths = glob.sync(templatesGlob, {
+    dot: true,
+    cwd: templatesRoot,
+  })
+
+  templatesPaths.forEach(templatePath => {
+    const templateAbsolutePath = path.join(templatesRoot, templatePath)
+    const destinationPath = getDestinationPath(templatePath)
+    const destinationAbsolutePath = path.join(destinationRoot, destinationPath)
+
+    ctx.fs.mkdirSync(path.dirname(destinationAbsolutePath), { recursive: true })
+    const render = compile(fs.readFileSync(templateAbsolutePath, 'utf8'))
+    ctx.fs.writeFileSync(destinationAbsolutePath, render(templatesData))
+    formatFile(ctx, destinationAbsolutePath)
+  })
+}
+
 module.exports = {
   getTestsRootDir,
   getProjectRootDir,
@@ -217,7 +235,6 @@ module.exports = {
   createJsonFile,
   updateJsonFile,
   updateToolConfig,
-  initTemplate,
   getParentProjectPackageJsonSafe,
   getRepoNameByAddress,
   validatePackageName,

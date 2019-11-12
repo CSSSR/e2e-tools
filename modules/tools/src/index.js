@@ -11,34 +11,34 @@ const {
 } = require('./utils')
 const toolsPackageInfo = require('../package.json')
 
-const initCommand = ({ config }) => ({
-  command: 'init',
-  describe: 'Setup tests in current project',
-  handler() {
-    if (path.basename(process.cwd()) === 'e2e-tests') {
-      throw new Error('Already inited')
-    }
+// const initCommand = ({ config }) => ({
+//   command: 'init',
+//   describe: 'Setup tests in current project',
+//   handler() {
+//     if (path.basename(process.cwd()) === 'e2e-tests') {
+//       throw new Error('Already inited')
+//     }
 
-    createFilesFromTemplates({
-      templatesGlob: '**/*.hbs',
-      templatesData: { toolsVersion: config.version },
-      templatesRoot: path.join(__dirname, '../templates'),
-      destinationRoot: getProjectRootDir(),
-    })
+//     createFilesFromTemplates({
+//       templatesGlob: '**/*.hbs',
+//       templatesData: { toolsVersion: config.version },
+//       templatesRoot: path.join(__dirname, '../templates'),
+//       destinationRoot: getProjectRootDir(),
+//     })
 
-    spawn.sync('yarn', ['install'], {
-      stdio: 'inherit',
-      cwd: getTestsRootDir(),
-    })
-  },
-})
+//     spawn.sync('yarn', ['install'], {
+//       stdio: 'inherit',
+//       cwd: getTestsRootDir(),
+//     })
+//   },
+// })
 
-const addToolCommand = context => ({
+const addToolCommand = ctx => ({
   command: 'add-tool <package-name>',
   describe: 'Add new tool',
   handler({ packageName }) {
-    updateJsonFile({
-      filePath: path.join(getTestsRootDir(), 'e2e-tools.json'),
+    updateJsonFile(ctx, {
+      filePath: path.join(getTestsRootDir(ctx), 'e2e-tools.json'),
       update(config) {
         return {
           ...config,
@@ -50,25 +50,21 @@ const addToolCommand = context => ({
       },
     })
 
-    // TODO: find a better way
-    const package =
-      process.env.NODE_ENV === 'test'
-        ? `file:${__dirname.replace('tools/src', 'nightwatch')}`
-        : packageName
+    // spawn.sync('yarn', ['add', '--dev', '--tilde', packageName], {
+    //   stdio: 'inherit',
+    //   cwd: getTestsRootDir(),
+    // })
+    ctx.yarn.addPackage(packageName)
 
-    spawn.sync('yarn', ['add', '--dev', '--tilde', package], {
-      stdio: 'inherit',
-      cwd: getTestsRootDir(),
-    })
-
-    spawn.sync('yarn', ['install'], {
-      stdio: 'inherit',
-      cwd: getTestsRootDir(),
-    })
+    // spawn.sync('yarn', ['install'], {
+    //   stdio: 'inherit',
+    //   cwd: getTestsRootDir(),
+    // })
+    ctx.yarn.install()
 
     const tool = require(packageName)
 
-    tool.initScript(context).catch(console.error)
+    tool.initScript(ctx).catch(console.error)
   },
 })
 
@@ -132,25 +128,57 @@ const upgradeCommand = context => ({
   },
 })
 
-exports.main = context => {
-  process.chdir(getTestsRootDir())
-  const config = getConfigSafe()
-
-  context.yargs
-    .command(addToolCommand(context))
-    .command(initCommand(context))
-    .command(upgradeCommand(context))
-
-  if (config && config.tools) {
-    Object.keys(config.tools).forEach(toolName => {
-      const tool = require(toolName)
-      if (typeof tool.getCommands === 'function') {
-        tool.getCommands(context).forEach(command => {
-          context.yargs.command(command)
-        })
+function initCommand1(ctx) {
+  return {
+    command: 'init',
+    describe: 'Setup tests in current project',
+    handler() {
+      if (path.basename(ctx.cwd) === 'e2e-tests') {
+        throw new Error('Already inited')
       }
-    })
-  }
 
-  context.yargs.demandCommand().help().argv
+      createFilesFromTemplates(ctx, {
+        templatesGlob: '**/*.hbs',
+        // templatesData: { toolsVersion: config.version },
+        templatesData: { toolsVersion: ctx.version },
+        templatesRoot: path.join(__dirname, '../templates'),
+        destinationRoot: getProjectRootDir(ctx),
+      })
+
+      // spawn.sync('yarn', ['install'], {
+      //   stdio: 'inherit',
+      //   cwd: getTestsRootDir(),
+      // })
+
+      ctx.yarn.install({
+        // cwd: getTestsRootDir(),
+      })
+    },
+  }
+}
+
+exports.main = ctx => {
+  ctx.yargs
+    .command(initCommand1(ctx))
+    .command(addToolCommand(ctx))
+    .demandCommand()
+    .help().argv
+
+  // process.chdir(getTestsRootDir())
+  // const config = getConfigSafe()
+  // context.yargs
+  //   .command(addToolCommand(context))
+  //   .command(initCommand(context))
+  //   .command(upgradeCommand(context))
+  // if (config && config.tools) {
+  //   Object.keys(config.tools).forEach(toolName => {
+  //     const tool = require(toolName)
+  //     if (typeof tool.getCommands === 'function') {
+  //       tool.getCommands(context).forEach(command => {
+  //         context.yargs.command(command)
+  //       })
+  //     }
+  //   })
+  // }
+  // context.yargs.demandCommand().help().argv
 }
