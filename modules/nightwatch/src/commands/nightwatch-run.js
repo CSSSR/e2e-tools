@@ -1,5 +1,5 @@
 const isCI = require('is-ci')
-const { getConfig } = require('@csssr/e2e-tools/utils')
+const { getConfig, getTestsRootDir } = require('@csssr/e2e-tools/utils')
 const packageName = require('../../package.json').name
 
 function createArgsArrayFromMap(argsMap) {
@@ -14,8 +14,8 @@ function createArgsArrayFromMap(argsMap) {
 /**
  * @returns {import('yargs').CommandModule | undefined}
  */
-const addNightwatchRunCommand = context => {
-  const config = getConfig()
+const addNightwatchRunCommand = ctx => {
+  const config = getConfig(ctx)
   const browsersConfig = config.tools[packageName].browsers
 
   if (!browsersConfig) {
@@ -48,24 +48,42 @@ const addNightwatchRunCommand = context => {
     command: 'nightwatch:run',
     describe: 'Run nightwatch',
     handler(args) {
-      context.spawnSync('yarn', ['install', '--frozen-lockfile'], { stdio: 'inherit' })
+      ctx.yarn.install({
+        frozenLockfile: true,
+        cwd: getTestsRootDir(ctx),
+      })
 
-      const result = context.spawnSync(
-        'yarn',
+      const result = ctx.nightwatch(
         [
           'nightwatch',
           ...createArgsArrayFromMap({
             env: args.browser,
             test: args.test,
-            config: require.resolve('@csssr/e2e-tools-nightwatch/config'),
+            config: ctx.require.resolve('@csssr/e2e-tools-nightwatch/config'),
             publishResults: args.publishResults,
           }),
         ],
-        { stdio: 'inherit' }
+        {
+          cwd: getTestsRootDir(ctx),
+        }
       )
 
+      // const result = ctx.spawnSync(
+      //   'yarn',
+      //   [
+      //     'nightwatch',
+      //     ...createArgsArrayFromMap({
+      //       env: args.browser,
+      //       test: args.test,
+      //       config: require.resolve('@csssr/e2e-tools-nightwatch/config'),
+      //       publishResults: args.publishResults,
+      //     }),
+      //   ],
+      //   { stdio: 'inherit' }
+      // )
+
       if (result.status) {
-        process.exit(result.status)
+        ctx.process.exit(result.status)
       }
     },
   }

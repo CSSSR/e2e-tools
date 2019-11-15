@@ -1,11 +1,17 @@
-const rimraf = require('rimraf')
+const fs = require('fs')
 const path = require('path')
+const rimraf = require('rimraf')
 const chalk = require('chalk').default
 const { getTestsRootDir } = require('@csssr/e2e-tools/utils')
 
+const ctx = {
+  cwd: process.cwd(),
+  fs,
+}
+
 function cleanFailureScreenshots() {
   const failureScreenshotsPath = path.join(
-    getTestsRootDir(),
+    getTestsRootDir(ctx),
     'nightwatch/failure-screenshots/*.png'
   )
   rimraf.sync(failureScreenshotsPath)

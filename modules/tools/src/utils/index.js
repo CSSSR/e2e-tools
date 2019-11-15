@@ -13,9 +13,11 @@ const { isValidRepoSshAddress, getRepoSshAddress } = require('./repo-address')
 
 const getTestsRootDir = ctx => {
   try {
-    return findRoot(ctx.cwd, dir => path.basename(dir) === 'e2e-tests')
+    return findRoot(path.join(ctx.cwd, 'e2e-tests'), dir => {
+      return path.basename(dir) === 'e2e-tests' && ctx.fs.existsSync(dir)
+    })
   } catch (e) {
-    throw new Error(`Could not find e2e-tests/ folder in parents of ${ctx.cwd}`)
+    throw new Error(`Could not find e2e-tests/ folder from ${ctx.cwd}`)
   }
 }
 
@@ -54,9 +56,9 @@ function getConfig(ctx) {
   }
 }
 
-function getConfigSafe() {
+function runSafe(fn) {
   try {
-    return getConfig()
+    return fn()
   } catch (e) {
     return undefined
   }
@@ -231,7 +233,7 @@ module.exports = {
   getTestsRootDir,
   getProjectRootDir,
   getConfig,
-  getConfigSafe,
+  runSafe,
   createJsonFile,
   updateJsonFile,
   updateToolConfig,

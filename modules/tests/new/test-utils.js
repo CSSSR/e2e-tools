@@ -15,24 +15,35 @@ function waitMiscotasksToComplete() {
 function createEmptyProject({
   initialFileSystemState = defaultInitialFileSystemState,
   cwd = '/project',
-  version = '0.0.0',
   answers = {},
+  globalMocks = {
+    console: {
+      log: jest.fn(),
+      error: jest.fn(),
+    },
+    process: {
+      exit: jest.fn(),
+    },
+    nightwatch: jest.fn(() => ({ status: 0 })),
+  },
 } = {}) {
   const volume = Volume.fromJSON(initialFileSystemState)
   const fs = createFsFromVolume(volume)
 
   const yarn = {
     install() {},
-    addPackage() {},
+    add() {},
+    run() {},
   }
 
   const context = {
+    ...globalMocks,
     cwd,
     fs,
-    volume,
-    console: {
-      log: jest.fn(),
-      error: jest.fn(),
+    require: {
+      resolve(packageName) {
+        return `/node_modules/${packageName}`
+      },
     },
   }
 
@@ -49,10 +60,21 @@ function createEmptyProject({
     async run(cmd, options) {
       main({
         ...context,
-        version,
         yarn,
         prompt,
+        volume,
         yargs: yargs(cmd.split(' ')),
+        async getPackageInfo() {
+          return { version: '0.0.0' }
+        },
+        getLocalPackageInfo(packageName) {
+          return {
+            '@csssr/e2e-tools': {
+              name: '@csssr/e2e-tools',
+              version: '0.0.0',
+            },
+          }[packageName]
+        },
       })
 
       await waitMiscotasksToComplete()
@@ -62,6 +84,7 @@ function createEmptyProject({
         initialFileSystemState: volume.toJSON(),
         answers,
         ...options,
+        globalMocks,
       })
     },
   }

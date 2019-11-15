@@ -13,8 +13,8 @@ function addCredentialsId(browser) {
     : browser
 }
 
-function upgradeRemoteBrowsersConfig() {
-  updateToolConfig(packageName, config => {
+function upgradeRemoteBrowsersConfig(ctx) {
+  updateToolConfig(ctx, packageName, config => {
     return {
       ...config,
       browsers: mapValues(config.browsers, (browser, browserName) => {

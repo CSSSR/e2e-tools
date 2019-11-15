@@ -3,7 +3,7 @@
   "private": true,
   "scripts": {
     "fix": "prettier --write '**/*.{js,js.hbs,json,json.hbs}'",
-    "test": "rm -rf modules/tests/integration/sandbox && jest --runInBand"
+    "test": "jest"
   },
   "workspaces": [
     "modules/*"

@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/camelcase */
+const fs = require('fs')
 const path = require('path')
 const isCI = require('is-ci')
 const chromedriver = require('chromedriver')
@@ -9,8 +10,12 @@ const mochawesome = require('mochawesome')
 const { getTestsRootDir, getConfig, getEnvVariable } = require('@csssr/e2e-tools/utils')
 const { argv } = require('yargs')
 
-process.chdir(getTestsRootDir())
-const config = getConfig()
+const cwd = process.cwd()
+const ctx = { cwd, fs }
+const rootDir = getTestsRootDir(ctx)
+
+process.chdir(rootDir)
+const config = getConfig(ctx)
 
 function removeEndingSlash(url) {
   return url.replace(/\/$/, '')
@@ -66,8 +71,10 @@ function getTestSettingsForBrowser(browser, browserName) {
       return {
         selenium_port: port,
         selenium_host: host,
-        username: basicAuth && getEnvVariable(basicAuth.username_env, `Логин от ${serverName}`),
-        access_key: basicAuth && getEnvVariable(basicAuth.password_env, `Пароль от ${serverName}`),
+        username:
+          basicAuth && getEnvVariable(ctx, basicAuth.username_env, `Логин от ${serverName}`),
+        access_key:
+          basicAuth && getEnvVariable(ctx, basicAuth.password_env, `Пароль от ${serverName}`),
         ...rest,
       }
     }
@@ -88,8 +95,6 @@ function getTestSettings(browsers) {
 
   return testSettings
 }
-
-const rootDir = getTestsRootDir()
 
 const mochawesomeReporter = {
   reporter: mochawesome,
@@ -119,10 +124,10 @@ function getReporter() {
       reporterOptions: {
         mode: 'publish_ran_tests',
         domain: config.testrail.domain,
-        username: getEnvVariable(config.testrail.username_env, 'TestRail логин'),
-        apiToken: getEnvVariable(config.testrail.api_token_env, 'TestRail API токен'),
+        username: getEnvVariable(ctx, config.testrail.username_env, 'TestRail логин'),
+        apiToken: getEnvVariable(ctx, config.testrail.api_token_env, 'TestRail API токен'),
         projectId: config.testrail.projectId,
-        testsRootDir: path.join(getTestsRootDir(), 'nightwatch/tests'),
+        testsRootDir: path.join(rootDir, 'nightwatch/tests'),
         casePrefix: 'Автотест: ',
         additionalReporter: mainReporter.reporter,
         additionalReporterOptions: mainReporter.reporterOptions,
@@ -156,5 +161,7 @@ module.exports = {
   },
   globals_path: path.join(__dirname, 'src/nightwatch-settings/globals.js'),
   custom_assertions_path: [nightwatchImageComparison.assertionsPath],
-  launch_url: removeEndingSlash(getEnvVariable('LAUNCH_URL', 'Адрес, на котором запускать тесты')),
+  launch_url: removeEndingSlash(
+    getEnvVariable(ctx, 'LAUNCH_URL', 'Адрес, на котором запускать тесты')
+  ),
 }
