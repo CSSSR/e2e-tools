@@ -34,3 +34,7 @@
 - `Scheme:button:addBarrier.proactiveBarriers[1]`
 - `ConsequenceForm:field:riskConsumers[0].amount`
 - `ConsequenceForm:field:damageType[REPUTATION]`
+
+По возможности, надо избегать использования id элементов для data-testid,
+так как они могут инкрементироваться и не сохраняться от одного прогона тестов к другому.
+Вместо id можно использовать index или order.
