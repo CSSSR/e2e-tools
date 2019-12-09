@@ -1,6 +1,6 @@
 const path = require('path')
 const spawn = require('cross-spawn')
-const getPackageInfo = require('package-info')
+const getPackageInfo = require('package-json')
 const {
   getTestsRootDir,
   getProjectRootDir,
