@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.1](https://github.com/csssr-team/e2e-tools/compare/@csssr/e2e-tools@1.1.0...@csssr/e2e-tools@1.1.1) (2019-12-09)
+
+
+### Bug Fixes
+
+* Remove deep-extend package usage because of security issue ([801ea5e](https://github.com/csssr-team/e2e-tools/commit/801ea5e0ab9e34c00b718b0bd1ca9e2374f8cddb))
+
+
+
+
+
 # [1.1.0](https://github.com/csssr-team/e2e-tools/compare/@csssr/e2e-tools@1.0.4...@csssr/e2e-tools@1.1.0) (2019-10-11)
 
 
