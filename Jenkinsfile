@@ -1,28 +1,7 @@
 pipeline {
   agent any
 
-  environment {
-    scmVars = ""
-  }
-
   stages {
-    stage('Clone') {
-      steps {
-        echo "Branch: ${GIT_BRANCH}"
-        script {
-          scmVars = checkout([
-            $class: 'GitSCM',
-            branches: [[name: GIT_BRANCH]],
-            doGenerateSubmoduleConfigurations: false,
-            userRemoteConfigs: [[credentialsId: 'e2e-tools-repo', url: 'git@github.com:csssr-team/e2e-tools.git']],
-            extensions: [[$class: 'LocalBranch', localBranch: "**"]]
-          ])
-        }
-        echo "GIT_BRANCH: ${scmVars.GIT_BRANCH}"
-        echo "GIT_COMMIT: ${scmVars.GIT_COMMIT}"
-      }
-    }
-
     stage('Install dependencies') {
       steps {
         script {
@@ -46,7 +25,7 @@ pipeline {
             """
 
             script {
-              if (scmVars.GIT_BRANCH == 'origin/master') {
+              if (GIT_BRANCH == 'master') {
                 sh """#!/bin/bash
                   source ~/.bashrc
                   set -e
@@ -61,7 +40,7 @@ pipeline {
                 """
               }
 
-              if (scmVars.GIT_BRANCH == 'origin/canary') {
+              if (GIT_BRANCH == 'canary') {
                 sh """#!/bin/bash
                   source ~/.bashrc
                   set -e
