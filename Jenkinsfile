@@ -22,6 +22,9 @@ pipeline {
             sh """
               # auth in npm
               printf "//registry.npmjs.org/:_authToken="%s"\n@csssr:registry=https://registry.npmjs.org/\n" "$NPM_TOKEN" >.npmrc
+
+              git config user.email tools@csssr.io
+              git config user.name "Jenkins CI"
             """
 
             script {
@@ -44,9 +47,6 @@ pipeline {
                 sh """#!/bin/bash
                   source ~/.bashrc
                   set -e
-
-                  git config user.email tools@csssr.io
-                  git config user.name "Jenkins CI"
 
                   # up versions
                   yarn lerna version --conventional-commits --conventional-prerelease --allow-branch=canary --yes --no-push --sign-git-commit --sign-git-tag
