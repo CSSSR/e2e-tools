@@ -37,7 +37,7 @@ pipeline {
                   yarn lerna version --conventional-commits --conventional-graduate --allow-branch=master --yes --no-push --sign-git-commit --sign-git-tag
 
                   # publish
-                  # yarn lerna publish from-git --yes
+                  yarn lerna publish from-git --yes
 
                   git push origin master --follow-tags
                 """
