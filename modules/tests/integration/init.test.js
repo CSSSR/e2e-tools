@@ -64,11 +64,6 @@ describe('init command', () => {
       "// Этот файл сгенерирован автоматически, не редактируйте его вручную
       {
         \\"editor.formatOnSave\\": true,
-        \\"eslint.autoFixOnSave\\": true,
-        \\"eslint.validate\\": [
-          { \\"language\\": \\"javascript\\", \\"autoFix\\": true },
-          { \\"language\\": \\"javascriptreact\\", \\"autoFix\\": true }
-        ],
         \\"git.ignoreLimitWarning\\": true
       }
       "
