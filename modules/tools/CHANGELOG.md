@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.4](https://github.com/csssr-team/e2e-tools/compare/@csssr/e2e-tools@1.1.1...@csssr/e2e-tools@1.1.4) (2019-12-19)
+
+
+### Bug Fixes
+
+* add indent_style = tab for Makefile ([2ba894b](https://github.com/csssr-team/e2e-tools/commit/2ba894b6d0465cb23b03b980a9e0f8c6438d5617))
+* Удалил неиспользуемые настройки eslint и vscode конфига ([1b6e7e8](https://github.com/csssr-team/e2e-tools/commit/1b6e7e8e1887b8f93078983ed188bf52061cbcd8))
+
+
+
+
+
 ## [1.1.1](https://github.com/csssr-team/e2e-tools/compare/@csssr/e2e-tools@1.1.0...@csssr/e2e-tools@1.1.1) (2019-12-09)
 
 

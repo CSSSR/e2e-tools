@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.6.9](https://github.com/csssr-team/e2e-tools/compare/@csssr/e2e-tools-nightwatch@1.6.6...@csssr/e2e-tools-nightwatch@1.6.9) (2019-12-19)
+
+
+### Bug Fixes
+
+* add dockerignore ([8a6a914](https://github.com/csssr-team/e2e-tools/commit/8a6a914ebecb003ef4b651f57f07fbb3bc8c3b3b))
+
+
+
+
+
 ## [1.6.6](https://github.com/csssr-team/e2e-tools/compare/@csssr/e2e-tools-nightwatch@1.6.5...@csssr/e2e-tools-nightwatch@1.6.6) (2019-12-09)
 
 **Note:** Version bump only for package @csssr/e2e-tools-nightwatch
