@@ -45,6 +45,9 @@ pipeline {
                   source ~/.bashrc
                   set -e
 
+                  git config user.email tools@csssr.io
+                  git config user.name "Jenkins CI"
+
                   # up versions
                   yarn lerna version --conventional-commits --conventional-prerelease --allow-branch=canary --yes --no-push --sign-git-commit --sign-git-tag
 
