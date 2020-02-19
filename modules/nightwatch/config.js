@@ -61,11 +61,13 @@ function getTestSettingsForBrowser(browser, browserName) {
 
     case 'selenium': {
       const { host, port = 80, basicAuth, ...rest } = settings
-      const serverName = `${host}${port !== 80 ? `:${port}` : ''}`
+      const isDefaultPort = [80, 443].includes(port)
+      const serverName = `${host}${!isDefaultPort ? `:${port}` : ''}`
+      const useSsl = typeof settings.useSsl === 'boolean' ? settings.useSsl : port === 443
 
       return {
-        selenium_port: port,
-        selenium_host: host,
+        selenium: { port, host },
+        useSsl,
         username: basicAuth && getEnvVariable(basicAuth.username_env, `Логин от ${serverName}`),
         access_key: basicAuth && getEnvVariable(basicAuth.password_env, `Пароль от ${serverName}`),
         ...rest,
