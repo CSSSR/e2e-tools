@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/camelcase */
+const url = require('url')
 const path = require('path')
 const isCI = require('is-ci')
 const chromedriver = require('chromedriver')
@@ -48,6 +49,23 @@ function getWebdriverOptions(settings, browserKeyName) {
   }
 }
 
+function parseUrl(settings) {
+  if ((settings.host || settings.port) && settings.url) {
+    throw new Error('Конфликтующие параметры url, host и port')
+  }
+
+  const parsed = settings.url && url.parse(settings.url)
+  const host = settings.host || (parsed && parsed.hostname)
+  const port = Number(
+    settings.port || (parsed && parsed.port) || (parsed && parsed.protocol === 'https:' ? 443 : 80)
+  )
+  const useSsl =
+    typeof settings.useSsl === 'boolean'
+      ? settings.useSsl
+      : port === 443 || (parsed && parsed.protocol === 'https:')
+  return { host, port, useSsl }
+}
+
 function getTestSettingsForBrowser(browser, browserName) {
   const { type, ...settings } = browser
 
@@ -60,10 +78,10 @@ function getTestSettingsForBrowser(browser, browserName) {
     }
 
     case 'selenium': {
-      const { host, port = 80, basicAuth, ...rest } = settings
+      const { basicAuth, ...rest } = settings
+      const { host, port, useSsl } = parseUrl(settings)
       const isDefaultPort = [80, 443].includes(port)
       const serverName = `${host}${!isDefaultPort ? `:${port}` : ''}`
-      const useSsl = typeof settings.useSsl === 'boolean' ? settings.useSsl : port === 443
 
       return {
         selenium: { port, host },
