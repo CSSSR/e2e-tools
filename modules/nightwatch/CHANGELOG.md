@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.6.13](https://github.com/CSSSR/e2e-tools/compare/@csssr/e2e-tools-nightwatch@1.6.12...@csssr/e2e-tools-nightwatch@1.6.13) (2020-02-25)
+
+
+### Bug Fixes
+
+* Исправил приведение числа к bool в Jenkinsfile ([fb40381](https://github.com/CSSSR/e2e-tools/commit/fb4038147522bdcd0d98b71e6909ef68ce15806d))
+
+
+
+
+
 ## [1.6.12](https://github.com/CSSSR/e2e-tools/compare/@csssr/e2e-tools-nightwatch@1.6.10...@csssr/e2e-tools-nightwatch@1.6.12) (2020-02-25)
 
 
