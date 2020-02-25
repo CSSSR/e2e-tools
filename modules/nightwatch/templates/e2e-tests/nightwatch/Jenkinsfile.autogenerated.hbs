@@ -56,7 +56,7 @@ pipeline {
 
   options {
     skipDefaultCheckout(true)
-    timeout(time: config.maxTestsDurationMinutes || 60, unit: 'MINUTES')
+    timeout(time: config.maxTestsDurationMinutes ?: 60, unit: 'MINUTES')
   }
 
   stages {
