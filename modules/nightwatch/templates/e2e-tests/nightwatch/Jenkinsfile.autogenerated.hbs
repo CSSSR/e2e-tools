@@ -85,7 +85,7 @@ pipeline {
         script {
           withCredentials(runTestsCredentials) {
             sh """
-              docker run --network host \
+              docker run --rm --network host \
                 ${ runTestsEnvs.collect { "-e ${it}" } .join(' ') } \
                 --cidfile "${scmVars.GIT_COMMIT}.cid" \
                 ${config.projectName}/tests:${scmVars.GIT_COMMIT}
@@ -106,7 +106,7 @@ pipeline {
             docker cp `cat "${scmVars.GIT_COMMIT}.cid"`:/usr/src/app/nightwatch/jenkins-report.xml artifacts/
             docker cp `cat "${scmVars.GIT_COMMIT}.cid"`:/usr/src/app/nightwatch/failure-screenshots artifacts/
             docker cp `cat "${scmVars.GIT_COMMIT}.cid"`:/usr/src/app/nightwatch/screenshots artifacts/
-            docker rm `cat "${scmVars.GIT_COMMIT}.cid"`
+            docker rm --force `cat "${scmVars.GIT_COMMIT}.cid"`
             rm "${scmVars.GIT_COMMIT}.cid"
           """
 
