@@ -1,0 +1,50 @@
+name: publish
+on:
+  push:
+    branches:
+      - master
+      - canary
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+
+      - name: Fetch all git history
+        run: git fetch --prune --unshallow
+
+      - name: Setup node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Configure git
+        run: |
+          git config --local user.name "GitHub Action"
+          git config --local user.email "action@github.com"
+
+      - name: Publish prerelease
+        run: |
+          yarn lerna version --conventional-commits --conventional-prerelease --allow-branch=canary --yes --no-push
+          yarn lerna publish from-git --yes --canary
+          git push origin canary --follow-tags
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+        if: github.ref == 'refs/heads/canary'
+
+      - name: Publish release
+        run: |
+          yarn lerna version --conventional-commits --conventional-graduate --allow-branch=master --yes --no-push
+          yarn lerna publish from-git --yes
+          git push origin master --follow-tags
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+        if: github.ref == 'refs/heads/master'
