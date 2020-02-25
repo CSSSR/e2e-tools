@@ -154,7 +154,6 @@ function checks({ readFile, rootDir }) {
 const promptResults = {
   launchUrl: 'github.com',
   projectName: 'github',
-  repositorySshAddress: 'git@github.com:github/web.git',
 }
 
 describe('add-tool command', () => {

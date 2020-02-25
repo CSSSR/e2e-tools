@@ -86,28 +86,16 @@ async function initScript({ inquirer }) {
     message: 'Адрес стенда по умолчанию',
   })
 
-  const repositorySshAddress = await prompt({
-    type: 'input',
-    name: 'repositorySshAddress',
-    default: config.repositorySshAddress || getRepoSshAddress(parentProjectPackageJson.repository),
-    message: 'Адрес GitHub-репозитория (ssh):',
-    validate: falseToError('Невалидный адрес репозитория', isValidRepoSshAddress),
-  })
-
   const projectName = await prompt({
     type: 'input',
     name: 'projectName',
-    default:
-      config.projectName ||
-      parentProjectPackageJson.name ||
-      getRepoNameByAddress(repositorySshAddress),
+    default: config.projectName || parentProjectPackageJson.name,
     message: 'Название проекта (маленькими буквами без пробелов)',
     validate: falseToError('Навалидное название пакета', validatePackageName),
   })
 
   const configNewFields = {
     projectName,
-    repositorySshAddress,
     defaultLaunchUrl: normalizeUrl(launchUrl),
   }
 
