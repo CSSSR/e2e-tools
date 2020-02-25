@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.7.0](https://github.com/CSSSR/e2e-tools/compare/@csssr/e2e-tools-nightwatch@1.6.13...@csssr/e2e-tools-nightwatch@1.7.0) (2020-02-25)
+
+
+### Features
+
+* **jenkins:** force remove docker container in post script ([f4bf074](https://github.com/CSSSR/e2e-tools/commit/f4bf074d1ef1ce293a8002416d505f14522709e0))
+
+
+
+
+
 ## [1.6.13](https://github.com/CSSSR/e2e-tools/compare/@csssr/e2e-tools-nightwatch@1.6.12...@csssr/e2e-tools-nightwatch@1.6.13) (2020-02-25)
 
 
