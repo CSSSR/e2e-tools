@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.6.12](https://github.com/CSSSR/e2e-tools/compare/@csssr/e2e-tools-nightwatch@1.6.10...@csssr/e2e-tools-nightwatch@1.6.12) (2020-02-25)
+
+
+### Bug Fixes
+
+* добавил способ задания адреса selenium сервера через url ([6df64db](https://github.com/CSSSR/e2e-tools/commit/6df64db0705e3cb34b57352317883c9d8f5c7b05))
+* Используем ssl, если selenium сервер на порту 443 ([68e7e0d](https://github.com/CSSSR/e2e-tools/commit/68e7e0d4d11fe7cc07ccdc07dbeb30144fe436a8))
+* Не спрашиваем ssh адрес репозитория при старте, так как он больше не нужен ([e3bd77d](https://github.com/CSSSR/e2e-tools/commit/e3bd77d1deb8938db71207640495ab82a33dc2dd))
+* Сделал, чтобы время прогона тестов можно было конфигурировать ([3f9598a](https://github.com/CSSSR/e2e-tools/commit/3f9598a04ad518abcc797c84cf7e83cedb67ebf5))
+
+
+
+
+
 ## [1.6.11](https://github.com/CSSSR/e2e-tools/compare/@csssr/e2e-tools-nightwatch@1.6.10...@csssr/e2e-tools-nightwatch@1.6.11) (2020-02-19)
 
 
