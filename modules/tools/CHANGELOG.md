@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.5-alpha.4](https://github.com/CSSSR/e2e-tools/compare/@csssr/e2e-tools@1.1.5-alpha.3...@csssr/e2e-tools@1.1.5-alpha.4) (2020-03-16)
+
+
+### Bug Fixes
+
+* проверил на реальном проекте, исправил ошибки ([830bd29](https://github.com/CSSSR/e2e-tools/commit/830bd29011f4fc3111af1842859758438739d154))
+
+
+
+
+
 ## [1.1.5-alpha.3](https://github.com/CSSSR/e2e-tools/compare/@csssr/e2e-tools@1.1.5-alpha.2...@csssr/e2e-tools@1.1.5-alpha.3) (2020-03-16)
 
 
