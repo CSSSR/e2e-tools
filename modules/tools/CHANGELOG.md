@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.5-alpha.1](https://github.com/CSSSR/e2e-tools/compare/@csssr/e2e-tools@1.1.5-alpha.0...@csssr/e2e-tools@1.1.5-alpha.1) (2020-03-16)
+
+
+### Bug Fixes
+
+* Добавил флаг, позволяющий не обновлять версии пакетов при использовании команды upgrade ([45b2eb4](https://github.com/CSSSR/e2e-tools/commit/45b2eb499a7005ef08ec54c801ea28ffc5b30deb))
+
+
+
+
+
 ## [1.1.5-alpha.0](https://github.com/CSSSR/e2e-tools/compare/@csssr/e2e-tools@1.1.4...@csssr/e2e-tools@1.1.5-alpha.0) (2020-03-16)
 
 **Note:** Version bump only for package @csssr/e2e-tools
