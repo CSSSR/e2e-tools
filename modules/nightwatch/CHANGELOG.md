@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.7.1](https://github.com/CSSSR/e2e-tools/compare/@csssr/e2e-tools-nightwatch@1.7.0...@csssr/e2e-tools-nightwatch@1.7.1) (2020-03-16)
+
+
+### Bug Fixes
+
+* Убрал удаление контейнера сразу после остановки ([2bfbc94](https://github.com/CSSSR/e2e-tools/commit/2bfbc94691d444deabcff6ce9b4c74583def9f0e))
+
+
+
+
+
 # [1.7.0](https://github.com/CSSSR/e2e-tools/compare/@csssr/e2e-tools-nightwatch@1.6.13...@csssr/e2e-tools-nightwatch@1.7.0) (2020-02-25)
 
 
