@@ -85,7 +85,7 @@ pipeline {
         script {
           withCredentials(runTestsCredentials) {
             sh """
-              docker run --rm --network host \
+              docker run --network host \
                 ${ runTestsEnvs.collect { "-e ${it}" } .join(' ') } \
                 --cidfile "${scmVars.GIT_COMMIT}.cid" \
                 ${config.projectName}/tests:${scmVars.GIT_COMMIT}
