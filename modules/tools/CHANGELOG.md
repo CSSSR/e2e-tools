@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.5-alpha.2](https://github.com/CSSSR/e2e-tools/compare/@csssr/e2e-tools@1.1.5-alpha.1...@csssr/e2e-tools@1.1.5-alpha.2) (2020-03-16)
+
+
+### Bug Fixes
+
+* Сделал, чтобы github action автогенерировался при yarn et upgrade ([fadc407](https://github.com/CSSSR/e2e-tools/commit/fadc407204ab0d9a663c8ac11977206c99b7e5c5))
+
+
+
+
+
 ## [1.1.5-alpha.1](https://github.com/CSSSR/e2e-tools/compare/@csssr/e2e-tools@1.1.5-alpha.0...@csssr/e2e-tools@1.1.5-alpha.1) (2020-03-16)
 
 
