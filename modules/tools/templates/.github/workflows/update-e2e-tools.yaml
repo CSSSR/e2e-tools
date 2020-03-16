@@ -1,0 +1,27 @@
+name: Update e2e tests dependencies
+on:
+  schedule:
+  - cron: 0 0 * * 3
+
+jobs:
+  update:
+    name: Update
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v2
+
+      - name: Upgrade e2e tests dependencies
+        run: |
+          yarn
+          yarn et upgrade
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: Upgrade e2e tests dependencies
+          title: Upgrade e2e tests dependencies
+          labels: dependencies,e2e
+          branch: upgrade-e2e-tests-dependencies
