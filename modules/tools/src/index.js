@@ -72,11 +72,13 @@ const addToolCommand = context => ({
   },
 })
 
-async function updateTool(packageName, context) {
-  spawn.sync('yarn', ['add', '--dev', '--tilde', `${packageName}@latest`], {
-    stdio: 'inherit',
-    cwd: getTestsRootDir(),
-  })
+async function updateTool(context, packageName, shouldUpdatePackages) {
+  if (shouldUpdatePackages) {
+    spawn.sync('yarn', ['add', '--dev', '--tilde', `${packageName}@latest`], {
+      stdio: 'inherit',
+      cwd: getTestsRootDir(),
+    })
+  }
 
   const tool = require(packageName)
 
@@ -88,10 +90,18 @@ async function updateTool(packageName, context) {
 const upgradeCommand = context => ({
   command: 'upgrade',
   describe: 'Upgrades all packages',
-  async handler() {
+  builder: {
+    packageUpdates: {
+      boolean: true,
+      default: true,
+      describe:
+        'Whether update package versions in package.json on just regenerate files. Useful to for beta versions',
+    },
+  },
+  async handler(args) {
     const info = await getPackageInfo(toolsPackageInfo.name)
 
-    if (toolsPackageInfo.version !== info.version) {
+    if (args.packageUpdates && toolsPackageInfo.version !== info.version) {
       spawn.sync('yarn', ['add', '--dev', '--tilde', `${toolsPackageInfo.name}@latest`], {
         stdio: 'inherit',
         cwd: getTestsRootDir(),
@@ -122,7 +132,7 @@ const upgradeCommand = context => ({
     const toolNames = Object.keys(config.tools)
 
     for (const toolName of toolNames) {
-      await updateTool(toolName, context)
+      await updateTool(context, toolName, args.packageUpdates)
     }
 
     spawn.sync('yarn', ['install'], {
