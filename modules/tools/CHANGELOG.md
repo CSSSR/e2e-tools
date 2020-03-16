@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.5-alpha.3](https://github.com/CSSSR/e2e-tools/compare/@csssr/e2e-tools@1.1.5-alpha.2...@csssr/e2e-tools@1.1.5-alpha.3) (2020-03-16)
+
+
+### Bug Fixes
+
+* добавил пояснение к cron расписанию ([37599fc](https://github.com/CSSSR/e2e-tools/commit/37599fc572bd98aaf9c61b049071ef514332e31d))
+
+
+
+
+
 ## [1.1.5-alpha.2](https://github.com/CSSSR/e2e-tools/compare/@csssr/e2e-tools@1.1.5-alpha.1...@csssr/e2e-tools@1.1.5-alpha.2) (2020-03-16)
 
 
