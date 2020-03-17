@@ -72,7 +72,8 @@ describe('init command', () => {
 
   it('should create .vscode/tasks.json file', async () => {
     expect(readFile('e2e-tests/.vscode/tasks.json')).toMatchInlineSnapshot(`
-      "// Этот файл сгенерирован автоматически, не редактируйте его вручную
+      "// Этот файл сгенерирован автоматически, не удаляйте дефолтные таски, только добавляйте
+      // Удалённые таски будут заново добавлены при следующем обновлении
       {
         \\"version\\": \\"2.0.0\\",
         \\"tasks\\": []

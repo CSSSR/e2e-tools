@@ -52,8 +52,6 @@ function checks({ readFile, rootDir }) {
     expect(readFile('e2e-tests/package.json')).toMatchSnapshot()
   })
 
-  it.todo('should add tool with specific version')
-
   it('should be prettified', () => {
     const { stderr } = spawnSync('yarn', ['prettier', '--check', '**/*.{js,json}'], {
       cwd: path.join(rootDir, 'e2e-tests'),

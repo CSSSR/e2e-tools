@@ -20,7 +20,7 @@
     "@csssr/e2e-tools": "^1.1.6",
     "@nitive/mocha-testrail-reporter": "~0.1.4",
     "@nitive/mocha-testrail-ui": "~0.3.1",
-    "@nitive/nightwatch-image-comparison": "^0.1.2",
+    "@csssr/nightwatch-image-comparison": "^0.2.0",
     "@types/mocha": "^5.2.7",
     "@types/nightwatch": "^1.1.1",
     "@types/node": "^12.7.2",
