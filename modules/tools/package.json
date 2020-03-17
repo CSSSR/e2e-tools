@@ -17,18 +17,18 @@
     "access": "public"
   },
   "dependencies": {
-    "comment-json": "2.1.0",
-    "cross-spawn": "^6.0.5",
+    "comment-json": "3.0.2",
+    "cross-spawn": "^7.0.1",
     "dotenv": "^8.1.0",
     "fast-glob": "^3.0.4",
     "find-root": "^1.1.0",
     "handlebars": "^4.1.2",
-    "inquirer": "^6.5.1",
+    "inquirer": "^7.1.0",
     "lodash": "^4.17.15",
     "package-json": "^6.5.0",
-    "prettier": "1.18.2",
+    "prettier": "1.19.1",
     "readline-sync": "^1.4.10",
     "validate-npm-package-name": "^3.0.0",
-    "yargs": "^13.3.0"
+    "yargs": "^15.3.1"
   }
 }

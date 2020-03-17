@@ -1,0 +1,19 @@
+{
+  "name": "@csssr/nightwatch-image-comparison",
+  "version": "0.2.0",
+  "description": "Screenshot assertions for Nightwatch",
+  "main": "index.js",
+  "repository": "git@github.com:Nitive/nightwatch-image-comparison.git",
+  "author": "Maxim Samoilov <nitive@icloud.com>",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "webdriver-image-comparison": "^0.13.2"
+  },
+  "optionalDependencies": {
+    "mocha": "^6",
+    "mochawesome": "^4"
+  }
+}
