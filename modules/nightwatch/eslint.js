@@ -5,5 +5,5 @@ module.exports = {
   globals: {
     browser: true,
   },
-  extends: [require.resolve('@nitive/mocha-testrail-ui/eslint')],
+  extends: [require.resolve('@csssr/mocha-testrail-ui/eslint')],
 }

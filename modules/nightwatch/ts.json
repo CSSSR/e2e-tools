@@ -6,7 +6,7 @@
       "node",
       "mocha",
       "nightwatch",
-      "@nitive/mocha-testrail-ui",
+      "@csssr/mocha-testrail-ui",
       "@csssr/e2e-tools-nightwatch"
     ]
   }

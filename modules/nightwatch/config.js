@@ -4,7 +4,7 @@ const path = require('path')
 const isCI = require('is-ci')
 const chromedriver = require('chromedriver')
 const geckodriver = require('geckodriver')
-const nightwatchImageComparison = require('@nitive/nightwatch-image-comparison')
+const nightwatchImageComparison = require('@csssr/nightwatch-image-comparison')
 const packageName = require('./package.json').name
 const mochawesome = require('mochawesome')
 const { getTestsRootDir, getConfig, getEnvVariable } = require('@csssr/e2e-tools/utils')
@@ -155,7 +155,7 @@ module.exports = {
   test_runner: {
     type: 'mocha',
     options: {
-      ui: '@nitive/mocha-testrail-ui',
+      ui: '@csssr/mocha-testrail-ui',
       ...getReporter(),
     },
   },

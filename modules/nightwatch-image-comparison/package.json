@@ -10,6 +10,7 @@
     "webdriver-image-comparison": "^0.13.2"
   },
   "optionalDependencies": {
-    "mochawesome": "^4.0.1"
+    "mocha": "^6",
+    "mochawesome": "^4"
   }
 }
