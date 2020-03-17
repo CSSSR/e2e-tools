@@ -6,6 +6,9 @@
   "repository": "git@github.com:Nitive/nightwatch-image-comparison.git",
   "author": "Maxim Samoilov <nitive@icloud.com>",
   "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
   "dependencies": {
     "webdriver-image-comparison": "^0.13.2"
   },

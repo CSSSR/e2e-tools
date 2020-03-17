@@ -9,6 +9,9 @@
     "index.d.ts",
     "eslint.js"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "dependencies": {
     "mocha": "^6"
   }
