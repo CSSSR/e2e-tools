@@ -24,7 +24,7 @@ jobs:
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v2
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: $\{{ secrets.GITHUB_TOKEN }}
           commit-message: Обновление зависимостей @csssr/e2e-tools
           title: Обновление зависимостей @csssr/e2e-tools
           body: |
