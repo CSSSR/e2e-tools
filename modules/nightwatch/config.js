@@ -132,22 +132,7 @@ function getReporter() {
   const publishResults = !!(argv.publishResults && config.testrail)
 
   if (publishResults) {
-    console.log('Test run results will be published to TestRail')
-
-    return {
-      reporter: '@nitive/mocha-testrail-reporter',
-      reporterOptions: {
-        mode: 'publish_ran_tests',
-        domain: config.testrail.domain,
-        username: getEnvVariable(config.testrail.username_env, 'TestRail логин'),
-        apiToken: getEnvVariable(config.testrail.api_token_env, 'TestRail API токен'),
-        projectId: config.testrail.projectId,
-        testsRootDir: path.join(getTestsRootDir(), 'nightwatch/tests'),
-        casePrefix: 'Автотест: ',
-        additionalReporter: mainReporter.reporter,
-        additionalReporterOptions: mainReporter.reporterOptions,
-      },
-    }
+    throw new Error('Публикация результатов в Testrail пока не поддерживается')
   }
 
   return mainReporter

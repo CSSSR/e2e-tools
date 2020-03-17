@@ -19,12 +19,11 @@
   "dependencies": {
     "@csssr/e2e-tools": "^1.1.6",
     "@csssr/nightwatch-image-comparison": "^0.2.0",
-    "@nitive/mocha-testrail-reporter": "~0.1.4",
     "@nitive/mocha-testrail-ui": "~0.3.1",
     "@types/mocha": "^7.0.2",
     "@types/nightwatch": "^1.1.1",
     "@types/node": "^13.9.1",
-    "axios": "^0.19.0",
+    "axios": "^0.19.2",
     "chalk": "^3.0.0",
     "chromedriver": "*",
     "geckodriver": "*",
