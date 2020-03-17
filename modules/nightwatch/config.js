@@ -120,7 +120,7 @@ const mochawesomeReporter = {
 }
 
 const junkinsReporter = {
-  reporter: require('mocha-jenkins-reporter'),
+  reporter: require('@csssr/mocha-jenkins-reporter'),
   reporterOptions: {
     junit_report_path: 'nightwatch/jenkins-report.xml',
     junit_report_name: 'Nightwatch Tests',
