@@ -1,8 +1,9 @@
 {
   "packages": [
+    "modules/mocha-jenkins-reporter",
     "modules/mocha-testrail-ui",
-    "modules/nightwatch-image-comparison",
     "modules/nightwatch",
+    "modules/nightwatch-image-comparison",
     "modules/tools"
   ],
   "version": "independent"
