@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.6](https://github.com/CSSSR/e2e-tools/compare/@csssr/e2e-tools@1.1.5...@csssr/e2e-tools@1.1.6) (2020-03-17)
+
+
+### Bug Fixes
+
+* Пофиксил запуск github action для обновления e2e tools ([56dd035](https://github.com/CSSSR/e2e-tools/commit/56dd0350e06dac6328535bd41f944b034418ca3e))
+
+
+
+
+
 ## [1.1.5](https://github.com/CSSSR/e2e-tools/compare/@csssr/e2e-tools@1.1.4...@csssr/e2e-tools@1.1.5) (2020-03-16)
 
 
