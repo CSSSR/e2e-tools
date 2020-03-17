@@ -6,6 +6,7 @@
     "test": "rm -rf modules/tests/integration/sandbox && jest --runInBand"
   },
   "workspaces": [
+    "modules/mocha-jenkins-reporter",
     "modules/*"
   ],
   "devDependencies": {
