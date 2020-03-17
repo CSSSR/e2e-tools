@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.8.0](https://github.com/CSSSR/e2e-tools/compare/@csssr/e2e-tools-nightwatch@1.7.3...@csssr/e2e-tools-nightwatch@1.8.0) (2020-03-17)
+
+
+### Features
+
+* Обновление зависимостей ([#5](https://github.com/CSSSR/e2e-tools/issues/5)) ([493ad12](https://github.com/CSSSR/e2e-tools/commit/493ad12fdf0346f44d98cb874257b30d6000c442))
+
+
+
+
+
 ## [1.7.3](https://github.com/CSSSR/e2e-tools/compare/@csssr/e2e-tools-nightwatch@1.7.2...@csssr/e2e-tools-nightwatch@1.7.3) (2020-03-17)
 
 **Note:** Version bump only for package @csssr/e2e-tools-nightwatch

@@ -1,6 +1,6 @@
 {
   "name": "@csssr/nightwatch-image-comparison",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Screenshot assertions for Nightwatch",
   "main": "index.js",
   "repository": "git@github.com:Nitive/nightwatch-image-comparison.git",
