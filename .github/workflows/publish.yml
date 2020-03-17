@@ -40,7 +40,7 @@ jobs:
 
       - name: Publish release
         run: |
-          yarn lerna version --conventional-commits --conventional-graduate --allow-branch=master --yes --no-push
+          yarn lerna version --conventional-commits --conventional-graduate --allow-branch=master --yes --no-push --create-release github
           yarn lerna publish from-git --yes
           git push origin master --follow-tags
         env:
