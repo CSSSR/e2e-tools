@@ -25,6 +25,7 @@ jobs:
 
       - name: Install dependencies
         run: |
+          yarn policies set-version v1
           yarn workspaces info
           yarn install --frozen-lockfile
 
