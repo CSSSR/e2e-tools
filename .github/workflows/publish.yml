@@ -33,8 +33,7 @@ jobs:
 
       - name: Publish prerelease
         run: |
-          yarn lerna version --conventional-commits --conventional-prerelease --allow-branch=canary --yes --no-push
-          yarn lerna publish from-git --yes --canary
+          yarn lerna publish --yes --canary --force-publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
         if: github.ref == 'refs/heads/canary'
