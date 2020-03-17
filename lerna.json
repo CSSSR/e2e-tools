@@ -1,6 +1,6 @@
 {
   "packages": [
-    "modules/mocha-jenkins-reporter",
+    "modules/jenkins-reporter",
     "modules/mocha-testrail-ui",
     "modules/nightwatch",
     "modules/nightwatch-image-comparison",
