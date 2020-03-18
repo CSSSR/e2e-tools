@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.8.1](https://github.com/CSSSR/e2e-tools/compare/@csssr/e2e-tools-nightwatch@1.8.0...@csssr/e2e-tools-nightwatch@1.8.1) (2020-03-18)
+
+
+### Bug Fixes
+
+* Исправил сохранение скриншота при падающем тесте ([a006ba7](https://github.com/CSSSR/e2e-tools/commit/a006ba7c15d8d2365d1638a88598df3c62c79f5d))
+
+
+
+
+
 # [1.8.0](https://github.com/CSSSR/e2e-tools/compare/@csssr/e2e-tools-nightwatch@1.7.3...@csssr/e2e-tools-nightwatch@1.8.0) (2020-03-17)
 
 
