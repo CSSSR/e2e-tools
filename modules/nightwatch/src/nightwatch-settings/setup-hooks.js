@@ -1,6 +1,6 @@
 const rimraf = require('rimraf')
 const path = require('path')
-const chalk = require('chalk').default
+const chalk = require('chalk')
 const { getTestsRootDir } = require('@csssr/e2e-tools/utils')
 
 function cleanFailureScreenshots() {

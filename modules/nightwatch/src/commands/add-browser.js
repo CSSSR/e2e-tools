@@ -3,7 +3,7 @@ const readlineSync = require('readline-sync')
 const axios = require('axios').default
 const JSONWithComments = require('comment-json')
 const packageName = require('../../package.json').name
-const chalk = require('chalk').default
+const chalk = require('chalk')
 
 function isValidBrowserConfig(config) {
   return !!(config && config.desiredCapabilities)
