@@ -91,7 +91,7 @@ const upgradeCommand = context => ({
   command: 'upgrade',
   describe: 'Upgrades all packages',
   builder: {
-    packageUpdates: {
+    updatePackageJson: {
       boolean: true,
       default: true,
       describe:
@@ -101,7 +101,17 @@ const upgradeCommand = context => ({
   async handler(args) {
     const info = await getPackageInfo(toolsPackageInfo.name)
 
-    if (args.packageUpdates && toolsPackageInfo.version !== info.version) {
+    spawn.sync('yarn', [], {
+      stdio: 'inherit',
+      cwd: getTestsRootDir(),
+    })
+
+    spawn.sync('yarn', ['upgrade'], {
+      stdio: 'inherit',
+      cwd: getTestsRootDir(),
+    })
+
+    if (args.updatePackageJson && toolsPackageInfo.version !== info.version) {
       spawn.sync('yarn', ['add', '--dev', '--tilde', `${toolsPackageInfo.name}@latest`], {
         stdio: 'inherit',
         cwd: getTestsRootDir(),
@@ -132,7 +142,7 @@ const upgradeCommand = context => ({
     const toolNames = Object.keys(config.tools)
 
     for (const toolName of toolNames) {
-      await updateTool(context, toolName, args.packageUpdates)
+      await updateTool(context, toolName, args.updatePackageJson)
     }
 
     spawn.sync('yarn', ['install'], {
