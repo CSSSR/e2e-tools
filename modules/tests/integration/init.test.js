@@ -45,7 +45,8 @@ describe('init command', () => {
       "// Этот файл сгенерирован автоматически, не редактируйте его вручную
 
       module.exports = {
-        extends: ['@csssr/e2e-tools/eslint'],
+        root: true,
+        extends: [require.resolve('@csssr/e2e-tools/eslint')],
       }
       "
     `)
