@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.3.0](https://github.com/CSSSR/e2e-tools/compare/@csssr/e2e-tools@1.2.0...@csssr/e2e-tools@1.3.0) (2020-03-23)
+
+
+### Features
+
+* Добавил eslint ([e72f13c](https://github.com/CSSSR/e2e-tools/commit/e72f13cbb3d6b0eaadaf32e3cd3eed3aedb85105))
+* Обновляем обычные зависимости в рамках yarn et upgrade ([9d702b1](https://github.com/CSSSR/e2e-tools/commit/9d702b165b4c228c911294daddd19af5398b0e34))
+
+
+
+
+
 # [1.2.0](https://github.com/CSSSR/e2e-tools/compare/@csssr/e2e-tools@1.1.6...@csssr/e2e-tools@1.2.0) (2020-03-17)
 
 
