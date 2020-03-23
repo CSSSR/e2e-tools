@@ -157,7 +157,7 @@ exports[`add-tool command Adding nightwatch two times should be okey should add 
 "// Этот файл сгенерирован автоматически, не редактируйте его вручную
 
 module.exports = {
-  extends: [require.resolve('@csssr/e2e-tools/eslint')],
+  extends: [require.resolve('@csssr/e2e-tools-nightwatch/eslint')],
 }
 "
 `;
@@ -348,7 +348,7 @@ exports[`add-tool command Inside e2e-tests dir should add eslint config file 1`]
 "// Этот файл сгенерирован автоматически, не редактируйте его вручную
 
 module.exports = {
-  extends: [require.resolve('@csssr/e2e-tools/eslint')],
+  extends: [require.resolve('@csssr/e2e-tools-nightwatch/eslint')],
 }
 "
 `;
@@ -539,7 +539,7 @@ exports[`add-tool command Inside root dir should add eslint config file 1`] = `
 "// Этот файл сгенерирован автоматически, не редактируйте его вручную
 
 module.exports = {
-  extends: [require.resolve('@csssr/e2e-tools/eslint')],
+  extends: [require.resolve('@csssr/e2e-tools-nightwatch/eslint')],
 }
 "
 `;
