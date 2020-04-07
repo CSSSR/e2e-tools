@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.9.1](https://github.com/CSSSR/e2e-tools/compare/@csssr/e2e-tools-nightwatch@1.9.0...@csssr/e2e-tools-nightwatch@1.9.1) (2020-04-07)
+
+
+### Bug Fixes
+
+* добавил возможность передавать несколько тест файлов при запуске ([02d3df7](https://github.com/CSSSR/e2e-tools/commit/02d3df7f02a3525c8f344a540a76120033ee0293))
+
+
+
+
+
 # [1.9.0](https://github.com/CSSSR/e2e-tools/compare/@csssr/e2e-tools-nightwatch@1.8.1...@csssr/e2e-tools-nightwatch@1.9.0) (2020-03-23)
 
 
