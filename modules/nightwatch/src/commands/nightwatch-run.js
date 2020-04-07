@@ -6,7 +6,13 @@ function createArgsArrayFromMap(argsMap) {
   return Object.keys(argsMap)
     .map(arg => {
       const value = argsMap[arg]
-      return value ? [`--${arg}`, value] : []
+      if (!value) return []
+
+      if (Array.isArray(value)) {
+        return value.map(v => [`--${arg}`, v]).reduce((acc, x) => acc.concat(x), [])
+      }
+
+      return [`--${arg}`, value]
     })
     .reduce((acc, x) => acc.concat(x), [])
 }

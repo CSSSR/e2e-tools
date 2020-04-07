@@ -142,7 +142,7 @@ module.exports = {
   end_session_on_fail: false,
   output_folder: false,
   src_folders: ['./nightwatch/tests'],
-  filter: '**/*.test.js',
+  filter: argv.test || '**/*.test.js',
   globals: {
     screenshots: {
       testsRootDir: path.join(rootDir, 'nightwatch/tests'),
