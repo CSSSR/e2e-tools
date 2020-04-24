@@ -3,7 +3,6 @@
   "version": "0.3.0",
   "description": "Screenshot assertions for Nightwatch",
   "main": "index.js",
-  "repository": "git@github.com:Nitive/nightwatch-image-comparison.git",
   "author": "Maxim Samoilov <nitive@icloud.com>",
   "license": "MIT",
   "publishConfig": {
@@ -15,5 +14,10 @@
   "optionalDependencies": {
     "mocha": "^6",
     "mochawesome": "^4"
+  },
+  "repository": {
+    "type": "git",
+    "url": "ssh://git@github.com/CSSSR/e2e-tools.git",
+    "directory": "modules/nightwatch-image-comparison"
   }
 }

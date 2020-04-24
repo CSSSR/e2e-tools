@@ -14,5 +14,10 @@
     "diff": "^4.0.1",
     "mkdirp": "^1.0.3",
     "xml": "^1.0.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "ssh://git@github.com/CSSSR/e2e-tools.git",
+    "directory": "modules/jenkins-reporter"
   }
 }

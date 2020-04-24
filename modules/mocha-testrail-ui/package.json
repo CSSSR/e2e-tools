@@ -14,5 +14,10 @@
   },
   "dependencies": {
     "mocha": "^6"
+  },
+  "repository": {
+    "type": "git",
+    "url": "ssh://git@github.com/CSSSR/e2e-tools.git",
+    "directory": "modules/mocha-testrail-ui"
   }
 }
