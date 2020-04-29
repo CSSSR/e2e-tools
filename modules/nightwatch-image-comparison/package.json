@@ -1,6 +1,6 @@
 {
   "name": "@csssr/nightwatch-image-comparison",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "Screenshot assertions for Nightwatch",
   "main": "index.js",
   "author": "Maxim Samoilov <nitive@icloud.com>",

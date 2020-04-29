@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.4.3](https://github.com/CSSSR/e2e-tools/compare/@csssr/mocha-testrail-ui@0.4.1...@csssr/mocha-testrail-ui@0.4.3) (2020-04-29)
+
+**Note:** Version bump only for package @csssr/mocha-testrail-ui
+
+
+
+
+
 ## [0.4.1](https://github.com/CSSSR/e2e-tools/compare/@csssr/mocha-testrail-ui@0.4.0...@csssr/mocha-testrail-ui@0.4.1) (2020-04-24)
 
 **Note:** Version bump only for package @csssr/mocha-testrail-ui
