@@ -4,7 +4,8 @@
     "modules/mocha-testrail-ui",
     "modules/nightwatch",
     "modules/nightwatch-image-comparison",
-    "modules/tools"
+    "modules/tools",
+    "modules/nightwatch-local-file-upload"
   ],
   "version": "independent"
 }

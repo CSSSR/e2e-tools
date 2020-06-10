@@ -5,6 +5,7 @@ const isCI = require('is-ci')
 const chromedriver = require('chromedriver')
 const geckodriver = require('geckodriver')
 const nightwatchImageComparison = require('@csssr/nightwatch-image-comparison')
+const nightwatchLocalFileUpload = require('@csssr/nightwatch-local-file-upload')
 const packageName = require('./package.json').name
 const mochawesome = require('mochawesome')
 const { getTestsRootDir, getConfig, getEnvVariable } = require('@csssr/e2e-tools/utils')
@@ -160,6 +161,7 @@ module.exports = {
     },
   },
   globals_path: path.join(__dirname, 'src/nightwatch-settings/globals.js'),
+  custom_commands_path: [nightwatchLocalFileUpload.commandsPath],
   custom_assertions_path: [nightwatchImageComparison.assertionsPath],
   launch_url: removeEndingSlash(getEnvVariable('LAUNCH_URL', 'Адрес, на котором запускать тесты')),
 }
