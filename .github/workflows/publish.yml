@@ -38,18 +38,27 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
         if: github.ref == 'refs/heads/canary'
 
+      - name: Up version in package.json and create github release
+        run: yarn lerna version --conventional-commits --conventional-graduate --allow-branch=master --yes --create-release github
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        if: github.ref == 'refs/heads/master'
+
       - name: Publish release to npm
-        run: |
-          yarn lerna version --conventional-commits --conventional-graduate --allow-branch=master --yes --no-push --create-release github
-          yarn lerna publish from-git --yes
-          git push origin master --follow-tags
+        run: yarn lerna publish from-package --yes
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
         if: github.ref == 'refs/heads/master'
 
+      - name: Create .npmrc for github registry auth
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12
+          registry-url: 'https://npm.pkg.github.com'
+        if: github.ref == 'refs/heads/master'
+
       - name: Publish release to GitHub registry
-        run: |
-          yarn lerna publish from-package --yes --registry https://npm.pkg.github.com/CSSSR
+        run: yarn lerna publish from-package --yes --registry https://npm.pkg.github.com/CSSSR
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         if: github.ref == 'refs/heads/master'
