@@ -139,8 +139,11 @@ function getReporter() {
   return mainReporter
 }
 
+const isJenkins = !!process.env.JENKINS_URL
+
 module.exports = {
   end_session_on_fail: false,
+  disable_colors: isJenkins,
   output_folder: false,
   src_folders: ['./nightwatch/tests'],
   filter: argv.test || '**/*.test.js',
