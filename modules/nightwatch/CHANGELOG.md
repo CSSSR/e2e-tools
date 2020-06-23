@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.10.2](https://github.com/CSSSR/e2e-tools/compare/@csssr/e2e-tools-nightwatch@1.10.1...@csssr/e2e-tools-nightwatch@1.10.2) (2020-06-23)
+
+
+### Bug Fixes
+
+* Отключаем цвета mocha runner в Jenkins ([e5b0e93](https://github.com/CSSSR/e2e-tools/commit/e5b0e9357c5578f58b34a91921c069d4a5dd9a5b))
+
+
+
+
+
 ## [1.10.1](https://github.com/CSSSR/e2e-tools/compare/@csssr/e2e-tools-nightwatch@1.10.0...@csssr/e2e-tools-nightwatch@1.10.1) (2020-06-23)
 
 
