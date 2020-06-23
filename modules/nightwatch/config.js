@@ -1,7 +1,14 @@
 /* eslint-disable @typescript-eslint/camelcase */
+const ci = require('ci-info')
+
+const disableColors = ci.JENKINS
+
+if (disableColors) {
+  process.env.FORCE_COLOR = '0'
+}
+
 const url = require('url')
 const path = require('path')
-const isCI = require('is-ci')
 const chromedriver = require('chromedriver')
 const geckodriver = require('geckodriver')
 const nightwatchImageComparison = require('@csssr/nightwatch-image-comparison')
@@ -120,7 +127,7 @@ const mochawesomeReporter = {
   },
 }
 
-const junkinsReporter = {
+const jenkinsReporter = {
   reporter: require('@csssr/mocha-jenkins-reporter'),
   reporterOptions: {
     junit_report_path: 'nightwatch/jenkins-report.xml',
@@ -129,7 +136,7 @@ const junkinsReporter = {
 }
 
 function getReporter() {
-  const mainReporter = isCI ? junkinsReporter : mochawesomeReporter
+  const mainReporter = ci.isCI ? jenkinsReporter : mochawesomeReporter
   const publishResults = !!(argv.publishResults && config.testrail)
 
   if (publishResults) {
@@ -139,11 +146,9 @@ function getReporter() {
   return mainReporter
 }
 
-const isJenkins = !!process.env.JENKINS_URL
-
 module.exports = {
   end_session_on_fail: false,
-  disable_colors: isJenkins,
+  disable_colors: disableColors,
   output_folder: false,
   src_folders: ['./nightwatch/tests'],
   filter: argv.test || '**/*.test.js',
