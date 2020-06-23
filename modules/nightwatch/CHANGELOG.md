@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.10.1](https://github.com/CSSSR/e2e-tools/compare/@csssr/e2e-tools-nightwatch@1.10.0...@csssr/e2e-tools-nightwatch@1.10.1) (2020-06-23)
+
+
+### Bug Fixes
+
+* Отключаем цвета в логах дженкинса, иначе не отключаем ([8b744b8](https://github.com/CSSSR/e2e-tools/commit/8b744b882c163b5af0bad39c9ddbea0f3bd76cf5))
+
+
+
+
+
 # [1.10.0](https://github.com/CSSSR/e2e-tools/compare/@csssr/e2e-tools-nightwatch@1.9.4...@csssr/e2e-tools-nightwatch@1.10.0) (2020-06-10)
 
 
