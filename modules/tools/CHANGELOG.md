@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.3.4](https://github.com/CSSSR/e2e-tools/compare/@csssr/e2e-tools@1.3.3...@csssr/e2e-tools@1.3.4) (2020-07-08)
+
+
+### Bug Fixes
+
+* Добавил .npmrc файл, чтобы зависимости не брались из github registry ([ee8ad6a](https://github.com/CSSSR/e2e-tools/commit/ee8ad6a2316eb9d86b6f0a5a12c587d3f8faa734))
+
+
+
+
+
 ## [1.3.3](https://github.com/CSSSR/e2e-tools/compare/@csssr/e2e-tools@1.3.1...@csssr/e2e-tools@1.3.3) (2020-04-29)
 
 **Note:** Version bump only for package @csssr/e2e-tools
