@@ -1,6 +1,6 @@
 {
   "name": "@csssr/mocha-jenkins-reporter",
-  "version": "0.5.3",
+  "version": "0.6.0",
   "description": "jenkins reporter for mocha",
   "main": "index.js",
   "files": [

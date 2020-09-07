@@ -1,6 +1,6 @@
 {
   "name": "@csssr/nightwatch-local-file-upload",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "Upload local file to remote selenium",
   "main": "index.js",
   "author": "Aleksandr Krutikov <alex.krutikov@gmail.com>",
