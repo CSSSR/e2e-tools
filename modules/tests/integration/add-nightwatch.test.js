@@ -7,7 +7,7 @@ const { setupEnvironment } = require('./helpers')
 
 function checks({ readFile, rootDir }) {
   it('should add nightwatch with default config to e2e-tools.json', async () => {
-    const configFile = JSONWithComments.parse(readFile('e2e-tests/e2e-tools.json'))
+    const configFile = JSONWithComments.parse(readFile('e2e-tests/e2e-tools.json'), null, true)
     expect(configFile.tools).toEqual({
       '@csssr/e2e-tools-nightwatch': {
         browsers: {
@@ -26,8 +26,10 @@ function checks({ readFile, rootDir }) {
           },
           remote_chrome: {
             type: 'selenium',
-            host: 'chromedriver.csssr.ru',
+            host: 'selenium-linux.csssr.ru',
+            remote: true,
             basicAuth: {
+              credentialsId: 'chromedriver',
               username_env: 'CHROMEDRIVER_USERNAME',
               password_env: 'CHROMEDRIVER_PASSWORD',
             },
@@ -36,7 +38,7 @@ function checks({ readFile, rootDir }) {
               browserName: 'chrome',
               'goog:chromeOptions': {
                 w3c: false,
-                args: ['--headless', '--disable-gpu', '--window-size=1200,800'],
+                args: ['--headless', '--no-sandbox', '--disable-gpu', '--window-size=1200,800'],
               },
             },
             globals: {
@@ -101,7 +103,7 @@ function checks({ readFile, rootDir }) {
   })
 
   it('should add tasks', async () => {
-    const vscodeTasks = JSONWithComments.parse(readFile('e2e-tests/.vscode/tasks.json'))
+    const vscodeTasks = JSONWithComments.parse(readFile('e2e-tests/.vscode/tasks.json'), null, true)
 
     expect(vscodeTasks.tasks).toContainEqual({
       type: 'shell',

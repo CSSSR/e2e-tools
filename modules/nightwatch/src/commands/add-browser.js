@@ -23,7 +23,7 @@ async function getConfigByUrl(url) {
 
     if (typeof res.data === 'string') {
       try {
-        const parsed = JSONWithComments.parse(res.data)
+        const parsed = JSONWithComments.parse(res.data, null, true)
 
         if (isValidBrowserConfig(parsed)) {
           return parsed

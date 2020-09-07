@@ -17,20 +17,20 @@
     "access": "public"
   },
   "dependencies": {
-    "comment-json": "3.0.2",
-    "cross-spawn": "^7.0.1",
+    "comment-json": "4.0.4",
+    "cross-spawn": "^7.0.3",
     "dotenv": "^8.1.0",
-    "eslint": "^6.8.0",
-    "fast-glob": "^3.0.4",
+    "eslint": "^7.8.1",
+    "fast-glob": "^3.2.4",
     "find-root": "^1.1.0",
-    "handlebars": "^4.1.2",
-    "inquirer": "^7.1.0",
-    "lodash": "^4.17.15",
+    "handlebars": "^4.7.6",
+    "inquirer": "^7.3.3",
+    "lodash": "^4.17.20",
     "package-json": "^6.5.0",
-    "prettier": "1.19.1",
+    "prettier": "2.1.1",
     "readline-sync": "^1.4.10",
     "validate-npm-package-name": "^3.0.0",
-    "yargs": "^15.3.1"
+    "yargs": "^15.4.1"
   },
   "repository": {
     "type": "git",
