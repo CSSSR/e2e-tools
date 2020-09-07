@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "diff": "^4.0.1",
-    "mkdirp": "^1.0.3",
+    "mkdirp": "^1.0.4",
     "xml": "^1.0.1"
   },
   "repository": {

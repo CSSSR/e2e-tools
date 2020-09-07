@@ -40,7 +40,7 @@ function getConfig() {
       encoding: 'utf-8',
     })
 
-    return JSONWithComments.parse(configFile)
+    return JSONWithComments.parse(configFile, null, true)
   } catch (err) {
     if (err && err.code === 'ENOENT') {
       throw new Error(`Config file ${err.path} was not found`)
@@ -92,7 +92,7 @@ function formatFile(filePath) {
 
 function updateJsonFile({ filePath, update }) {
   const file = fs.readFileSync(filePath, { encoding: 'utf-8' })
-  const fileContent = JSONWithComments.parse(file)
+  const fileContent = JSONWithComments.parse(file, null, true)
   createJsonFile({ filePath, fileContent: update(fileContent) })
 }
 

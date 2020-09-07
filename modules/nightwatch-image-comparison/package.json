@@ -9,7 +9,7 @@
     "access": "public"
   },
   "dependencies": {
-    "webdriver-image-comparison": "^0.13.2"
+    "webdriver-image-comparison": "^0.14.4"
   },
   "optionalDependencies": {
     "mocha": "^6",
