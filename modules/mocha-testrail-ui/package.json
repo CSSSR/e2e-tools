@@ -13,7 +13,7 @@
     "access": "public"
   },
   "dependencies": {
-    "mocha": "^8.1.3"
+    "mocha": "^6"
   },
   "repository": {
     "type": "git",
