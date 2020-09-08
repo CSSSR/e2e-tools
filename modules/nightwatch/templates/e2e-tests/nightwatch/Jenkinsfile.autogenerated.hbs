@@ -32,7 +32,8 @@ filesCheckboxes = getTestFiles()
 
 buildParameters = [
   string(defaultValue: config.defaultLaunchUrl, description: 'Адрес стенда', name: 'LAUNCH_URL', trim: true),
-  choice(name: 'BROWSER', choices: browserNames, description: 'Браузер, в котором запускать тесты')
+  choice(name: 'BROWSER', choices: browserNames, description: 'Браузер, в котором запускать тесты'),
+  booleanParam(name: 'CHECK_SCREENSHOTS', defaultValue: true, description: 'Проверять совпадение скриншотов')
 ]
 
 buildParameters.addAll(filesCheckboxes)
@@ -109,6 +110,9 @@ node {
             runParams = filesToRun
               .collect{ "--test='${it}'" }
               .join(" ")
+
+            runParams.add("--checkScreenshots")
+            runParams.add("${params.CHECK_SCREENSHOTS}")
           }
 
           sh """

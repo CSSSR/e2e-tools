@@ -77,6 +77,14 @@ function parseUrl(settings) {
 function getTestSettingsForBrowser(browser, browserName) {
   const { type, ...settings } = browser
 
+  if (settings.globals === undefined) {
+    settings.globals = {}
+  }
+
+  if (typeof argv.checkScreenshots === 'boolean') {
+    settings.globals.skipScreenshotAssertions = !argv.checkScreenshots
+  }
+
   switch (type) {
     case 'webdriver': {
       return {
