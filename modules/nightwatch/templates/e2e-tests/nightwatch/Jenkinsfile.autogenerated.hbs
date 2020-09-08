@@ -1,118 +1,158 @@
 // Этот файл сгенерирован автоматически, не редактируйте его вручную
 
-def config
-def browserNames
-def scmVars
-def runTestsCredentials
-def runTestsEnvs
+def runParams
 
-node {
-  scmVars = checkout scm
-  config = readJSON file: 'e2e-tests/e2e-tools.json'
-
-  def browsers = config.tools['@csssr/e2e-tools-nightwatch'].browsers
-  browserNames = browsers.keySet().findAll { browsers[it].remote } as List
-
-  def basicAuths = browsers.values()
-      .findAll { it.basicAuth?.credentialsId }
-      .collect { it.basicAuth }
-
-  browserCredentials = basicAuths
-    .collect {
-      usernamePassword(
-        credentialsId: it.credentialsId,
-        usernameVariable: it.username_env,
-        passwordVariable: it.password_env
-      )
-    } as List
-
-  runTestsCredentials = [
-    usernamePassword(credentialsId: 'testrail', usernameVariable: 'TESTRAIL_USERNAME', passwordVariable: 'TESTRAIL_API_TOKEN')
-  ]
-
-  runTestsCredentials.addAll(browserCredentials)
-
-  runTestsEnvs = [
-    'LAUNCH_URL',
-    'TESTRAIL_USERNAME',
-    'TESTRAIL_API_TOKEN',
-    'BROWSER',
-  ]
-
-  runTestsEnvs.addAll(basicAuths.collectMany { [it.username_env, it.password_env] })
+def getTestFiles() {
+  findFiles(glob: '**/e2e-tests/nightwatch/tests/**/*.test.js').collect {
+    it.toString().replace("e2e-tests/nightwatch/tests/", "").replace(".test.js", "")
+  }
 }
 
-pipeline {
-  agent any
+def config = readJSON file: 'e2e-tests/e2e-tools.json'
+def browsers = config.tools['@csssr/e2e-tools-nightwatch'].browsers
+def browserNames = browsers.keySet().findAll { browsers[it].remote } as List
 
-  environment {
-    scmVars = ""
+def basicAuths = browsers.values()
+    .findAll { it.basicAuth?.credentialsId }
+    .collect { it.basicAuth }
+
+browserCredentials = basicAuths
+  .collect {
+    usernamePassword(
+      credentialsId: it.credentialsId,
+      usernameVariable: it.username_env,
+      passwordVariable: it.password_env
+    )
+  } as List
+
+filesCheckboxes = getTestFiles()
+  .collect {
+    booleanParam(defaultValue: true, name: it)
   }
 
-  parameters {
-    string(defaultValue: config.defaultLaunchUrl, description: 'Адрес стенда', name: 'LAUNCH_URL', trim: true)
-    choice(name: 'BROWSER', choices: browserNames, description: 'Браузер, в котором запускать тесты')
+buildParameters = [
+  string(defaultValue: config.defaultLaunchUrl, description: 'Адрес стенда', name: 'LAUNCH_URL', trim: true),
+  choice(name: 'BROWSER', choices: browserNames, description: 'Браузер, в котором запускать тесты')
+]
+
+buildParameters.addAll(filesCheckboxes)
+
+def customEnv = config.env ? config.env.keySet() as List : []
+
+customEnv.each {
+  paramOpts = config.env[it]
+  paramName = it
+  if (paramOpts.type == "string") {
+    buildParameters.add(
+      string(defaultValue: paramOpts.default, description: paramOpts.description, name: paramName, trim: true),
+    )
   }
 
-  options {
-    skipDefaultCheckout(true)
-    timeout(time: config.maxTestsDurationMinutes ?: 60, unit: 'MINUTES')
+  if (paramOpts.type == "boolean") {
+    buildParameters.add(
+      booleanParam(defaultValue: paramOpts.default, description: paramOpts.description, name: paramName),
+    )
   }
+}
 
-  stages {
-    stage('Install dependencies') {
-      when {
-        triggeredBy "UserIdCause"
-      }
+properties([
+  parameters(buildParameters)
+])
 
-      steps {
-        script {
-          sh """
-            git clean -fdx .
-            cd e2e-tests
-            docker build -f nightwatch/Dockerfile --network host -t ${config.projectName}/tests:${scmVars.GIT_COMMIT} .
-          """
-        }
+node {
+  pipeline {
+    agent {
+      docker {
+        image 'quay.csssr.cloud/csssr/e2e-tools:1'
       }
     }
 
-    stage('Run tests') {
-      when {
-        triggeredBy "UserIdCause"
+    options {
+      timeout(time: config.maxTestsDurationMinutes ?: 60, unit: 'MINUTES')
+    }
+
+    stages {
+      stage('Install dependencies') {
+        when {
+          triggeredBy "UserIdCause"
+        }
+
+        steps {
+          script {
+            def previousParams = currentBuild.getPreviousBuild().getRawBuild().actions.find{ it instanceof ParametersAction }?.parameters
+            if (!previousParams) {
+              throw new Error("Параметры сборки не заданы. Перезапустите сборку")
+            }
+
+            previousParamsNames = previousParams.collect{ it.name }.sort(false)
+            currentParamsNames = buildParameters.collect{ it.getArguments().name }.sort(false)
+
+            if (previousParamsNames != currentParamsNames) {
+              println("Предыдущие параметры:")
+              println(previousParamsNames)
+              println("Следующие параметры:")
+              println(currentParamsNames)
+              throw new Error("Параметры сборки обновлены. Перезапустите сборку")
+            }
+
+            env.LAUNCH_URL = params.LAUNCH_URL
+            env.BROWSER = params.BROWSER
+
+            customEnv.each {
+              env[it] = params[it]
+            }
+
+            filesToRun = getTestFiles()
+              .findAll{ params[it] }
+              .collect{ "nightwatch/tests/${it}.test.js" }
+
+            runParams = filesToRun
+              .collect{ "--test='${it}'" }
+              .join(" ")
+          }
+
+          sh """
+            pwd
+            git lfs install
+            git lfs pull
+            cd e2e-tests
+            yarn install --frozen-lockfile
+            touch .env
+          """
+        }
       }
 
-      steps {
-        script {
-          withCredentials(runTestsCredentials) {
-            sh """
-              docker run --network host \
-                ${ runTestsEnvs.collect { "-e ${it}" } .join(' ') } \
-                --cidfile "${scmVars.GIT_COMMIT}.cid" \
-                ${config.projectName}/tests:${scmVars.GIT_COMMIT}
-            """
+      stage('Run tests') {
+        when {
+          triggeredBy "UserIdCause"
+        }
+
+        steps {
+          script {
+            withCredentials(browserCredentials) {
+              sh """
+                pwd
+                cd e2e-tests
+                set -x
+                yarn et nightwatch:run --browser remote_chrome ${runParams}
+              """
+            }
           }
         }
-      }
-    }
-  }
 
-  post {
-    always {
-      script {
-        if (currentBuild.getBuildCauses('hudson.model.Cause$UserIdCause').size() > 0) {
-          sh """
-            mkdir -p artifacts/failure-screenshots
-            mkdir -p artifacts/screenshots
-            docker cp `cat "${scmVars.GIT_COMMIT}.cid"`:/usr/src/app/nightwatch/jenkins-report.xml artifacts/
-            docker cp `cat "${scmVars.GIT_COMMIT}.cid"`:/usr/src/app/nightwatch/failure-screenshots artifacts/
-            docker cp `cat "${scmVars.GIT_COMMIT}.cid"`:/usr/src/app/nightwatch/screenshots artifacts/
-            docker rm --force `cat "${scmVars.GIT_COMMIT}.cid"`
-            rm "${scmVars.GIT_COMMIT}.cid"
-          """
+        post {
+          always {
+            script {
+              junit 'e2e-tests/nightwatch/jenkins-report.xml'
+            }
+          }
 
-          archiveArtifacts artifacts: 'artifacts/failure-screenshots/*.png', allowEmptyArchive: true
-          archiveArtifacts artifacts: 'artifacts/screenshots/diff/**/*.png', allowEmptyArchive: true
-          junit 'artifacts/jenkins-report.xml'
+          unsuccessful {
+            script {
+              archiveArtifacts artifacts: 'e2e-tests/nightwatch/failure-screenshots/*.png', allowEmptyArchive: true
+              archiveArtifacts artifacts: 'e2e-tests/nightwatch/screenshots/diff/**/*.png', allowEmptyArchive: true
+            }
+          }
         }
       }
     }
