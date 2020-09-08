@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.12.0](https://github.com/CSSSR/e2e-tools/compare/@csssr/e2e-tools-nightwatch@1.11.0...@csssr/e2e-tools-nightwatch@1.12.0) (2020-09-08)
+
+
+### Bug Fixes
+
+* пофиксил невалидный Jenkinsfile ([df87d78](https://github.com/CSSSR/e2e-tools/commit/df87d787f759ff9e33758db6b1ed92dd9bd73568))
+
+
+### Features
+
+* Добавил возможность выбора файлов в Jenkins ([fcb3d12](https://github.com/CSSSR/e2e-tools/commit/fcb3d1232322c98daaa0bd121b0c7a7081a5d7b4))
+* Добавил возможность не проверять скриншоты в дженкинсе ([aeb2ba6](https://github.com/CSSSR/e2e-tools/commit/aeb2ba6ab922b344a3d8445ac0569e16dbef98d6))
+
+
+
+
+
 # [1.11.0](https://github.com/CSSSR/e2e-tools/compare/@csssr/e2e-tools-nightwatch@1.10.4...@csssr/e2e-tools-nightwatch@1.11.0) (2020-09-07)
 
 
