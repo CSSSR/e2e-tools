@@ -50,6 +50,10 @@ const addNightwatchRunCommand = context => {
         describe:
           'Publish test run results to TestRail. This option is on by default in most popular CI environments',
       },
+      checkScreenshots: {
+        boolean: true,
+        describe: 'Check screenshots',
+      },
     },
     command: 'nightwatch:run',
     describe: 'Run nightwatch',
@@ -65,6 +69,7 @@ const addNightwatchRunCommand = context => {
             test: args.test,
             config: require.resolve('@csssr/e2e-tools-nightwatch/config'),
             publishResults: args.publishResults,
+            checkScreenshots: args.checkScreenshots,
           }),
         ],
         { stdio: 'inherit' }
