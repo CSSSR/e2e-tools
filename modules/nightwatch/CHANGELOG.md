@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.12.1](https://github.com/CSSSR/e2e-tools/compare/@csssr/e2e-tools-nightwatch@1.12.0...@csssr/e2e-tools-nightwatch@1.12.1) (2020-09-09)
+
+
+### Bug Fixes
+
+* пофиксил название файла ([51b96de](https://github.com/CSSSR/e2e-tools/commit/51b96dea7cc4961d53b2d07b86d7a900c4405c41))
+
+
+
+
+
 # [1.12.0](https://github.com/CSSSR/e2e-tools/compare/@csssr/e2e-tools-nightwatch@1.11.0...@csssr/e2e-tools-nightwatch@1.12.0) (2020-09-08)
 
 
