@@ -1,7 +1,7 @@
 # Атрибуты для поиска элементов
 
 Для поиска элементов в тестах расставляются атрибуты `data-testid`.
-Такое имя атрибута неслучайное, `data-testid` использует [react-modal](https://github.com/reactjs/react-modal) и [testing-library](https://testing-library.com).
+Такое имя атрибута не случайное, `data-testid` используют [react-modal](https://github.com/reactjs/react-modal) и [testing-library](https://testing-library.com).
 
 ## Рекомендуемый формат локатора
 
