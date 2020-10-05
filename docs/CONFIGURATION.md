@@ -1,14 +1,14 @@
-# Конфигурирование
+# Конфигурирование e2e-tools
 
 ## Добавление браузеров в проект
 
-Firefox, запуск локально
+Firefox, запуск локально:
 
 ```bash
 yarn et nightwatch:add-browser --name local_firefox --configUrl https://csssr-team.github.io/selenium-servers/browsers/local_firefox.json
 ```
 
-Firefox, запуск на удалённом Линукс-сервере
+Firefox, запуск на удалённом Линукс-сервере:
 
 ```bash
 yarn et nightwatch:add-browser --name remote_firefox --configUrl https://csssr-team.github.io/selenium-servers/browsers/remote_firefox.json
@@ -16,7 +16,7 @@ yarn et nightwatch:add-browser --name remote_firefox --configUrl https://csssr-t
 
 ## Смена языка браузера
 
-Язык браузера можно задать в файле `e2e-tools.json`
+Язык браузера можно задать в файле `e2e-tools.json`:
 
 ```json
 "desiredCapabilities": {
@@ -32,7 +32,7 @@ yarn et nightwatch:add-browser --name remote_firefox --configUrl https://csssr-t
 
 ## Авторизация на стенде
 
-Логин и пароль от стенда можно задать прямо в URL стенда
+Логин и пароль от стенда можно задать прямо в URL стенда:
 
 ```json
 {
