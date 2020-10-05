@@ -121,6 +121,9 @@ pipeline {
           git lfs install
           git lfs pull
           cd e2e-tests
+          rm -f nightwatch/jenkins-report.xml
+          rm -rf nightwatch/failure-screenshots/
+          rm -rf nightwatch/screenshots/diff/
           yarn install --frozen-lockfile
           touch .env
         """
