@@ -142,7 +142,7 @@ pipeline {
               pwd
               cd e2e-tests
               set -x
-              yarn et nightwatch:run --browser remote_chrome ${runParamsString}
+              yarn et nightwatch:run ${runParamsString}
             """
           }
         }
