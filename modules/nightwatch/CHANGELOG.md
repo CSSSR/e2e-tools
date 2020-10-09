@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.13.0](https://github.com/CSSSR/e2e-tools/compare/@csssr/e2e-tools-nightwatch@1.12.1...@csssr/e2e-tools-nightwatch@1.13.0) (2020-10-09)
+
+
+### Bug Fixes
+
+* Удаляем отчёт от предыдущего билда перед запуском следующего ([746d986](https://github.com/CSSSR/e2e-tools/commit/746d98646c47ec65e99cc8d0939ed99fef8a258d))
+
+
+### Features
+
+* Пофиксил запуск тестов в Jenkins в Firefox ([17e478a](https://github.com/CSSSR/e2e-tools/commit/17e478af3288d12fdaf9ed01dc825bfcc4c505da))
+
+
+
+
+
 ## [1.12.2](https://github.com/CSSSR/e2e-tools/compare/@csssr/e2e-tools-nightwatch@1.12.1...@csssr/e2e-tools-nightwatch@1.12.2) (2020-10-05)
 
 
