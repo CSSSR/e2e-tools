@@ -4,12 +4,12 @@ const packageName = require('../../package.json').name
 
 function createArgsArrayFromMap(argsMap) {
   return Object.keys(argsMap)
-    .map(arg => {
+    .map((arg) => {
       const value = argsMap[arg]
-      if (!value) return []
+      if (value === undefined) return []
 
       if (Array.isArray(value)) {
-        return value.map(v => [`--${arg}`, v]).reduce((acc, x) => acc.concat(x), [])
+        return value.map((v) => [`--${arg}`, v]).reduce((acc, x) => acc.concat(x), [])
       }
 
       return [`--${arg}`, value]
@@ -20,7 +20,7 @@ function createArgsArrayFromMap(argsMap) {
 /**
  * @returns {import('yargs').CommandModule | undefined}
  */
-const addNightwatchRunCommand = context => {
+const addNightwatchRunCommand = (context) => {
   const config = getConfig()
   const browsersConfig = config.tools[packageName].browsers
 
