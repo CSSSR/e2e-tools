@@ -25,6 +25,18 @@ function removeEndingSlash(url) {
   return url.replace(/\/$/, '')
 }
 
+function boolArg(value) {
+  if (value === true || value === 'true') {
+    return true
+  }
+
+  if (value === 'false') {
+    return false
+  }
+
+  return undefined
+}
+
 function getWebdriverOptions(settings, browserKeyName) {
   const { browserName } = (settings || {}).desiredCapabilities || {}
 
@@ -81,8 +93,8 @@ function getTestSettingsForBrowser(browser, browserName) {
     settings.globals = {}
   }
 
-  if (typeof argv.checkScreenshots === 'boolean') {
-    settings.globals.skipScreenshotAssertions = !argv.checkScreenshots
+  if (typeof boolArg(argv.checkScreenshots) === 'boolean') {
+    settings.globals.skipScreenshotAssertions = !boolArg(argv.checkScreenshots)
   }
 
   switch (type) {
@@ -113,7 +125,7 @@ function getTestSettingsForBrowser(browser, browserName) {
 function getTestSettings(browsers) {
   const testSettings = {}
 
-  Object.keys(browsers).forEach(browserName => {
+  Object.keys(browsers).forEach((browserName) => {
     if (browserName !== argv.env) {
       return
     }
@@ -145,7 +157,7 @@ const jenkinsReporter = {
 
 function getReporter() {
   const mainReporter = ci.isCI ? jenkinsReporter : mochawesomeReporter
-  const publishResults = !!(argv.publishResults && config.testrail)
+  const publishResults = !!(boolArg(argv.publishResults) && config.testrail)
 
   if (publishResults) {
     throw new Error('Публикация результатов в Testrail пока не поддерживается')
