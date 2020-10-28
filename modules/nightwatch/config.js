@@ -119,6 +119,28 @@ function getTestSettingsForBrowser(browser, browserName) {
         ...rest,
       }
     }
+
+    case 'browserstack': {
+      return {
+        selenium: {
+          host: 'hub-cloud.browserstack.com',
+          port: 443
+        },
+        desiredCapabilities: {
+          'browserstack.user': getEnvVariable('BROWSERSTACK_USER', `Browserstack username`),
+          'browserstack.key': getEnvVariable('BROWSERSTACK_KEY', `Browserstack access key`),
+          project: config.projectName,
+          build: new Date().toISOString(),
+          ...settings
+        },
+  
+        disable_error_log: true,
+        webdriver: {
+          keep_alive: true,
+          start_process: false
+        }
+      }
+    }
   }
 }
 
