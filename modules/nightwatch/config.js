@@ -130,8 +130,14 @@ function getTestSettingsForBrowser(browser, browserName) {
           'browserstack.user': getEnvVariable('BROWSERSTACK_USER', `Browserstack username`),
           'browserstack.key': getEnvVariable('BROWSERSTACK_KEY', `Browserstack access key`),
           project: config.projectName,
-          build: new Date().toISOString(),
-          ...settings
+          build: new Date().toLocaleString('ru', {
+            year: 'numeric',
+            month: 'numeric',
+            day: 'numeric',
+            hour: 'numeric',
+            minute: 'numeric',
+          }),
+          ...(settings.desiredCapabilities || {})
         },
   
         disable_error_log: true,
