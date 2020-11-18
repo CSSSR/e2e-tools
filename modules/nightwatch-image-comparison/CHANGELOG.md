@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.4.1](https://github.com/CSSSR/e2e-tools/compare/@csssr/nightwatch-image-comparison@0.4.0...@csssr/nightwatch-image-comparison@0.4.1) (2020-11-18)
+
+
+### Bug Fixes
+
+* Исправлен мигающий курсор в скриншотах с input с заданным цветом ([#17](https://github.com/CSSSR/e2e-tools/issues/17)) ([112a932](https://github.com/CSSSR/e2e-tools/commit/112a9328cb205548d133d63fc7be385c64ddbe3c))
+
+
+
+
+
 # [0.4.0](https://github.com/CSSSR/e2e-tools/compare/@csssr/nightwatch-image-comparison@0.3.3...@csssr/nightwatch-image-comparison@0.4.0) (2020-09-07)
 
 
