@@ -49,7 +49,7 @@ function addClassWhichFixBlinkingCursorsInScreenshot() {
     if (!document.querySelector('.__blinking-screenshot-fix-style-element')) {
       style = document.createElement('style')
       style.className = '__blinking-screenshot-fix-style-element'
-      style.innerHTML = '.__blinking-screenshot-fix { color: transparent; text-shadow: 0 0 0 #000 }'
+      style.innerHTML = '.__blinking-screenshot-fix { color: transparent !important; text-shadow: 0 0 0 #000 !important; }'
       document.body.appendChild(style)
     }
 
