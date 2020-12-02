@@ -14,6 +14,20 @@ Firefox, запуск на удалённом Линукс-сервере:
 yarn et nightwatch:add-browser --name remote_firefox --configUrl https://csssr.github.io/selenium-servers/browsers/remote_firefox.json
 ```
 
+Chrome, запуск на Browserstack:
+
+```bash
+yarn et nightwatch:add-browser --name browserstack_chrome --configUrl https://csssr-team.github.io/selenium-servers/browsers/browserstack_chrome.json
+```
+
+IE 11, запуск на Browserstack:
+
+```bash
+yarn et nightwatch:add-browser --name browserstack_ie --configUrl https://csssr-team.github.io/selenium-servers/browsers/browserstack_ie.json
+```
+
+[Дополнительные настройки запуска браузера на Browserstack](https://www.browserstack.com/automate/capabilities)
+
 ## Смена языка браузера
 
 Язык браузера можно задать в файле `e2e-tools.json`:
