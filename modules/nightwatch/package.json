@@ -1,6 +1,6 @@
 {
   "name": "@csssr/e2e-tools-nightwatch",
-  "version": "1.13.3",
+  "version": "1.14.0",
   "description": "Nightwatch плагин для @csssr/e2e-tools",
   "author": "Maxim Samoilov <nitive@icloud.com>",
   "license": "MIT",

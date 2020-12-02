@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.14.0](https://github.com/CSSSR/e2e-tools/compare/@csssr/e2e-tools-nightwatch@1.13.3...@csssr/e2e-tools-nightwatch@1.14.0) (2020-12-02)
+
+
+### Features
+
+* Add browserstack support ([#16](https://github.com/CSSSR/e2e-tools/issues/16)) ([d702cec](https://github.com/CSSSR/e2e-tools/commit/d702cecab862c07018d7eabfd560abd816a88131))
+
+
+
+
+
 ## [1.13.3](https://github.com/CSSSR/e2e-tools/compare/@csssr/e2e-tools-nightwatch@1.13.2...@csssr/e2e-tools-nightwatch@1.13.3) (2020-11-18)
 
 **Note:** Version bump only for package @csssr/e2e-tools-nightwatch
