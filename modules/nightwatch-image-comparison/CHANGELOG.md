@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.4.2](https://github.com/CSSSR/e2e-tools/compare/@csssr/nightwatch-image-comparison@0.4.1...@csssr/nightwatch-image-comparison@0.4.2) (2020-12-09)
+
+
+### Bug Fixes
+
+* Better error handling when taking screenshot ([99713ce](https://github.com/CSSSR/e2e-tools/commit/99713ce6354f04c0e1d05930c0a3aeef3f911cdb))
+
+
+
+
+
 ## [0.4.1](https://github.com/CSSSR/e2e-tools/compare/@csssr/nightwatch-image-comparison@0.4.0...@csssr/nightwatch-image-comparison@0.4.1) (2020-11-18)
 
 
