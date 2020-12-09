@@ -49,7 +49,8 @@ function addClassWhichFixBlinkingCursorsInScreenshot() {
     if (!document.querySelector('.__blinking-screenshot-fix-style-element')) {
       style = document.createElement('style')
       style.className = '__blinking-screenshot-fix-style-element'
-      style.innerHTML = '.__blinking-screenshot-fix { color: transparent !important; text-shadow: 0 0 0 #000 !important; }'
+      style.innerHTML =
+        '.__blinking-screenshot-fix { color: transparent !important; text-shadow: 0 0 0 #000 !important; }'
       document.body.appendChild(style)
     }
 
@@ -59,7 +60,7 @@ function addClassWhichFixBlinkingCursorsInScreenshot() {
 }
 
 function removeClassWhichFixBlinkingCursorsInScreenshot() {
-  document.querySelectorAll('.__blinking-screenshot-fix').forEach(element => {
+  document.querySelectorAll('.__blinking-screenshot-fix').forEach(function (element) {
     element.className = element.className.replace(' __blinking-screenshot-fix', '')
   })
 
@@ -108,16 +109,31 @@ function takeScreenshot({ client, description, check, methodOptions, callback })
 
   const methods = {
     executor: (fn, ...args) => {
-      return new Promise(resolve => {
-        client.execute(fn, args, r => {
+      return new Promise((resolve, reject) => {
+        client.execute(fn, args, (r) => {
+          if (r.value && r.value.error) {
+            const err = new Error(r.value.error)
+
+            if (r.value.message) {
+              err.message = r.value.message
+            }
+
+            if (r.value.stacktrace) {
+              err.stack = r.value.stacktrace
+            }
+
+            reject(err)
+            return
+          }
+
           resolve(r.value)
         })
       })
     },
     screenShot: () => {
-      return new Promise(resolve => {
+      return new Promise((resolve) => {
         client.execute(addClassWhichFixBlinkingCursorsInScreenshot, [], () => {
-          client.screenshot(true, res => {
+          client.screenshot(true, (res) => {
             client.execute(removeClassWhichFixBlinkingCursorsInScreenshot, [], () => {
               resolve(res.value)
             })
@@ -135,7 +151,7 @@ function takeScreenshot({ client, description, check, methodOptions, callback })
         folders,
         options,
       })
-        .then(result => {
+        .then((result) => {
           if (addContext && client.currentTest && client.currentTest.mochaTestContext) {
             const ctx = client.currentTest.mochaTestContext
 
@@ -163,7 +179,7 @@ function takeScreenshot({ client, description, check, methodOptions, callback })
 
           callback({ status: 'success' })
         })
-        .catch(error => {
+        .catch((error) => {
           callback({ status: 'error', error })
         })
     }
