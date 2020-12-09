@@ -66,7 +66,7 @@ function normalizeUrl(input) {
 }
 
 function falseToError(error, func) {
-  return str => (func(str) ? true : error)
+  return (str) => (func(str) ? true : error)
 }
 
 async function initScript({ inquirer }) {

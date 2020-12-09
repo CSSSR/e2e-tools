@@ -124,7 +124,7 @@ function getTestSettingsForBrowser(browser, browserName) {
       return {
         selenium: {
           host: 'hub-cloud.browserstack.com',
-          port: 443
+          port: 443,
         },
         desiredCapabilities: {
           'browserstack.user': getEnvVariable('BROWSERSTACK_USER', `Browserstack username`),
@@ -137,14 +137,14 @@ function getTestSettingsForBrowser(browser, browserName) {
             hour: 'numeric',
             minute: 'numeric',
           }),
-          ...(settings.desiredCapabilities || {})
+          ...(settings.desiredCapabilities || {}),
         },
-  
+
         disable_error_log: true,
         webdriver: {
           keep_alive: true,
-          start_process: false
-        }
+          start_process: false,
+        },
       }
     }
   }

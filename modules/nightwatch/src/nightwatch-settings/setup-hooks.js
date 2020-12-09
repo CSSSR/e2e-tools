@@ -47,14 +47,12 @@ exports.setupHooksInternal = () => {
   after(function globalAfterHook(browser, done) {
     if (this.failedTest) {
       const suite = this.failedTest.parent
-      const random = Math.random()
-        .toString()
-        .replace('0.', '')
+      const random = Math.random().toString().replace('0.', '')
       const screenshotFileName = `nightwatch/failure-screenshots/${suite.title} (${random}).png`.replace(
         /\s/g,
         '_'
       )
-      browser.saveScreenshot(screenshotFileName, result => {
+      browser.saveScreenshot(screenshotFileName, (result) => {
         if (result.status === 0) {
           console.log(
             chalk.red(
@@ -74,9 +72,9 @@ exports.setupHooksInternal = () => {
 
     // browser.session is broken
     // https://github.com/nightwatchjs/nightwatch/issues/2162
-    browser.sessions(sessions => {
+    browser.sessions((sessions) => {
       if (sessions.status === 0 && sessions.value.length > 0) {
-        const currentSession = sessions.value.find(session => session.id === browser.sessionId)
+        const currentSession = sessions.value.find((session) => session.id === browser.sessionId)
 
         if (currentSession) {
           browser.end(() => done())

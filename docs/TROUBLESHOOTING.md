@@ -1,6 +1,7 @@
 # Частые проблемы
 
 ## Ошибка «An error occurred while retrieving a new session»
+
 Ошибка `Error: An error occurred while retrieving a new session` часто возникает по одной из двух причин:
 
 1. Версия chromedriver не совпадает с версией установленного chrome. Выполните `yarn et upgrade`, чтобы обновить её

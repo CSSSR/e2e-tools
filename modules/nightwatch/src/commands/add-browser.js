@@ -42,7 +42,7 @@ async function getConfigByUrl(url) {
 /**
  * @returns {import('yargs').CommandModule | undefined}
  */
-const addNightwatchAddBrowserCommand = context => {
+const addNightwatchAddBrowserCommand = (context) => {
   return {
     builder: {
       name: {
@@ -60,7 +60,7 @@ const addNightwatchAddBrowserCommand = context => {
       try {
         const newBrowserConfig = await getConfigByUrl(configUrl)
 
-        updateToolConfig(packageName, config => {
+        updateToolConfig(packageName, (config) => {
           if (config.browsers && config.browsers[name]) {
             const value = readlineSync.question(
               'Браузер с таким именем уже добавлен. Заменить его? (yes/no) '

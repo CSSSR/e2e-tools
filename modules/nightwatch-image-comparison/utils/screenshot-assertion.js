@@ -6,7 +6,7 @@ exports.addAssertionMethods = function addAssertionMethods(self, description) {
     'Screenshot does match'
   }
 
-  self.pass = value => {
+  self.pass = (value) => {
     if (value.status === 'error') {
       const misMatchPercentage = value.result && value.result.misMatchPercentage
       if (misMatchPercentage) {
@@ -22,5 +22,5 @@ exports.addAssertionMethods = function addAssertionMethods(self, description) {
     return value.status !== 'error'
   }
 
-  self.value = result => result
+  self.value = (result) => result
 }

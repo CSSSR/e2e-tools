@@ -57,7 +57,7 @@ function updateVsCodeTasks() {
               group: 'build',
             },
           ],
-          task => task.label
+          (task) => task.label
         ),
       }
     },

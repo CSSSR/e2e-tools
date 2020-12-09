@@ -28,7 +28,7 @@ function withType(type, suiteOrTest) {
 module.exports = function bddInterface(rootSuite) {
   const suites = [rootSuite]
 
-  rootSuite.on('pre-require', function(context, file, mocha) {
+  rootSuite.on('pre-require', function (context, file, mocha) {
     const common = commonInterface(suites, context, mocha)
 
     context.before = common.before
@@ -41,7 +41,7 @@ module.exports = function bddInterface(rootSuite) {
      * testcase
      */
 
-    context.testcase = function(title, fn) {
+    context.testcase = function (title, fn) {
       // хак для before/after хуков
       const fnWithGlobalHook = () => {
         if (global.runInTestcaseBody) {
@@ -55,8 +55,7 @@ module.exports = function bddInterface(rootSuite) {
 
       suite.afterEach(function beforeEachHook(browser, done) {
         let isSuiteFailed = false
-        this.test.parent.tests.forEach(test => {
-
+        this.test.parent.tests.forEach((test) => {
           if (test.state === 'failed') {
             isSuiteFailed = true
           }
@@ -72,11 +71,11 @@ module.exports = function bddInterface(rootSuite) {
       return withType('testcase', suite)
     }
 
-    context.testcase.skip = function(title, fn) {
+    context.testcase.skip = function (title, fn) {
       return withType('testcase', common.suite.skip({ title, file, fn }))
     }
 
-    context.testcase.only = function(title, fn) {
+    context.testcase.only = function (title, fn) {
       return withType('testcase', common.suite.only({ title, file, fn }))
     }
 
@@ -84,7 +83,7 @@ module.exports = function bddInterface(rootSuite) {
      * step
      */
 
-    context.step = function(title, fn) {
+    context.step = function (title, fn) {
       const currentSuite = suites[0]
       if (currentSuite.isPending()) {
         fn = null
@@ -95,15 +94,15 @@ module.exports = function bddInterface(rootSuite) {
       return withType('step', test)
     }
 
-    context.step.only = function(title, fn) {
+    context.step.only = function (title, fn) {
       return common.test.only(mocha, context.step(title, fn))
     }
 
-    context.xit = context.step.skip = function(title) {
+    context.xit = context.step.skip = function (title) {
       return context.step(title)
     }
 
-    context.step.retries = function(n) {
+    context.step.retries = function (n) {
       context.retries(n)
     }
 
@@ -111,7 +110,7 @@ module.exports = function bddInterface(rootSuite) {
      * expected
      */
 
-    context.expected = function(title, fn) {
+    context.expected = function (title, fn) {
       const suite = suites[0]
       if (suite.isPending()) {
         fn = null
@@ -122,15 +121,15 @@ module.exports = function bddInterface(rootSuite) {
       return withType('expected', test)
     }
 
-    context.expected.only = function(title, fn) {
+    context.expected.only = function (title, fn) {
       return common.test.only(mocha, context.expected(title, fn))
     }
 
-    context.xit = context.expected.skip = function(title) {
+    context.xit = context.expected.skip = function (title) {
       return context.expected(title)
     }
 
-    context.expected.retries = function(n) {
+    context.expected.retries = function (n) {
       context.retries(n)
     }
   })

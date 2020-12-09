@@ -16,8 +16,9 @@
 1. Проверить, что тесты запускаются `yarn et nightwatch:run`.
 1. Изолировать папку `e2e-tests/` от остального проекта: добавить её в `.eslintignore`, `.prettierignore`, в `coverageIgnore` в конфиге jest и т. д.
 1. Настроить Jenkins [↓](https://github.com/csssr-team/e2e-tools/blobmaster/docs/SETUP.md#настройка-дженкинса).
- 
+
 После добавления тестов необходимо решить следующие организационные вопросы:
+
 - Попросить всех разработчиков установить себе [Git LFS](https://git-lfs.github.com)
 - Попросить всех разработчиков прочитать [документацию к данной библиотеке e2e тестов](https://github.com/CSSSR/e2e-tools/tree/master/docs).
 - Дать доступ на чтение к репозиторию команде [QA (e2e)](https://github.com/orgs/CSSSR/teams/qa-e2e/repositories), чтобы QA было легче делиться с друг другом наработками.

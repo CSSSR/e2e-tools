@@ -33,7 +33,7 @@ const initCommand = ({ config }) => ({
   },
 })
 
-const addToolCommand = context => ({
+const addToolCommand = (context) => ({
   command: 'add-tool <package-name>',
   describe: 'Add new tool',
   handler({ packageName }) {
@@ -87,7 +87,7 @@ async function updateTool(context, packageName, shouldUpdatePackages) {
   }
 }
 
-const upgradeCommand = context => ({
+const upgradeCommand = (context) => ({
   command: 'upgrade',
   describe: 'Upgrades all packages',
   builder: {
@@ -152,7 +152,7 @@ const upgradeCommand = context => ({
   },
 })
 
-exports.main = context => {
+exports.main = (context) => {
   process.chdir(getTestsRootDir())
   const config = getConfigSafe()
 
@@ -162,10 +162,10 @@ exports.main = context => {
     .command(upgradeCommand(context))
 
   if (config && config.tools) {
-    Object.keys(config.tools).forEach(toolName => {
+    Object.keys(config.tools).forEach((toolName) => {
       const tool = require(toolName)
       if (typeof tool.getCommands === 'function') {
-        tool.getCommands(context).forEach(command => {
+        tool.getCommands(context).forEach((command) => {
           context.yargs.command(command)
         })
       }

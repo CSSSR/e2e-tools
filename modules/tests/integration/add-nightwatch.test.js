@@ -147,7 +147,7 @@ function checks({ readFile, rootDir }) {
       group: 'build',
     })
 
-    expect(uniqBy(vscodeTasks.tasks, task => task.label)).toHaveLength(vscodeTasks.tasks.length)
+    expect(uniqBy(vscodeTasks.tasks, (task) => task.label)).toHaveLength(vscodeTasks.tasks.length)
   })
 }
 

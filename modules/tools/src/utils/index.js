@@ -120,7 +120,7 @@ function updateToolConfig(tool, update) {
 }
 
 function initTemplate({ templatesRoot, root }) {
-  return options => {
+  return (options) => {
     const { data } = options
     const filePath = options.filePath
     const fileFullPath = path.join(root, options.filePath)
@@ -169,7 +169,7 @@ function getEnvVariable(variable, description) {
 
     const envFileContent =
       Object.keys(newConfig)
-        .map(key => `${key}=${newConfig[key]}`)
+        .map((key) => `${key}=${newConfig[key]}`)
         .join('\n') + '\n'
 
     fs.writeFileSync(envFilePath, envFileContent)
@@ -197,7 +197,7 @@ function createFilesFromTemplates({
     cwd: templatesRoot,
   })
 
-  templatesPaths.forEach(templatePath => {
+  templatesPaths.forEach((templatePath) => {
     const templateAbsolutePath = path.join(templatesRoot, templatePath)
     const destinationPath = getDestinationPath(templatePath)
     const destinationAbsolutePath = path.join(destinationRoot, destinationPath)
