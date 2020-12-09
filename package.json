@@ -2,7 +2,7 @@
   "name": "e2e-tools",
   "private": true,
   "scripts": {
-    "fix": "prettier --write '**/*.{js,js.hbs,json,json.hbs}'",
+    "fix": "prettier --write .",
     "test": "rm -rf modules/tests/integration/sandbox && jest --runInBand"
   },
   "workspaces": [
