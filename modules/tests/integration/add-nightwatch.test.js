@@ -26,7 +26,7 @@ function checks({ readFile, rootDir }) {
           },
           remote_chrome: {
             type: 'selenium',
-            host: 'selenium-linux.csssr.ru',
+            url: 'https://chrome.selenium.csssr.cloud',
             remote: true,
             basicAuth: {
               credentialsId: 'chromedriver',

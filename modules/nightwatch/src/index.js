@@ -36,7 +36,7 @@ function createToolConfig() {
       remote_chrome: {
         remote: true,
         type: 'selenium',
-        host: 'selenium-linux.csssr.ru',
+        url: 'https://chrome.selenium.csssr.cloud',
 
         basicAuth: {
           credentialsId: 'chromedriver',
