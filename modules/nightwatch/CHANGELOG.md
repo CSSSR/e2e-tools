@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.14.3](https://github.com/CSSSR/e2e-tools/compare/@csssr/e2e-tools-nightwatch@1.14.2...@csssr/e2e-tools-nightwatch@1.14.3) (2021-01-06)
+
+
+### Bug Fixes
+
+* bump axios from 0.20.0 to 0.21.1 ([#22](https://github.com/CSSSR/e2e-tools/issues/22)) ([a98f470](https://github.com/CSSSR/e2e-tools/commit/a98f470204bb8a70847b591f16f7c8dba6e7e638))
+
+
+
+
+
 ## [1.14.2](https://github.com/CSSSR/e2e-tools/compare/@csssr/e2e-tools-nightwatch@1.14.1...@csssr/e2e-tools-nightwatch@1.14.2) (2020-12-25)
 
 
