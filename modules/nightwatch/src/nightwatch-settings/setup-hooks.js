@@ -70,20 +70,14 @@ exports.setupHooksInternal = () => {
       })
     }
 
-    // browser.session is broken
-    // https://github.com/nightwatchjs/nightwatch/issues/2162
-    browser.sessions((sessions) => {
-      if (sessions.status === 0 && sessions.value.length > 0) {
-        const currentSession = sessions.value.find((session) => session.id === browser.sessionId)
+    if (browser.sessionId) {
+      browser.end(() => {
+        done()
+      })
+      return
+    }
 
-        if (currentSession) {
-          browser.end(() => done())
-          return
-        }
-      }
-
-      done()
-    })
+    done()
   })
 }
 
