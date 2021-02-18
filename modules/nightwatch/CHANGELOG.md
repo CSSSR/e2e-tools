@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.14.4](https://github.com/CSSSR/e2e-tools/compare/@csssr/e2e-tools-nightwatch@1.14.3...@csssr/e2e-tools-nightwatch@1.14.4) (2021-02-18)
+
+
+### Bug Fixes
+
+* Automaticly maximize Safari on start ([662dbc8](https://github.com/CSSSR/e2e-tools/commit/662dbc8335a399cf182b361bc2f11a6d07652c73))
+* Do not use browser.sessions API because it does not work with Selenium Grid ([7ba8815](https://github.com/CSSSR/e2e-tools/commit/7ba881507348049aa7cb34172cddf80bc1cdcef3))
+
+
+
+
+
 ## [1.14.3](https://github.com/CSSSR/e2e-tools/compare/@csssr/e2e-tools-nightwatch@1.14.2...@csssr/e2e-tools-nightwatch@1.14.3) (2021-01-06)
 
 
