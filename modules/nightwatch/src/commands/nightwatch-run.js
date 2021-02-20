@@ -44,6 +44,9 @@ const addNightwatchRunCommand = (context) => {
       test: {
         describe: 'Test file',
       },
+      testcase: {
+        describe: 'Testcase in test file',
+      },
       publishResults: {
         boolean: true,
         default: isCI,
@@ -67,6 +70,7 @@ const addNightwatchRunCommand = (context) => {
           ...createArgsArrayFromMap({
             env: args.browser,
             test: args.test,
+            testcase: args.testcase,
             config: require.resolve('@csssr/e2e-tools-nightwatch/config'),
             publishResults: args.publishResults,
             checkScreenshots: args.checkScreenshots,
