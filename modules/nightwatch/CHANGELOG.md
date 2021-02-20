@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.14.5](https://github.com/CSSSR/e2e-tools/compare/@csssr/e2e-tools-nightwatch@1.14.4...@csssr/e2e-tools-nightwatch@1.14.5) (2021-02-20)
+
+
+### Bug Fixes
+
+* Добавлена поддержка аргумента testcase ([#24](https://github.com/CSSSR/e2e-tools/issues/24)) ([be376d8](https://github.com/CSSSR/e2e-tools/commit/be376d853ceb6e3c0a7efcde51fd09b29018345a))
+
+
+
+
+
 ## [1.14.4](https://github.com/CSSSR/e2e-tools/compare/@csssr/e2e-tools-nightwatch@1.14.3...@csssr/e2e-tools-nightwatch@1.14.4) (2021-02-18)
 
 
