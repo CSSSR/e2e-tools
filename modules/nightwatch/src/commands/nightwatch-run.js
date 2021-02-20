@@ -44,6 +44,9 @@ const addNightwatchRunCommand = (context) => {
       test: {
         describe: 'Test file',
       },
+      testcase: {
+        describe: 'testcase test file',
+      },
       publishResults: {
         boolean: true,
         default: isCI,
