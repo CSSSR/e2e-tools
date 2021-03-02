@@ -83,7 +83,7 @@ function updateVsCodeTasks() {
         ),
         inputs: uniqBy(
           [
-            ...config.inputs,
+            ...(config.inputs || []),
             {
               id: 'testcase',
               type: 'promptString',
