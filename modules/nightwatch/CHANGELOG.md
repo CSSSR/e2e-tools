@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.15.0](https://github.com/CSSSR/e2e-tools/compare/@csssr/e2e-tools-nightwatch@1.14.5...@csssr/e2e-tools-nightwatch@1.15.0) (2021-03-03)
+
+
+### Features
+
+* VS Code запуск одного testcase ([#25](https://github.com/CSSSR/e2e-tools/issues/25)) ([561cdf6](https://github.com/CSSSR/e2e-tools/commit/561cdf652d66cc10a7f4800593dacd75d2029657))
+
+
+
+
+
 ## [1.14.5](https://github.com/CSSSR/e2e-tools/compare/@csssr/e2e-tools-nightwatch@1.14.4...@csssr/e2e-tools-nightwatch@1.14.5) (2021-02-20)
 
 
