@@ -18,7 +18,7 @@ jobs:
         run: git fetch --prune --unshallow
 
       - name: Setup node
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v2
         with:
           node-version: 12
           registry-url: 'https://registry.npmjs.org'
@@ -33,7 +33,7 @@ jobs:
 
       - name: Publish prerelease
         run: |
-          yarn lerna publish --yes --canary --force-publish
+          yarn lerna publish --yes --canary --force-publish --no-verify-access
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
         if: github.ref == 'refs/heads/canary'
@@ -45,13 +45,13 @@ jobs:
         if: github.ref == 'refs/heads/master'
 
       - name: Publish release to npm
-        run: yarn lerna publish from-package --yes
+        run: yarn lerna publish from-package --yes --no-verify-access
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
         if: github.ref == 'refs/heads/master'
 
       - name: Create .npmrc for github registry auth
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v2
         with:
           node-version: 12
           registry-url: 'https://npm.pkg.github.com'

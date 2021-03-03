@@ -23,8 +23,30 @@ function updateVsCodeTasks() {
             },
             {
               type: 'shell',
+              label: 'Nightwatch: запустить testcase текущего файла в Chrome локально',
+              command:
+                "yarn et nightwatch:run --browser local_chrome --test='${file}' --testcase='${input:testcase}'",
+              problemMatcher: [],
+              presentation: {
+                showReuseMessage: false,
+              },
+              group: 'build',
+            },
+            {
+              type: 'shell',
               label: 'Nightwatch: запустить текущий файл в Chrome на удалённом сервере',
               command: "yarn et nightwatch:run --browser remote_chrome --test='${file}'",
+              problemMatcher: [],
+              presentation: {
+                showReuseMessage: false,
+              },
+              group: 'build',
+            },
+            {
+              type: 'shell',
+              label: 'Nightwatch: запустить testcase текущего файла в Chrome на удалённом сервере',
+              command:
+                "yarn et nightwatch:run --browser remote_chrome --test='${file}' --testcase='${input:testcase}'",
               problemMatcher: [],
               presentation: {
                 showReuseMessage: false,
@@ -58,6 +80,17 @@ function updateVsCodeTasks() {
             },
           ],
           (task) => task.label
+        ),
+        inputs: uniqBy(
+          [
+            ...(config.inputs || []),
+            {
+              id: 'testcase',
+              type: 'promptString',
+              description: 'Имя запускаемого testcase',
+            },
+          ],
+          (input) => input.id
         ),
       }
     },
