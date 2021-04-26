@@ -30,7 +30,7 @@
     "prettier": "2.2.1",
     "readline-sync": "^1.4.10",
     "validate-npm-package-name": "^3.0.0",
-    "yargs": "^15.4.1"
+    "yargs": "^16.2.0"
   },
   "repository": {
     "type": "git",
