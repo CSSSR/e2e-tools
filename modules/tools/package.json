@@ -17,17 +17,17 @@
     "access": "public"
   },
   "dependencies": {
-    "comment-json": "4.0.4",
+    "comment-json": "4.1.0",
     "cross-spawn": "^7.0.3",
     "dotenv": "^8.1.0",
-    "eslint": "^7.8.1",
-    "fast-glob": "^3.2.4",
+    "eslint": "^7.25.0",
+    "fast-glob": "^3.2.5",
     "find-root": "^1.1.0",
-    "handlebars": "^4.7.6",
+    "handlebars": "^4.7.7",
     "inquirer": "^7.3.3",
-    "lodash": "^4.17.20",
+    "lodash": "^4.17.21",
     "package-json": "^6.5.0",
-    "prettier": "2.1.1",
+    "prettier": "2.2.1",
     "readline-sync": "^1.4.10",
     "validate-npm-package-name": "^3.0.0",
     "yargs": "^15.4.1"
