@@ -1,4 +1,4 @@
-const isCI = require('is-ci')
+const { isCI } = require('ci-info')
 const { getConfig } = require('@csssr/e2e-tools/utils')
 const packageName = require('../../package.json').name
 
