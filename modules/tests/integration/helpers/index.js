@@ -1,3 +1,4 @@
+require('core-js/features/string/replace-all')
 const fs = require('fs')
 const path = require('path')
 const spawn = require('cross-spawn')
@@ -28,7 +29,9 @@ function setupEnvironment(name) {
   return {
     rootDir: sandboxDir,
     readFile(filePath) {
-      return fs.readFileSync(path.join(sandboxDir, filePath), 'utf-8')
+      return fs
+        .readFileSync(path.join(sandboxDir, filePath), 'utf-8')
+        .replaceAll(path.join(__dirname, '../../../..'), '<root>')
     },
     run(command, { promptResults = {} } = {}) {
       spawn.sync(

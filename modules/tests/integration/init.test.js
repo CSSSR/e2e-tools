@@ -32,7 +32,7 @@ describe('init command', () => {
         \\"private\\": true,
         \\"prettier\\": \\"@csssr/e2e-tools/prettier\\",
         \\"devDependencies\\": {
-          \\"@csssr/e2e-tools\\": \\"file:/Users/nitive/Work/e2e-tools/modules/tools\\"
+          \\"@csssr/e2e-tools\\": \\"file:<root>/modules/tools\\"
         }
       }
       "

@@ -97,11 +97,6 @@ function checks({ readFile, rootDir }) {
     expect(jenkinsfile).toMatchSnapshot()
   })
 
-  it('should add Dockerfile', async () => {
-    const dockerfile = readFile('e2e-tests/nightwatch/Dockerfile')
-    expect(dockerfile).toMatchSnapshot()
-  })
-
   it('should add tasks', async () => {
     const vscodeTasks = JSONWithComments.parse(readFile('e2e-tests/.vscode/tasks.json'), null, true)
 

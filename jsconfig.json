@@ -3,7 +3,7 @@
     "checkJs": true,
     "moduleResolution": "node",
     "resolveJsonModule": true,
-    "lib": ["dom", "es2016"],
-    "target": "es2015"
+    "lib": ["dom", "esnext"],
+    "target": "es2020"
   }
 }
