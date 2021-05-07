@@ -1,0 +1,10 @@
+{
+  "major": {
+    "enabled": false
+  },
+  "enabledManagers": ["npm"],
+  "lockFileMaintenance": {
+    "enabled": true,
+    "extends": ["schedule:weekly"]
+  }
+}
