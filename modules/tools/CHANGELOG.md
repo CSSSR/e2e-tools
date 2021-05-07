@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.4.2](https://github.com/CSSSR/e2e-tools/compare/@csssr/e2e-tools@1.4.1...@csssr/e2e-tools@1.4.2) (2021-05-07)
+
+**Note:** Version bump only for package @csssr/e2e-tools
+
+
+
+
+
 ## [1.4.1](https://github.com/CSSSR/e2e-tools/compare/@csssr/e2e-tools@1.4.0...@csssr/e2e-tools@1.4.1) (2020-12-09)
 
 **Note:** Version bump only for package @csssr/e2e-tools

@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.4.3](https://github.com/CSSSR/e2e-tools/compare/@csssr/nightwatch-image-comparison@0.4.2...@csssr/nightwatch-image-comparison@0.4.3) (2021-05-07)
+
+**Note:** Version bump only for package @csssr/nightwatch-image-comparison
+
+
+
+
+
 ## [0.4.2](https://github.com/CSSSR/e2e-tools/compare/@csssr/nightwatch-image-comparison@0.4.1...@csssr/nightwatch-image-comparison@0.4.2) (2020-12-09)
 
 
