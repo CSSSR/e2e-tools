@@ -47,12 +47,6 @@ const addNightwatchRunCommand = (context) => {
       testcase: {
         describe: 'Testcase in test file',
       },
-      publishResults: {
-        boolean: true,
-        default: isCI,
-        describe:
-          'Publish test run results to TestRail. This option is on by default in most popular CI environments',
-      },
       checkScreenshots: {
         boolean: true,
         describe: 'Check screenshots',
@@ -72,7 +66,7 @@ const addNightwatchRunCommand = (context) => {
             test: args.test,
             testcase: args.testcase,
             config: require.resolve('@csssr/e2e-tools-nightwatch/config'),
-            publishResults: args.publishResults,
+            /*TODO remove publishResults: args.publishResults,*/
             checkScreenshots: args.checkScreenshots,
           }),
         ],

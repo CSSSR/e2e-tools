@@ -184,14 +184,7 @@ const jenkinsReporter = {
 }
 
 function getReporter() {
-  const mainReporter = ci.isCI ? jenkinsReporter : mochawesomeReporter
-  const publishResults = !!(boolArg(argv.publishResults) && config.testrail)
-
-  if (publishResults) {
-    throw new Error('Публикация результатов в Testrail пока не поддерживается')
-  }
-
-  return mainReporter
+  return ci.isCI ? jenkinsReporter : mochawesomeReporter
 }
 
 module.exports = {
