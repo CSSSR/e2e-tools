@@ -1,5 +1,7 @@
 {
-  "enabled": false,
+  "major": {
+    "enabled": false
+  },
   "enabledManagers": ["npm"],
   "lockFileMaintenance": {
     "enabled": true,
