@@ -17,7 +17,7 @@ exports.setupHooksInternal = () => {
   before(function globalBeforeHook(browser, done) {
     // @ts-ignore
     global.browser = browser
-    if (browser.options.desiredCapabilities.browserName === 'Safari') {
+    if (browser.options.desiredCapabilities.browserName.toLowerCase() === 'safari') {
       browser.maximizeWindow()
     }
     done()
