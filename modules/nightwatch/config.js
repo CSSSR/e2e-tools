@@ -194,6 +194,7 @@ module.exports = {
   src_folders: ['./nightwatch/tests'],
   filter: argv.test || '**/*.test.js',
   globals: {
+    abortOnElementLocateError: true,
     screenshots: {
       testsRootDir: path.join(rootDir, 'nightwatch/tests'),
       screenshotsRootDir: path.join(rootDir, 'nightwatch/screenshots'),
