@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.15.5](https://github.com/CSSSR/e2e-tools/compare/@csssr/e2e-tools-nightwatch@1.15.3...@csssr/e2e-tools-nightwatch@1.15.5) (2021-06-02)
+
+
+### Bug Fixes
+
+* Завершаем тест с ошибкой, если элемент не найден ([#58](https://github.com/CSSSR/e2e-tools/issues/58)) ([7d9ab7f](https://github.com/CSSSR/e2e-tools/commit/7d9ab7fb0518bb95611dbcb20510463e4ee1d1a8)), closes [#31](https://github.com/CSSSR/e2e-tools/issues/31)
+
+
+
+
+
 ## [1.15.4](https://github.com/CSSSR/e2e-tools/compare/@csssr/e2e-tools-nightwatch@1.15.3...@csssr/e2e-tools-nightwatch@1.15.4) (2021-06-02)
 
 **Note:** Version bump only for package @csssr/e2e-tools-nightwatch
