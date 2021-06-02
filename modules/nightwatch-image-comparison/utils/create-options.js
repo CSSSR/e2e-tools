@@ -11,7 +11,7 @@ function getScreenshotFolder({ testsRootDir, testFileName }) {
     .join(path.sep)
 }
 
-exports.createOptions = async (client, browserName, testsRootDir, options = {}) => {
+exports.createOptions = async (client, screenshotName, testsRootDir, options = {}) => {
   const {
     hideSelectors = [],
     removeSelectors = [],
@@ -26,7 +26,7 @@ exports.createOptions = async (client, browserName, testsRootDir, options = {}) 
 
   const wic = defaultOptions({
     autoSaveBaseline: true,
-    formatImageName: `${screenshotFolder}/{tag}/${browserName}-{width}x{height}`,
+    formatImageName: `${screenshotFolder}/{tag}/${screenshotName}-{width}x{height}`,
   })
 
   const method = {
