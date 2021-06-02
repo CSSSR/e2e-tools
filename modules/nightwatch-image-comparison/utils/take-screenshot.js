@@ -17,6 +17,7 @@ const { createOptions } = require('./create-options')
 function getInstanceData(capabilities) {
   // Substract the needed data from the running instance
   const browserName = (capabilities.browserName || '').toLowerCase()
+
   const logName =
     capabilities.logName ||
     (capabilities['sauce:options'] ? capabilities['sauce:options'].logName : null) ||
@@ -100,6 +101,7 @@ function takeScreenshot({ client, description, check, methodOptions, callback })
   }
 
   const instanceData = getInstanceData(client.capabilities)
+  const screenshotName = client.options.desiredCapabilities.browserId || instanceData.browserName
 
   const folders = {
     actualFolder: path.join(globalOptions.screenshotsRootDir, 'actual'),
@@ -143,7 +145,7 @@ function takeScreenshot({ client, description, check, methodOptions, callback })
     },
   }
 
-  createOptions(client, instanceData.browserName, globalOptions.testsRootDir, methodOptions).then(
+  createOptions(client, screenshotName, globalOptions.testsRootDir, methodOptions).then(
     ({ options, allowedMisMatchPercentage }) => {
       return check({
         methods,

@@ -54,3 +54,16 @@ yarn et nightwatch:add-browser --name browserstack_ie --configUrl https://csssr.
   "defaultLaunchUrl": "https://user:password@my.site.ru/"
 }
 ```
+
+## Идентификация браузера при использовании одинаковых browserName
+
+Заменяет имя файла скриншота с browserName на browserId
+Id браузера можно задать в файле `e2e-tools.json`:
+
+```json
+"desiredCapabilities": {
+  "browserId": "chrome-1",
+  "browserName": "chrome",
+  }
+},
+```
