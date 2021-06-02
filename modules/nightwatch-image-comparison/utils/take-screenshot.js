@@ -101,7 +101,7 @@ function takeScreenshot({ client, description, check, methodOptions, callback })
   }
 
   const instanceData = getInstanceData(client.capabilities)
-  const screenshotName = client.options.desiredCapabilities.browserId || instanceData.browserName;
+  const screenshotName = client.options.desiredCapabilities.browserId || instanceData.browserName
 
   const folders = {
     actualFolder: path.join(globalOptions.screenshotsRootDir, 'actual'),
