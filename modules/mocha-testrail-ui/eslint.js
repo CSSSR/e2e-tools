@@ -3,5 +3,6 @@ module.exports = {
     testcase: true,
     step: true,
     expected: true,
+    store: true,
   },
 }

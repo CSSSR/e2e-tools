@@ -36,7 +36,8 @@ module.exports = function bddInterface(rootSuite) {
     context.beforeEach = common.beforeEach
     context.afterEach = common.afterEach
     context.run = mocha.options.delay && common.runWithSuite(rootSuite)
-
+    // store for share variables
+    context.store = {};
     /**
      * testcase
      */
