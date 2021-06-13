@@ -2958,6 +2958,11 @@ dezalgo@^1.0.0:
     asap "^2.0.0"
     wrappy "1"
 
+didyoumean@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/didyoumean/-/didyoumean-1.2.1.tgz#e92edfdada6537d484d73c0172fd1eba0c4976ff"
+  integrity sha1-6S7f2tplN9SE1zwBcv0eugxJdv8=
+
 diff-sequences@^26.6.2:
   version "26.6.2"
   resolved "https://registry.yarnpkg.com/diff-sequences/-/diff-sequences-26.6.2.tgz#48ba99157de1923412eed41db6b6d4aa9ca7c0b1"
@@ -6128,14 +6133,15 @@ nice-try@^1.0.4:
   resolved "https://registry.yarnpkg.com/nice-try/-/nice-try-1.0.5.tgz#a3378a7696ce7d223e88fc9b764bd7ef1089e366"
   integrity sha512-1nh45deeb5olNY7eX82BkPO7SSxR5SSYJiPTrTdFUVYwAl8CKMA5N9PjTYkHiRjisVcxcQ1HXdLhx2qxxJzLNQ==
 
-nightwatch@~1.6.3:
-  version "1.6.4"
-  resolved "https://registry.yarnpkg.com/nightwatch/-/nightwatch-1.6.4.tgz#9d0a92d13e93a7abff7d3a11a944bd5228da8ed7"
-  integrity sha512-3Ivb8TVjM9GHYwN0Ixi0CK+5hznRLsY7iiY1CBmdRi01ofx3a6glVvbrhsfOshwN3ai/tTaJ2D9taQGZ05wy3w==
+nightwatch@~1.7.0:
+  version "1.7.3"
+  resolved "https://registry.yarnpkg.com/nightwatch/-/nightwatch-1.7.3.tgz#0a924be207a46aa9e8c97f08b4cf41da486727b3"
+  integrity sha512-8haEi+FhJfjB3bfhsmNhGrllhFsLz+Ax+xxLbJ1vvyKPH27XgQQQ3UbYXAq2kvj+TiyfT4nHeHLKEwRvVeY3kA==
   dependencies:
     assertion-error "^1.1.0"
     chai-nightwatch "^0.4.0"
     ci-info "^2.0.0"
+    didyoumean "^1.2.1"
     dotenv "7.0.0"
     ejs "^3.1.6"
     envinfo "^7.5.1"
