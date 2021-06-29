@@ -1,0 +1,37 @@
+{
+  "name": "@csssr/e2e-tools-codecept",
+  "version": "1.0.0",
+  "description": "Codecept плагин для @csssr/e2e-tools",
+  "author": "Pavel Liaukovich <pl@xlinur.com>",
+  "license": "MIT",
+  "main": "./src/index.js",
+  "typings": "./index.d.ts",
+  "files": [
+    "/*.js",
+    "index.d.ts",
+    "ts.json",
+    "src/",
+    "templates/"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@csssr/e2e-tools": "^1.4.2",
+    "@types/mocha": "^8.2.2",
+    "@types/node": "^14.14.41",
+    "axios": "^0.21.1",
+    "chalk": "^4.1.1",
+    "ci-info": "^3.1.1",
+    "codeceptjs": "^3.0.7",
+    "mocha": "^6",
+    "mochawesome": "^4",
+    "testcafe": "^1.14.2",
+    "rimraf": "^3.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "ssh://git@github.com/CSSSR/e2e-tools.git",
+    "directory": "modules/codecept"
+  },
+}
