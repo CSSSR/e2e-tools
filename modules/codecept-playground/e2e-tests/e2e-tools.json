@@ -1,0 +1,5 @@
+{
+  "tools": { "@csssr/e2e-tools-codecept": { "browsers": {} } },
+  "projectName": "codecept-playground",
+  "defaultLaunchUrl": "https://csssr.com"
+}
