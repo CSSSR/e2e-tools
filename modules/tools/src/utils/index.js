@@ -158,7 +158,7 @@ function getEnvVariable(variable, description) {
       fs.writeFileSync(envFilePath, '\n')
     }
 
-    const config = dotenv.config()
+    const config = dotenv.config({ path: envFilePath })
     if (process.env[variable]) {
       return process.env[variable]
     }
