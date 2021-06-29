@@ -1,5 +1,6 @@
 {
   "packages": [
+    "modules/codecept",
     "modules/jenkins-reporter",
     "modules/mocha-testrail-ui",
     "modules/nightwatch",

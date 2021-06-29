@@ -6,7 +6,8 @@
     "test": "rm -rf modules/tests/integration/sandbox && jest --runInBand"
   },
   "workspaces": [
-    "modules/*"
+    "modules/*",
+    "modules/codecept-playground/e2e-tests"
   ],
   "devDependencies": {
     "@types/jest": "^26.0.23",
