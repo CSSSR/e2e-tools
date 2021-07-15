@@ -5,7 +5,7 @@ declare namespace CodeceptJS {
     I: I
     current: any
   }
-  interface Methods extends TestCafe {}
+  interface Methods extends Playwright, Webdriver, Puppeteer {}
   interface I extends WithTranslation<Methods> {}
   namespace Translation {
     interface Actions {}
