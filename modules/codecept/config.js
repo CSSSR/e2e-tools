@@ -1,12 +1,82 @@
+const { getConfig, getEnvVariable } = require('@csssr/e2e-tools/utils')
+
+const config = getConfig()
+
+function getBasicAuthAuthorizationHeader(url, basicAuth) {
+  const username = getEnvVariable(basicAuth.username_env, `Логин от ${url}`)
+  const password = getEnvVariable(basicAuth.password_env, `Пароль от ${url}`)
+  return `Basic ${Buffer.from(`${username}:${password}`, 'utf-8').toString('base64')}`
+}
+
+function getBrowser(browserName, browserConfig) {
+  const { type, default: isDefault, remote, url, seleniumBasicAuth, ...settings } = browserConfig
+
+  switch (type) {
+    case 'playwright': {
+      return {
+        Playwright: {
+          url: config.defaultLaunchUrl,
+          ...settings,
+        },
+      }
+    }
+
+    case 'puppeteer': {
+      return {
+        Puppeteer: {
+          url: config.defaultLaunchUrl,
+          ...settings,
+        },
+      }
+    }
+
+    case 'selenium': {
+      if (!url) {
+        throw new Error(`Selenium url is not specified for browser ${browserName}`)
+      }
+
+      const u = new URL(url)
+      return {
+        Webdriver: {
+          url: config.defaultLaunchUrl,
+          host: u.host,
+          port: Number(u.port || (u.protocol === 'https:' ? 443 : 80)),
+          protocol: u.protocol.slice(0, -1),
+          headers: {
+            Authorization: getBasicAuthAuthorizationHeader(u, seleniumBasicAuth),
+          },
+          uniqueScreenshotNames: true,
+          ...settings,
+        },
+      }
+    }
+
+    default:
+      throw new Error(`Unexpected browser type ${type}`)
+  }
+}
+
+const { browsers } = config.tools['@csssr/e2e-tools-codecept']
+
+function getBrowserName() {
+  if (process.env.BROWSER) {
+    return process.env.BROWSER
+  }
+
+  for (const browserName of Object.keys(browsers)) {
+    if (browsers[browserName].default) {
+      return browserName
+    }
+  }
+}
+
+const browserName = getBrowserName()
+
 exports.config = {
   tests: './tests/**/*.test.js',
   output: './report',
-  helpers: {
-    Puppeteer: {
-      url: 'http://localhost',
-      show: true,
-    },
-  },
+  helpers: getBrowser(browserName, browsers[browserName]),
+
   bootstrap: null,
   mocha: {},
   name: 'e2e-tests',

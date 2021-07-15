@@ -10,6 +10,7 @@ const {
   getProjectRootDir,
 } = require('@csssr/e2e-tools/utils')
 const packageName = require('./package.json').name
+const { getCommands } = require('./src/commands')
 
 function normalizeUrl(input) {
   if (input.startsWith('http')) {
@@ -75,7 +76,38 @@ async function addAnyProjectFields(ctx, opts) {
 
 function createToolConfig() {
   return {
-    browsers: {},
+    browsers: {
+      local_chrome: {
+        default: true,
+        type: 'playwright',
+        show: true,
+        browser: 'chromium',
+      },
+      local_firefox: {
+        type: 'playwright',
+        browser: 'firefox',
+        show: true,
+      },
+      remote_chrome: {
+        remote: true,
+        type: 'selenium',
+
+        url: 'https://selenium.csssr.cloud',
+        seleniumBasicAuth: {
+          credentialsId: 'selenium',
+          username_env: 'SELENIUM_USERNAME',
+          password_env: 'SELENIUM_PASSWORD',
+        },
+
+        browser: 'chrome',
+        windowSize: '1920x1680',
+        desiredCapabilities: {
+          'goog:chromeOptions': {
+            args: ['--headless', '--no-sandbox', '--disable-gpu', '--window-size=1200,800'],
+          },
+        },
+      },
+    },
   }
 }
 
@@ -94,10 +126,6 @@ function upgrade() {
     templatesRoot: path.join(__dirname, 'templates'),
     destinationRoot: getProjectRootDir(),
   })
-}
-
-function getCommands(context) {
-  return [].filter(Boolean)
 }
 
 module.exports = {
