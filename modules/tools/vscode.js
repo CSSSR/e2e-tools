@@ -1,20 +1,29 @@
 const uniqBy = require('lodash/uniqBy')
+const fs = require('fs')
 const path = require('path')
 const { updateJsonFile, getTestsRootDir } = require('@csssr/e2e-tools/utils')
 
-function updateVsCodeTasks() {
+function updateVsCodeConfig({ frameworkName, runCommand, tasks = [], inputs = [] }) {
+  const vscodeTasksFilePath = path.join(getTestsRootDir(), '.vscode/tasks.json')
+
+  if (!fs.existsSync(vscodeTasksFilePath)) {
+    fs.mkdirSync(path.dirname(vscodeTasksFilePath), { recursive: true })
+    fs.writeFileSync(vscodeTasksFilePath, '{}', { encoding: 'utf-8' })
+  }
+
   updateJsonFile({
-    filePath: path.join(getTestsRootDir(), '.vscode/tasks.json'),
+    filePath: vscodeTasksFilePath,
     update(config) {
       return {
         ...config,
         tasks: uniqBy(
           [
-            ...config.tasks,
+            ...(config.tasks || []),
+            ...tasks,
             {
               type: 'shell',
-              label: 'Nightwatch: запустить текущий файл в Chrome локально',
-              command: "yarn et nightwatch:run --browser local_chrome --test='${file}'",
+              label: `${frameworkName}: запустить текущий файл в Chrome локально`,
+              command: `yarn et ${runCommand} --browser local_chrome --test='\${file}'`,
               problemMatcher: [],
               presentation: {
                 showReuseMessage: false,
@@ -23,9 +32,8 @@ function updateVsCodeTasks() {
             },
             {
               type: 'shell',
-              label: 'Nightwatch: запустить testcase текущего файла в Chrome локально',
-              command:
-                "yarn et nightwatch:run --browser local_chrome --test='${file}' --testcase='${input:testcase}'",
+              label: `${frameworkName}: запустить testcase текущего файла в Chrome локально`,
+              command: `yarn et ${runCommand} --browser local_chrome --test='\${file}' --testcase='\${input:testcase}'`,
               problemMatcher: [],
               presentation: {
                 showReuseMessage: false,
@@ -34,8 +42,8 @@ function updateVsCodeTasks() {
             },
             {
               type: 'shell',
-              label: 'Nightwatch: запустить текущий файл в Chrome на удалённом сервере',
-              command: "yarn et nightwatch:run --browser remote_chrome --test='${file}'",
+              label: `${frameworkName}: запустить текущий файл в Chrome на удалённом сервере`,
+              command: `yarn et ${runCommand} --browser remote_chrome --test='\${file}'`,
               problemMatcher: [],
               presentation: {
                 showReuseMessage: false,
@@ -44,9 +52,8 @@ function updateVsCodeTasks() {
             },
             {
               type: 'shell',
-              label: 'Nightwatch: запустить testcase текущего файла в Chrome на удалённом сервере',
-              command:
-                "yarn et nightwatch:run --browser remote_chrome --test='${file}' --testcase='${input:testcase}'",
+              label: `${frameworkName}: запустить testcase текущего файла в Chrome на удалённом сервере`,
+              command: `yarn et ${runCommand} --browser remote_chrome --test='\${file}' --testcase='\${input:testcase}'`,
               problemMatcher: [],
               presentation: {
                 showReuseMessage: false,
@@ -55,20 +62,10 @@ function updateVsCodeTasks() {
             },
             {
               type: 'shell',
-              label: 'Nightwatch: запустить все тесты в Chrome на удалённом сервере',
-              command: 'yarn et nightwatch:run --browser remote_chrome',
+              label: `${frameworkName}: запустить все тесты в Chrome на удалённом сервере`,
+              command: `yarn et ${runCommand} --browser remote_chrome`,
               problemMatcher: [],
               presentation: { showReuseMessage: false },
-              group: 'build',
-            },
-            {
-              type: 'shell',
-              label: 'Nightwatch: Открыть HTML отчёт о последнем прогоне',
-              command: 'open nightwatch/report/mochawesome.html',
-              windows: {
-                command: 'explorer nightwatch/report\\mochawesome.html',
-              },
-              problemMatcher: [],
               group: 'build',
             },
             {
@@ -84,6 +81,7 @@ function updateVsCodeTasks() {
         inputs: uniqBy(
           [
             ...(config.inputs || []),
+            ...inputs,
             {
               id: 'testcase',
               type: 'promptString',
@@ -97,4 +95,4 @@ function updateVsCodeTasks() {
   })
 }
 
-module.exports = { updateVsCodeTasks }
+module.exports = { updateVsCodeConfig }

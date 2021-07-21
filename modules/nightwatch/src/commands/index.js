@@ -1,4 +1,4 @@
-const { addNightwatchRunCommand } = require('./nightwatch-run')
+const { addNightwatchRunCommand } = require('./run')
 const { addNightwatchAddBrowserCommand } = require('./add-browser')
 
 function getCommands(context) {

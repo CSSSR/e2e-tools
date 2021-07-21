@@ -97,19 +97,26 @@ const upgradeCommand = (context) => ({
       describe:
         'Whether update package versions in package.json on just regenerate files. Useful to for beta versions',
     },
+    updateSubdependencies: {
+      boolean: true,
+      default: true,
+      describe: 'Whether update subdependencies such as chromedriver',
+    },
   },
   async handler(args) {
     const info = await getPackageInfo(toolsPackageInfo.name)
 
-    spawn.sync('yarn', [], {
-      stdio: 'inherit',
-      cwd: getTestsRootDir(),
-    })
+    if (args.updateSubdependencies) {
+      spawn.sync('yarn', [], {
+        stdio: 'inherit',
+        cwd: getTestsRootDir(),
+      })
 
-    spawn.sync('yarn', ['upgrade'], {
-      stdio: 'inherit',
-      cwd: getTestsRootDir(),
-    })
+      spawn.sync('yarn', ['upgrade'], {
+        stdio: 'inherit',
+        cwd: getTestsRootDir(),
+      })
+    }
 
     if (args.updatePackageJson && toolsPackageInfo.version !== info.version) {
       spawn.sync('yarn', ['add', '--dev', '--tilde', `${toolsPackageInfo.name}@latest`], {

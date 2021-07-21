@@ -1,0 +1,58 @@
+{
+  "tasks": [
+    {
+      "type": "shell",
+      "label": "CodeceptJS: запустить текущий файл в Chrome локально",
+      "command": "yarn et codecept:run --browser local_chrome --test='${file}'",
+      "problemMatcher": [],
+      "presentation": { "showReuseMessage": false },
+      "group": "build"
+    },
+    {
+      "type": "shell",
+      "label": "CodeceptJS: запустить testcase текущего файла в Chrome локально",
+      "command": "yarn et codecept:run --browser local_chrome --test='${file}' --testcase='${input:testcase}'",
+      "problemMatcher": [],
+      "presentation": { "showReuseMessage": false },
+      "group": "build"
+    },
+    {
+      "type": "shell",
+      "label": "CodeceptJS: запустить текущий файл в Chrome на удалённом сервере",
+      "command": "yarn et codecept:run --browser remote_chrome --test='${file}'",
+      "problemMatcher": [],
+      "presentation": { "showReuseMessage": false },
+      "group": "build"
+    },
+    {
+      "type": "shell",
+      "label": "CodeceptJS: запустить testcase текущего файла в Chrome на удалённом сервере",
+      "command": "yarn et codecept:run --browser remote_chrome --test='${file}' --testcase='${input:testcase}'",
+      "problemMatcher": [],
+      "presentation": { "showReuseMessage": false },
+      "group": "build"
+    },
+    {
+      "type": "shell",
+      "label": "CodeceptJS: запустить все тесты в Chrome на удалённом сервере",
+      "command": "yarn et codecept:run --browser remote_chrome",
+      "problemMatcher": [],
+      "presentation": { "showReuseMessage": false },
+      "group": "build"
+    },
+    {
+      "type": "shell",
+      "label": "Обновить @csssr/e2e-tools",
+      "command": "yarn et upgrade",
+      "problemMatcher": [],
+      "group": "build"
+    }
+  ],
+  "inputs": [
+    {
+      "id": "testcase",
+      "type": "promptString",
+      "description": "Имя запускаемого testcase"
+    }
+  ]
+}
