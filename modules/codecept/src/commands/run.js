@@ -1,20 +1,6 @@
-const { getConfig, getTestsRootDir } = require('@csssr/e2e-tools/utils')
+const path = require('path')
+const { getConfig, getTestsRootDir, createArgsArrayFromMap } = require('@csssr/e2e-tools/utils')
 const packageName = require('../../package.json').name
-
-function createArgsArrayFromMap(argsMap) {
-  return Object.keys(argsMap)
-    .map((arg) => {
-      const value = argsMap[arg]
-      if (value === undefined) return []
-
-      if (Array.isArray(value)) {
-        return value.map((v) => [`--${arg}`, v]).reduce((acc, x) => acc.concat(x), [])
-      }
-
-      return [`--${arg}`, value]
-    })
-    .reduce((acc, x) => acc.concat(x), [])
-}
 
 /**
  * @returns {import('yargs').CommandModule | undefined}
@@ -40,24 +26,33 @@ const addRunCommand = (context) => {
         default: defaultBrowser,
         choices: browsers,
       },
+      test: {
+        describe: 'Test file',
+      },
+      testcase: {
+        describe: 'Testcase in test file (--grep option in codecept)',
+      },
     },
     command: 'codecept:run',
     describe: 'Run CodeceptJS tests',
     handler(args) {
       context.spawnSync('yarn', ['install', '--frozen-lockfile'], { stdio: 'inherit' })
+      const testRoot = getTestsRootDir()
 
       const result = context.spawnSync(
         'yarn',
         [
           'codeceptjs',
           'run',
+          ...(args.test ? [args.test.replace(path.join(testRoot, 'codecept/'), '')] : []),
           ...createArgsArrayFromMap({
             config: 'codecept/codecept.conf.js',
+            grep: args.testcase,
           }),
         ],
         {
           stdio: 'inherit',
-          cwd: getTestsRootDir(),
+          cwd: testRoot,
           env: { ...process.env, BROWSER: args.browser },
         }
       )

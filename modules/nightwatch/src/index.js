@@ -1,20 +1,14 @@
 const path = require('path')
 const {
   getConfig,
-  updateJsonFile,
   updateToolConfig,
-  getTestsRootDir,
-  getParentProjectPackageJsonSafe,
-  getRepoNameByAddress,
-  isValidRepoSshAddress,
-  validatePackageName,
   createFilesFromTemplates,
   getProjectRootDir,
-  getRepoSshAddress,
+  addAnyProjectFields,
 } = require('@csssr/e2e-tools/utils')
+const { updateVsCodeConfig } = require('@csssr/e2e-tools/vscode')
 const packageName = require('../package.json').name
 const { getCommands } = require('./commands')
-const { updateVsCodeTasks } = require('./upgrades/vscode-tasks')
 const { upgradeRemoteBrowsersConfig } = require('./upgrades/upgrade-remote-browsers-config')
 
 function createToolConfig() {
@@ -57,70 +51,30 @@ function createToolConfig() {
   }
 }
 
-function normalizeUrl(input) {
-  if (input.startsWith('http')) {
-    return input
-  }
-
-  return `http://${input}`
+const vscodeSettings = {
+  frameworkName: 'Nightwatch',
+  runCommand: 'nightwatch:run',
+  tasks: [
+    {
+      type: 'shell',
+      label: 'Nightwatch: Открыть HTML отчёт о последнем прогоне',
+      command: 'open nightwatch/report/mochawesome.html',
+      windows: {
+        command: 'explorer nightwatch/report\\mochawesome.html',
+      },
+      problemMatcher: [],
+      group: 'build',
+    },
+  ],
 }
 
-function falseToError(error, func) {
-  return (str) => (func(str) ? true : error)
-}
-
-async function initScript({ inquirer }) {
-  const parentProjectPackageJson = getParentProjectPackageJsonSafe() || {}
-
-  async function prompt(question) {
-    const answers = await inquirer.prompt([question])
-
-    return answers[question.name]
-  }
-  const config = getConfig()
-
-  const launchUrl = await prompt({
-    type: 'input',
-    name: 'launchUrl',
-    default: config.defaultLaunchUrl,
-    message: 'Адрес стенда по умолчанию',
-  })
-
-  const projectName = await prompt({
-    type: 'input',
-    name: 'projectName',
-    default: config.projectName || parentProjectPackageJson.name,
-    message: 'Название проекта (маленькими буквами без пробелов)',
-    validate: falseToError('Навалидное название пакета', validatePackageName),
-  })
-
-  const configNewFields = {
-    projectName,
-    defaultLaunchUrl: normalizeUrl(launchUrl),
-  }
-
-  updateJsonFile({
-    filePath: path.join(getTestsRootDir(), 'e2e-tools.json'),
-    update(prevConfig) {
-      return {
-        ...prevConfig,
-        ...configNewFields,
-      }
-    },
-  })
-
-  createFilesFromTemplates({
-    templatesGlob: '**/*.hbs',
-    templatesData: {
-      config: { ...config, ...configNewFields },
-    },
+async function initScript(ctx) {
+  await addAnyProjectFields(ctx, {
     templatesRoot: path.join(__dirname, '../templates'),
-    destinationRoot: getProjectRootDir(),
   })
 
   updateToolConfig(packageName, createToolConfig)
-
-  updateVsCodeTasks()
+  updateVsCodeConfig(vscodeSettings)
 }
 
 function upgrade() {
@@ -131,7 +85,7 @@ function upgrade() {
     destinationRoot: getProjectRootDir(),
   })
 
-  updateVsCodeTasks()
+  updateVsCodeConfig(vscodeSettings)
   upgradeRemoteBrowsersConfig()
 }
 

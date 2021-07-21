@@ -209,6 +209,83 @@ function createFilesFromTemplates({
   })
 }
 
+function createArgsArrayFromMap(argsMap) {
+  return Object.keys(argsMap)
+    .map((arg) => {
+      const value = argsMap[arg]
+      if (value === undefined) return []
+
+      if (Array.isArray(value)) {
+        return value.map((v) => [`--${arg}`, v]).reduce((acc, x) => acc.concat(x), [])
+      }
+
+      return [`--${arg}`, value]
+    })
+    .reduce((acc, x) => acc.concat(x), [])
+}
+
+function normalizeUrl(input) {
+  if (input.startsWith('http')) {
+    return input
+  }
+
+  return `http://${input}`
+}
+
+function falseToError(error, func) {
+  return (str) => (func(str) ? true : error)
+}
+
+async function addAnyProjectFields(ctx, opts) {
+  const parentProjectPackageJson = getParentProjectPackageJsonSafe() || {}
+
+  async function prompt(question) {
+    const answers = await ctx.inquirer.prompt([question])
+
+    return answers[question.name]
+  }
+  const config = getConfig()
+
+  const launchUrl = await prompt({
+    type: 'input',
+    name: 'launchUrl',
+    default: config.defaultLaunchUrl,
+    message: 'Адрес стенда по умолчанию',
+  })
+
+  const projectName = await prompt({
+    type: 'input',
+    name: 'projectName',
+    default: config.projectName || parentProjectPackageJson.name,
+    message: 'Название проекта (маленькими буквами без пробелов)',
+    validate: falseToError('Навалидное название пакета', validatePackageName),
+  })
+
+  const configNewFields = {
+    projectName,
+    defaultLaunchUrl: normalizeUrl(launchUrl),
+  }
+
+  updateJsonFile({
+    filePath: path.join(getTestsRootDir(), 'e2e-tools.json'),
+    update(prevConfig) {
+      return {
+        ...prevConfig,
+        ...configNewFields,
+      }
+    },
+  })
+
+  createFilesFromTemplates({
+    templatesGlob: '**/*.hbs',
+    templatesData: {
+      config: { ...config, ...configNewFields },
+    },
+    templatesRoot: opts.templatesRoot,
+    destinationRoot: getProjectRootDir(),
+  })
+}
+
 module.exports = {
   getTestsRootDir,
   getProjectRootDir,
@@ -225,4 +302,8 @@ module.exports = {
   createFilesFromTemplates,
   isValidRepoSshAddress,
   getRepoSshAddress,
+  createArgsArrayFromMap,
+  normalizeUrl,
+  falseToError,
+  addAnyProjectFields,
 }

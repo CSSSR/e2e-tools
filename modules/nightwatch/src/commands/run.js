@@ -1,21 +1,5 @@
-const { isCI } = require('ci-info')
-const { getConfig } = require('@csssr/e2e-tools/utils')
+const { getConfig, createArgsArrayFromMap } = require('@csssr/e2e-tools/utils')
 const packageName = require('../../package.json').name
-
-function createArgsArrayFromMap(argsMap) {
-  return Object.keys(argsMap)
-    .map((arg) => {
-      const value = argsMap[arg]
-      if (value === undefined) return []
-
-      if (Array.isArray(value)) {
-        return value.map((v) => [`--${arg}`, v]).reduce((acc, x) => acc.concat(x), [])
-      }
-
-      return [`--${arg}`, value]
-    })
-    .reduce((acc, x) => acc.concat(x), [])
-}
 
 /**
  * @returns {import('yargs').CommandModule | undefined}
