@@ -57,7 +57,7 @@ function generateGitHubWorkflow() {
   function getTestRunJob(testFile) {
     return {
       name: getTestFilePrettyName(testFile),
-      if: `\${{ github.event.inputs.${getJobName(testFile)} == "yes" }}`,
+      if: `github.event.inputs.${getJobName(testFile)} == 'yes'`,
       'runs-on': ['self-hosted', 'e2e-tests'],
       steps: [
         {
