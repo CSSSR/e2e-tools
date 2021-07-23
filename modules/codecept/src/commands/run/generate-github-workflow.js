@@ -25,7 +25,7 @@ function getGitHubSecretEnv(browsers) {
 }
 
 function getTestFilePrettyName(testFile) {
-  return testFile.replace(/^tests\//, '').replace(/\.test\.[jt]s$/, '')
+  return testFile.replace(/\.test\.[jt]s$/, '')
 }
 
 function getJobName(testFile) {
@@ -78,7 +78,7 @@ function generateGitHubWorkflow() {
           'working-directory': 'e2e-tests',
         },
         {
-          run: `yarn et codecept:run --browser \${{ github.event.inputs.browserName }} --test '${testFile}'`,
+          run: `yarn et codecept:run --browser \${{ github.event.inputs.browserName }} --test 'tests/${testFile}'`,
           'working-directory': 'e2e-tests',
           env: {
             ...githubSecretsEnv,
