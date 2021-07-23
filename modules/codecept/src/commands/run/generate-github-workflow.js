@@ -93,7 +93,7 @@ function generateGitHubWorkflow() {
     '# Этот файл сгенерирован автоматически, не редактируйте его вручную\n\n' +
     yaml.dump(
       {
-        name: 'Run e2e tests',
+        name: 'Run CodeceptJS e2e tests',
         concurrency: 'e2e-tests',
         on: {
           workflow_dispatch: {
