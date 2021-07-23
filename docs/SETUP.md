@@ -9,7 +9,6 @@
 ## Добавление тестов
 
 1. Перейти в папку проекта `cd ./some-project`.
-1. Скачать e2e-tools.
 1. Выполнить первичную инициализацию `npx -p @csssr/e2e-tools et init`.
 1. Перейти в сгенерированную папку `cd e2e-tests/`.
 1. Добавить Nightwatch `yarn et add-tool @csssr/e2e-tools-nightwatch`.
