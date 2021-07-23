@@ -32,7 +32,7 @@
     "geckodriver": "1.22.3",
     "mocha": "^6",
     "mochawesome": "^4",
-    "nightwatch": "~1.6.3",
+    "nightwatch": "~1.7.0",
     "rimraf": "^3.0.0"
   },
   "repository": {
