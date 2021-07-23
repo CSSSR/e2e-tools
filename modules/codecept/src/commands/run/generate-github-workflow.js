@@ -27,6 +27,13 @@ function getTestFilePrettyName(testFile) {
   return testFile.replace(/^tests\//, '').replace(/\.test\.[jt]s$/, '')
 }
 
+function getJobName(testFile) {
+  const normalizedName = getTestFilePrettyName(testFile)
+    .toLowerCase()
+    .replace(/[^a-zа-яё\d]/gi, '-')
+  return `run-test-${normalizedName}`
+}
+
 function generateGitHubWorkflow() {
   const config = getConfig()
   const codeceptConfig = config.tools['@csssr/e2e-tools-codecept']
@@ -40,7 +47,7 @@ function generateGitHubWorkflow() {
   }
 
   const githubSecretsEnv = getGitHubSecretEnv(codeceptConfig.browsers)
-  const testFiles = glob.sync('*.test.{js,ts}', {
+  const testFiles = glob.sync('**/*.test.{js,ts}', {
     cwd: path.join(getTestsRootDir(), 'codecept/tests'),
   })
 
@@ -50,6 +57,8 @@ function generateGitHubWorkflow() {
 
   function getTestRunJob(testFile) {
     return {
+      name: getTestFilePrettyName(testFile),
+      if: `\${{ github.event.inputs.${getJobName(testFile)} == "yes" }}`,
       'runs-on': ['self-hosted', 'e2e-tests'],
       steps: [
         {
@@ -103,7 +112,7 @@ function generateGitHubWorkflow() {
 
               ...Object.fromEntries(
                 testFiles.map((testFile) => [
-                  `test-${getTestFilePrettyName(testFile)}`,
+                  getJobName(testFile),
                   {
                     description: `Запустить тест «${getTestFilePrettyName(testFile)}»`,
                     required: false,
@@ -115,19 +124,19 @@ function generateGitHubWorkflow() {
           },
         },
         permissions: {
-          actions: 'none', // read|write|none
-          checks: 'none', // read|write|none
-          contents: 'read', // read|write|none
-          deployments: 'none', // read|write|none
-          issues: 'none', // read|write|none
-          packages: 'none', // read|write|none
-          'pull-requests': 'none', // read|write|none
-          'repository-projects': 'none', // read|write|none
-          'security-events': 'none', // read|write|none
-          statuses: 'none', // read|write|none
+          actions: 'none',
+          checks: 'none',
+          contents: 'read',
+          deployments: 'none',
+          issues: 'none',
+          packages: 'none',
+          'pull-requests': 'none',
+          'repository-projects': 'none',
+          'security-events': 'none',
+          statuses: 'none',
         },
         jobs: Object.fromEntries(
-          testFiles.map((testFile) => [getTestFilePrettyName(testFile), getTestRunJob(testFile)])
+          testFiles.map((testFile) => [getJobName(testFile), getTestRunJob(testFile)])
         ),
       },
       { noCompatMode: true, noRefs: true, lineWidth: -1 }

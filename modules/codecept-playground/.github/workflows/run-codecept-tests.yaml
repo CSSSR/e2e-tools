@@ -1,6 +1,7 @@
 # Этот файл сгенерирован автоматически, не редактируйте его вручную
 
 name: Run e2e tests
+concurrency: e2e-tests
 on:
   workflow_dispatch:
     inputs:
@@ -12,8 +13,8 @@ on:
         description: Название браузера как в e2e-tools.json
         default: remote_chrome
         required: true
-      test-Переход на страницу вакансий:
-        description: Запустить тест «Переход на страницу вакансий»
+      run-test-примеры-переход-на-страницу-авторизации:
+        description: Запустить тест «Примеры/Переход на страницу авторизации»
         required: false
         default: yes
 permissions:
@@ -28,7 +29,9 @@ permissions:
   security-events: none
   statuses: none
 jobs:
-  Переход на страницу вакансий:
+  run-test-примеры-переход-на-страницу-авторизации:
+    name: Примеры/Переход на страницу авторизации
+    if: ${{ github.event.inputs.run-test-примеры-переход-на-страницу-авторизации == "yes" }}
     runs-on:
       - self-hosted
       - e2e-tests
@@ -42,7 +45,7 @@ jobs:
           cache: yarn
       - run: yarn install --frozen-lockfile
         working-directory: e2e-tests
-      - run: yarn et codecept:run --browser ${{ github.event.inputs.browserName }} --test 'Переход на страницу вакансий.test.js'
+      - run: yarn et codecept:run --browser ${{ github.event.inputs.browserName }} --test 'Примеры/Переход на страницу авторизации.test.js'
         working-directory: e2e-tests
         env:
           REMOTE_CHROME_SELENIUM_USERNAME: ${{ secrets.SELENIUM_USERNAME }}
