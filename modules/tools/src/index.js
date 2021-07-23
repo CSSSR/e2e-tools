@@ -87,6 +87,13 @@ async function updateTool(context, packageName, shouldUpdatePackages, releaseCha
   }
 }
 
+// Removes commit from version
+// 1.4.3-alpha.19+25774ce → 1.4.3-alpha.19
+// Idenpotent: dropCommit('1.4.3-alpha') → 1.4.3-alpha.19
+function dropCommit(version) {
+  return version.split('+')[0]
+}
+
 const upgradeCommand = (context) => ({
   command: 'upgrade',
   describe: 'Upgrades all packages',
@@ -122,7 +129,7 @@ const upgradeCommand = (context) => ({
       })
     }
 
-    if (args.updatePackageJson && toolsPackageInfo.version !== info.version) {
+    if (args.updatePackageJson && dropCommit(toolsPackageInfo.version) !== info.version) {
       spawn.sync(
         'yarn',
         ['add', '--dev', '--tilde', `${toolsPackageInfo.name}@${releaseChannel}`],
