@@ -104,9 +104,11 @@ const upgradeCommand = (context) => ({
     },
   },
   async handler(args) {
-    const info = await getPackageInfo(toolsPackageInfo.name)
     const config = getConfig()
     const releaseChannel = config.releaseChannel || 'latest'
+    const info = await getPackageInfo(toolsPackageInfo.name, {
+      version: releaseChannel,
+    })
 
     if (args.updateSubdependencies) {
       spawn.sync('yarn', [], {
