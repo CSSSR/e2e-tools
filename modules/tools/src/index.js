@@ -49,12 +49,13 @@ const addToolCommand = (context) => ({
         }
       },
     })
+    const config = getConfig()
 
     // TODO: find a better way
     const package =
       process.env.NODE_ENV === 'test'
         ? `file:${__dirname.replace('tools/src', 'nightwatch')}`
-        : packageName
+        : `${packageName}@${config.releaseChannel || 'latest'}`
 
     spawn.sync('yarn', ['add', '--dev', '--tilde', package], {
       stdio: 'inherit',
