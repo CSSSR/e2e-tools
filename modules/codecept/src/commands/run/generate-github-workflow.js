@@ -2,6 +2,7 @@ const fs = require('fs')
 const path = require('path')
 const yaml = require('js-yaml')
 const glob = require('fast-glob')
+const crypto = require('crypto')
 const { getConfig, getTestsRootDir, getProjectRootDir } = require('@csssr/e2e-tools/utils')
 
 function getGitHubSecretEnv(browsers) {
@@ -28,10 +29,8 @@ function getTestFilePrettyName(testFile) {
 }
 
 function getJobName(testFile) {
-  const normalizedName = getTestFilePrettyName(testFile)
-    .toLowerCase()
-    .replace(/[^a-zа-яё\d]/gi, '-')
-  return `run-test-${normalizedName}`
+  const hash = crypto.createHash('sha256').update(testFile, 'utf8').digest('hex')
+  return `run-test-${hash}`
 }
 
 function generateGitHubWorkflow() {
