@@ -2,9 +2,15 @@ const { getConfig, getEnvVariable } = require('@csssr/e2e-tools/utils')
 
 const config = getConfig()
 
-function getBasicAuthAuthorizationHeader(url, basicAuth) {
-  const username = getEnvVariable(basicAuth.username_env, `Логин от ${url}`)
-  const password = getEnvVariable(basicAuth.password_env, `Пароль от ${url}`)
+function getSeleniumBasicAuthEnv(browserName, env, description) {
+  const envValue = process.env[`${browserName.toUpperCase()}_${env}`]
+  return envValue || getEnvVariable(env, description)
+}
+
+function getBasicAuthAuthorizationHeader(browserName, browserConfig) {
+  const { url, seleniumBasicAuth: sba } = browserConfig
+  const username = getSeleniumBasicAuthEnv(browserName, sba.username_env, `Login for ${url}`)
+  const password = getSeleniumBasicAuthEnv(browserName, sba.password_env, `Password for ${url}`)
   return `Basic ${Buffer.from(`${username}:${password}`, 'utf-8').toString('base64')}`
 }
 
@@ -43,7 +49,7 @@ function getBrowser(browserName, browserConfig) {
           port: Number(u.port || (u.protocol === 'https:' ? 443 : 80)),
           protocol: u.protocol.slice(0, -1),
           headers: {
-            Authorization: getBasicAuthAuthorizationHeader(u, seleniumBasicAuth),
+            Authorization: getBasicAuthAuthorizationHeader(browserName, browserConfig),
           },
           uniqueScreenshotNames: true,
           ...settings,

@@ -1,6 +1,7 @@
 const path = require('path')
 const { getConfig, getTestsRootDir, createArgsArrayFromMap } = require('@csssr/e2e-tools/utils')
-const packageName = require('../../package.json').name
+const packageName = require('../../../package.json').name
+const { generateGitHubWorkflow } = require('./generate-github-workflow')
 
 /**
  * @returns {import('yargs').CommandModule | undefined}
@@ -37,6 +38,7 @@ const addRunCommand = (context) => {
     describe: 'Run CodeceptJS tests',
     handler(args) {
       context.spawnSync('yarn', ['install', '--frozen-lockfile'], { stdio: 'inherit' })
+      generateGitHubWorkflow()
       const testRoot = getTestsRootDir()
 
       const result = context.spawnSync(

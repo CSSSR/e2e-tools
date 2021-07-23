@@ -44,6 +44,9 @@ function createToolConfig() {
         },
       },
     },
+    githubActions: {
+      enabled: true,
+    },
   }
 }
 
