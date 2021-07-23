@@ -1,0 +1,50 @@
+# Этот файл сгенерирован автоматически, не редактируйте его вручную
+
+name: Run e2e tests
+on:
+  workflow_dispatch:
+    inputs:
+      launchUrl:
+        description: Базовый URL сайта
+        default: https://csssr.com
+        required: true
+      browserName:
+        description: Название браузера как в e2e-tools.json
+        default: remote_chrome
+        required: true
+      test-Переход на страницу вакансий:
+        description: Запустить тест «Переход на страницу вакансий»
+        required: false
+        default: yes
+permissions:
+  actions: none
+  checks: none
+  contents: read
+  deployments: none
+  issues: none
+  packages: none
+  pull-requests: none
+  repository-projects: none
+  security-events: none
+  statuses: none
+jobs:
+  Переход на страницу вакансий:
+    runs-on:
+      - self-hosted
+      - e2e-tests
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          lfs: true
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+          cache: yarn
+      - run: yarn install --frozen-lockfile
+        working-directory: e2e-tests
+      - run: yarn et codecept:run --browser ${{ github.event.inputs.browserName }} --test 'Переход на страницу вакансий.test.js'
+        working-directory: e2e-tests
+        env:
+          REMOTE_CHROME_SELENIUM_USERNAME: ${{ secrets.SELENIUM_USERNAME }}
+          REMOTE_CHROME_SELENIUM_PASSWORD: ${{ secrets.SELENIUM_PASSWORD }}
+          LAUNCH_URL: ${{ github.event.inputs.launchUrl }}
