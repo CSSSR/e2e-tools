@@ -72,9 +72,9 @@ const addToolCommand = (context) => ({
   },
 })
 
-async function updateTool(context, packageName, shouldUpdatePackages) {
+async function updateTool(context, packageName, shouldUpdatePackages, releaseChannel) {
   if (shouldUpdatePackages) {
-    spawn.sync('yarn', ['add', '--dev', '--tilde', `${packageName}@latest`], {
+    spawn.sync('yarn', ['add', '--dev', '--tilde', `${packageName}@${releaseChannel}`], {
       stdio: 'inherit',
       cwd: getTestsRootDir(),
     })
@@ -105,6 +105,8 @@ const upgradeCommand = (context) => ({
   },
   async handler(args) {
     const info = await getPackageInfo(toolsPackageInfo.name)
+    const config = getConfig()
+    const releaseChannel = config.releaseChannel || 'latest'
 
     if (args.updateSubdependencies) {
       spawn.sync('yarn', [], {
@@ -119,10 +121,14 @@ const upgradeCommand = (context) => ({
     }
 
     if (args.updatePackageJson && toolsPackageInfo.version !== info.version) {
-      spawn.sync('yarn', ['add', '--dev', '--tilde', `${toolsPackageInfo.name}@latest`], {
-        stdio: 'inherit',
-        cwd: getTestsRootDir(),
-      })
+      spawn.sync(
+        'yarn',
+        ['add', '--dev', '--tilde', `${toolsPackageInfo.name}@${releaseChannel}`],
+        {
+          stdio: 'inherit',
+          cwd: getTestsRootDir(),
+        }
+      )
 
       // Если прошло обновление основного пакета, запускаем новую версию кода и выходим
       spawn.sync('yarn', ['et', 'upgrade'], {
@@ -141,7 +147,6 @@ const upgradeCommand = (context) => ({
       destinationRoot: getProjectRootDir(),
     })
 
-    const config = getConfig()
     if (!config.tools) {
       return
     }
@@ -149,7 +154,7 @@ const upgradeCommand = (context) => ({
     const toolNames = Object.keys(config.tools)
 
     for (const toolName of toolNames) {
-      await updateTool(context, toolName, args.updatePackageJson)
+      await updateTool(context, toolName, args.updatePackageJson, releaseChannel)
     }
 
     spawn.sync('yarn', ['install'], {

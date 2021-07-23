@@ -41,6 +41,7 @@
       }
     }
   },
+  "releaseChannel": "canary",
   "projectName": "codecept-playground",
   "defaultLaunchUrl": "https://csssr.com"
 }
