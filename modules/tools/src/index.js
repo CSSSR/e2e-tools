@@ -49,12 +49,13 @@ const addToolCommand = (context) => ({
         }
       },
     })
+    const config = getConfig()
 
     // TODO: find a better way
     const package =
       process.env.NODE_ENV === 'test'
         ? `file:${__dirname.replace('tools/src', 'nightwatch')}`
-        : packageName
+        : `${packageName}@${config.releaseChannel || 'latest'}`
 
     spawn.sync('yarn', ['add', '--dev', '--tilde', package], {
       stdio: 'inherit',
@@ -72,9 +73,9 @@ const addToolCommand = (context) => ({
   },
 })
 
-async function updateTool(context, packageName, shouldUpdatePackages) {
+async function updateTool(context, packageName, shouldUpdatePackages, releaseChannel) {
   if (shouldUpdatePackages) {
-    spawn.sync('yarn', ['add', '--dev', '--tilde', `${packageName}@latest`], {
+    spawn.sync('yarn', ['add', '--dev', '--tilde', `${packageName}@${releaseChannel}`], {
       stdio: 'inherit',
       cwd: getTestsRootDir(),
     })
@@ -85,6 +86,13 @@ async function updateTool(context, packageName, shouldUpdatePackages) {
   if (tool.upgrade) {
     await tool.upgrade(context)
   }
+}
+
+// Removes commit from version
+// 1.4.3-alpha.19+25774ce → 1.4.3-alpha.19
+// Idenpotent: dropCommit('1.4.3-alpha') → 1.4.3-alpha.19
+function dropCommit(version) {
+  return version.split('+')[0]
 }
 
 const upgradeCommand = (context) => ({
@@ -104,7 +112,11 @@ const upgradeCommand = (context) => ({
     },
   },
   async handler(args) {
-    const info = await getPackageInfo(toolsPackageInfo.name)
+    const config = getConfig()
+    const releaseChannel = config.releaseChannel || 'latest'
+    const info = await getPackageInfo(toolsPackageInfo.name, {
+      version: releaseChannel,
+    })
 
     if (args.updateSubdependencies) {
       spawn.sync('yarn', [], {
@@ -118,11 +130,15 @@ const upgradeCommand = (context) => ({
       })
     }
 
-    if (args.updatePackageJson && toolsPackageInfo.version !== info.version) {
-      spawn.sync('yarn', ['add', '--dev', '--tilde', `${toolsPackageInfo.name}@latest`], {
-        stdio: 'inherit',
-        cwd: getTestsRootDir(),
-      })
+    if (args.updatePackageJson && dropCommit(toolsPackageInfo.version) !== info.version) {
+      spawn.sync(
+        'yarn',
+        ['add', '--dev', '--tilde', `${toolsPackageInfo.name}@${releaseChannel}`],
+        {
+          stdio: 'inherit',
+          cwd: getTestsRootDir(),
+        }
+      )
 
       // Если прошло обновление основного пакета, запускаем новую версию кода и выходим
       spawn.sync('yarn', ['et', 'upgrade'], {
@@ -141,7 +157,6 @@ const upgradeCommand = (context) => ({
       destinationRoot: getProjectRootDir(),
     })
 
-    const config = getConfig()
     if (!config.tools) {
       return
     }
@@ -149,7 +164,7 @@ const upgradeCommand = (context) => ({
     const toolNames = Object.keys(config.tools)
 
     for (const toolName of toolNames) {
-      await updateTool(context, toolName, args.updatePackageJson)
+      await updateTool(context, toolName, args.updatePackageJson, releaseChannel)
     }
 
     spawn.sync('yarn', ['install'], {
