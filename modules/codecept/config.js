@@ -43,7 +43,7 @@ function getBrowser(browserName, browserConfig) {
 
       const u = new URL(url)
       return {
-        Webdriver: {
+        WebDriver: {
           url: config.defaultLaunchUrl,
           host: u.host,
           port: Number(u.port || (u.protocol === 'https:' ? 443 : 80)),
