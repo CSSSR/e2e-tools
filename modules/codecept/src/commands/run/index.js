@@ -1,5 +1,10 @@
 const path = require('path')
-const { getConfig, getTestsRootDir, createArgsArrayFromMap } = require('@csssr/e2e-tools/utils')
+const {
+  getConfig,
+  getTestsRootDir,
+  createArgsArrayFromMap,
+  stripDirectoryNameCaseInsensitive,
+} = require('@csssr/e2e-tools/utils')
 const packageName = require('../../../package.json').name
 const { generateGitHubWorkflow } = require('./generate-github-workflow')
 
@@ -46,7 +51,9 @@ const addRunCommand = (context) => {
         [
           'codeceptjs',
           'run',
-          ...(args.test ? [args.test.replace(path.join(testRoot, 'codecept/'), '')] : []),
+          ...(args.test
+            ? [stripDirectoryNameCaseInsensitive(args.test, path.join(testRoot, 'codecept/'))]
+            : []),
           ...createArgsArrayFromMap({
             config: 'codecept/codecept.conf.js',
             grep: args.testcase,

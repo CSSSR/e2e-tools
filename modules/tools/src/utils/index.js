@@ -286,6 +286,17 @@ async function addAnyProjectFields(ctx, opts) {
   })
 }
 
+// VSCode на Windowns прокидывает название директории с диском в нижнем регистре,
+// а process.cwd() возвращает название диска в верхнем регистре. Поэтому обрезаем
+// название пути не учитывая регистра
+function stripDirectoryNameCaseInsensitive(filePath, directoryName) {
+  if (filePath.toLowerCase().slice(0, directoryName.length) == directoryName.toLowerCase()) {
+    return filePath.slice(directoryName.length)
+  }
+
+  throw new Error(`Could not remove directory prefix ${directoryName} from path ${filePath}`)
+}
+
 module.exports = {
   getTestsRootDir,
   getProjectRootDir,
@@ -306,4 +317,5 @@ module.exports = {
   normalizeUrl,
   falseToError,
   addAnyProjectFields,
+  stripDirectoryNameCaseInsensitive,
 }
