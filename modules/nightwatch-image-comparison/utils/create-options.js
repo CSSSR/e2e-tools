@@ -15,7 +15,7 @@ exports.createOptions = async (client, screenshotName, testsRootDir, options = {
   const {
     hideSelectors = [],
     removeSelectors = [],
-    allowedMisMatchPercentage = 0,
+    allowedMisMatchPercentage = 0.02,
     ...opts
   } = options
 
