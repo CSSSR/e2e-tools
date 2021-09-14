@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.5.0](https://github.com/CSSSR/e2e-tools/compare/@csssr/e2e-tools@1.4.2...@csssr/e2e-tools@1.5.0) (2021-09-14)
+
+
+### Bug Fixes
+
+* Исправлен запуск конкретного теста в VSCode на Windows ([d682bbc](https://github.com/CSSSR/e2e-tools/commit/d682bbc6d69a6081c8f25afdc31fc0c5da801db4))
+
+
+### Features
+
+* Добавлена поддержка запуска тестов на CodeceptJS локально ([559cabb](https://github.com/CSSSR/e2e-tools/commit/559cabbdb243cd728b48b4cbde907da5e18e836a))
+* Добавлены каналы релизов ([3c85ba7](https://github.com/CSSSR/e2e-tools/commit/3c85ba7893253210c465951681c5a311624b8f25))
+* Настроен запуск тестов из VSCode ([59ce0f0](https://github.com/CSSSR/e2e-tools/commit/59ce0f0ca7c30cb6e60b00aa826dcf1180d7113b))
+
+
+
+
+
 ## [1.4.2](https://github.com/CSSSR/e2e-tools/compare/@csssr/e2e-tools@1.4.1...@csssr/e2e-tools@1.4.2) (2021-05-07)
 
 **Note:** Version bump only for package @csssr/e2e-tools
