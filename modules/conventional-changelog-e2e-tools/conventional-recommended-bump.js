@@ -13,7 +13,7 @@ module.exports = {
 
   whatBump: (commits) => {
     const bumps = commits.map((commit) => {
-      const bodyLines = (commit.body ?? '').toLowerCase().split('\n').filter(Boolean)
+      const bodyLines = (commit.body || '').toLowerCase().split('\n').filter(Boolean)
       if (bodyLines.includes('bump major')) {
         return levels.major
       }
