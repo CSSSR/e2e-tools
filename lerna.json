@@ -8,5 +8,6 @@
     "modules/tools",
     "modules/nightwatch-local-file-upload"
   ],
+  "changelogPreset": "e2e-tools",
   "version": "independent"
 }
