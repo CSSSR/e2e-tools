@@ -4,7 +4,7 @@
   "description": "Codecept плагин для @csssr/e2e-tools",
   "author": "Pavel Liaukovich <pl@xlinur.com>",
   "license": "MIT",
-  "main": "./src/index.js",
+  "main": "./index.js",
   "typings": "./index.d.ts",
   "files": [
     "/*.js",
