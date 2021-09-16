@@ -3,26 +3,13 @@ const path = require('path')
 const yaml = require('js-yaml')
 const glob = require('fast-glob')
 const crypto = require('crypto')
-const { getConfig, getTestsRootDir, getProjectRootDir } = require('@csssr/e2e-tools/utils')
-
-function getGitHubSecretEnv(browsers) {
-  return Object.entries(browsers)
-    .filter(
-      ([_, browserConfig]) => browserConfig.type === 'selenium' && browserConfig.seleniumBasicAuth
-    )
-    .reduce((acc, [browserName, browserConfig]) => {
-      const sba = browserConfig.seleniumBasicAuth
-      const usernameEnvName = `${browserName.toUpperCase()}_${sba.username_env}`
-      const usernameGitHubSecret = sba.username_github_secret || sba.username_env
-      const passwordEnvName = `${browserName.toUpperCase()}_${sba.password_env}`
-      const passwordGitHubSecret = sba.password_github_secret || sba.password_env
-      return {
-        ...acc,
-        [usernameEnvName]: `\${{ secrets.${usernameGitHubSecret} }}`,
-        [passwordEnvName]: `\${{ secrets.${passwordGitHubSecret} }}`,
-      }
-    }, {})
-}
+const {
+  getConfig,
+  getTestsRootDir,
+  getProjectRootDir,
+  createWorkflow,
+  getGitHubSecretEnv,
+} = require('@csssr/e2e-tools/utils')
 
 function getTestFilePrettyName(testFile) {
   return testFile.replace(/\.test\.[jt]s$/, '')
@@ -82,60 +69,54 @@ function generateGitHubWorkflow() {
     }
   }
 
-  const githubWorkflowContent =
-    '# Этот файл сгенерирован автоматически, не редактируйте его вручную\n\n' +
-    yaml.dump(
-      {
-        name: 'Run CodeceptJS e2e tests',
-        concurrency: 'e2e-tests',
-        on: {
-          workflow_dispatch: {
-            inputs: {
-              launchUrl: {
-                description: 'Базовый URL сайта',
-                default: config.defaultLaunchUrl,
-                required: true,
-              },
-              browserName: {
-                description: 'Название браузера как в e2e-tools.json',
-                default: defaultRemoteBrowser,
-                required: true,
-              },
-
-              ...Object.fromEntries(
-                testFiles.map((testFile) => [
-                  getJobName(testFile),
-                  {
-                    description: `Запустить тест «${getTestFilePrettyName(testFile)}»`,
-                    required: false,
-                    default: 'true',
-                  },
-                ])
-              ),
-            },
+  const workflowContent = {
+    name: 'Run CodeceptJS e2e tests',
+    concurrency: 'e2e-tests',
+    on: {
+      workflow_dispatch: {
+        inputs: {
+          launchUrl: {
+            description: 'Базовый URL сайта',
+            default: config.defaultLaunchUrl,
+            required: true,
           },
-        },
-        permissions: {
-          actions: 'none',
-          checks: 'none',
-          contents: 'read',
-          deployments: 'none',
-          issues: 'none',
-          packages: 'none',
-          'pull-requests': 'none',
-          'repository-projects': 'none',
-          'security-events': 'none',
-          statuses: 'none',
-        },
-        jobs: Object.fromEntries(
-          testFiles.map((testFile) => [getJobName(testFile), getTestRunJob(testFile)])
-        ),
-      },
-      { noCompatMode: true, noRefs: true, lineWidth: -1 }
-    )
+          browserName: {
+            description: 'Название браузера как в e2e-tools.json',
+            default: defaultRemoteBrowser,
+            required: true,
+          },
 
-  fs.mkdirSync(path.dirname(githubWorkflowPath), { recursive: true })
-  fs.writeFileSync(githubWorkflowPath, githubWorkflowContent, { encoding: 'utf-8' })
+          ...Object.fromEntries(
+            testFiles.map((testFile) => [
+              getJobName(testFile),
+              {
+                description: `Запустить тест «${getTestFilePrettyName(testFile)}»`,
+                required: false,
+                default: 'true',
+              },
+            ])
+          ),
+        },
+      },
+    },
+    permissions: {
+      actions: 'none',
+      checks: 'none',
+      contents: 'read',
+      deployments: 'none',
+      issues: 'none',
+      packages: 'none',
+      'pull-requests': 'none',
+      'repository-projects': 'none',
+      'security-events': 'none',
+      statuses: 'none',
+    },
+    jobs: Object.fromEntries(
+      testFiles.map((testFile) => [getJobName(testFile), getTestRunJob(testFile)])
+    ),
+  }
+
+  createWorkflow(githubWorkflowPath, workflowContent)
 }
 
 module.exports = { generateGitHubWorkflow }

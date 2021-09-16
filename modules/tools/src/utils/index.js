@@ -1,5 +1,6 @@
 const fs = require('fs')
 const path = require('path')
+const yaml = require('js-yaml')
 const dotenv = require('dotenv')
 const readlineSync = require('readline-sync')
 const findRoot = require('find-root')
@@ -297,6 +298,34 @@ function stripDirectoryNameCaseInsensitive(filePath, directoryName) {
   throw new Error(`Could not remove directory prefix ${directoryName} from path ${filePath}`)
 }
 
+function createWorkflow(workflowPath, content) {
+  const githubWorkflowContent =
+    '# Этот файл сгенерирован автоматически, не редактируйте его вручную\n\n' +
+    yaml.dump(content, { noCompatMode: true, noRefs: true, lineWidth: -1 })
+
+  fs.mkdirSync(path.dirname(workflowPath), { recursive: true })
+  fs.writeFileSync(workflowPath, githubWorkflowContent, { encoding: 'utf-8' })
+}
+
+function getGitHubSecretEnv(browsers) {
+  return Object.entries(browsers)
+    .filter(
+      ([_, browserConfig]) => browserConfig.type === 'selenium' && browserConfig.seleniumBasicAuth
+    )
+    .reduce((acc, [browserName, browserConfig]) => {
+      const sba = browserConfig.seleniumBasicAuth || browserConfig.basicAuth
+      const usernameEnvName = `${browserName.toUpperCase()}_${sba.username_env}`
+      const usernameGitHubSecret = sba.username_github_secret || sba.username_env
+      const passwordEnvName = `${browserName.toUpperCase()}_${sba.password_env}`
+      const passwordGitHubSecret = sba.password_github_secret || sba.password_env
+      return {
+        ...acc,
+        [usernameEnvName]: `\${{ secrets.${usernameGitHubSecret} }}`,
+        [passwordEnvName]: `\${{ secrets.${passwordGitHubSecret} }}`,
+      }
+    }, {})
+}
+
 module.exports = {
   getTestsRootDir,
   getProjectRootDir,
@@ -318,4 +347,6 @@ module.exports = {
   falseToError,
   addAnyProjectFields,
   stripDirectoryNameCaseInsensitive,
+  createWorkflow,
+  getGitHubSecretEnv,
 }

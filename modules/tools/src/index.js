@@ -9,6 +9,7 @@ const {
   getConfig,
   createFilesFromTemplates,
 } = require('./utils')
+const { generatePeriodicRunsCommand } = require('./commands/generate-periodic-runs')
 const toolsPackageInfo = require('../package.json')
 
 const initCommand = ({ config }) => ({
@@ -182,6 +183,7 @@ exports.main = (context) => {
     .command(addToolCommand(context))
     .command(initCommand(context))
     .command(upgradeCommand(context))
+    .command(generatePeriodicRunsCommand(context))
 
   if (config && config.tools) {
     Object.keys(config.tools).forEach((toolName) => {
