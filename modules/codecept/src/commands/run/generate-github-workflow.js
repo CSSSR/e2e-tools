@@ -46,6 +46,7 @@ function generateGitHubWorkflow() {
       name: getTestFilePrettyName(testFile),
       if: `github.event.inputs.${getJobName(testFile)} == 'true'`,
       'runs-on': ['self-hosted', 'e2e-tests'],
+      'timeout-minutes': 30,
       steps: [
         {
           uses: 'actions/checkout@v2',

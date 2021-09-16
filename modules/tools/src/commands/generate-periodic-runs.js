@@ -39,6 +39,7 @@ function generatePeriodicRunWorkflow({ url, command, run, id, config }) {
       'run-tests': {
         name: 'Run tests',
         'runs-on': ['self-hosted', 'e2e-tests'],
+        'timeout-minutes': 90,
         steps: [
           {
             uses: 'actions/checkout@v2',
