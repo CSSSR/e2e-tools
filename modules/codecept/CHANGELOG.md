@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.1](https://github.com/CSSSR/e2e-tools/compare/@csssr/e2e-tools-codecept@1.1.0...@csssr/e2e-tools-codecept@1.1.1) (2021-09-16)
+
+
+### Bug Fixes
+
+* Исправлен варнинг о неправильном поле main ([6bbabf4](https://github.com/CSSSR/e2e-tools/commit/6bbabf4cba1f004724c47f94d9cddb2ca62055f4))
+
+
+### Features
+
+* Добавлена возможность генерировать GitHub Workflows для переодичных запусков тестов ([588d061](https://github.com/CSSSR/e2e-tools/commit/588d061d5231747f578d35d1b0f0a66c418bd204))
+* Добавлены таймауты для генерируемых GitHub workflow. 30 минут для Codecept тестов, 90 минут для переодических запусков (`periodicRuns`) ([b3dc17b](https://github.com/CSSSR/e2e-tools/commit/b3dc17b94d02d157b7fc51acdd802d659b0744a3))
+
+
+
+
+
 # 1.1.0 (2021-09-14)
 
 
