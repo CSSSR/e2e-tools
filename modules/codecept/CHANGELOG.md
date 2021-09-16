@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.3](https://github.com/CSSSR/e2e-tools/compare/@csssr/e2e-tools-codecept@1.1.1...@csssr/e2e-tools-codecept@1.1.3) (2021-09-16)
+
+**Note:** Version bump only for package @csssr/e2e-tools-codecept
+
+
+
+
+
 ## [1.1.1](https://github.com/CSSSR/e2e-tools/compare/@csssr/e2e-tools-codecept@1.1.0...@csssr/e2e-tools-codecept@1.1.1) (2021-09-16)
 
 

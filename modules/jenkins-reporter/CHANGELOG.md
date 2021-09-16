@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.6.2](https://github.com/CSSSR/e2e-tools/compare/@csssr/mocha-jenkins-reporter@0.6.0...@csssr/mocha-jenkins-reporter@0.6.2) (2021-09-16)
+
+**Note:** Version bump only for package @csssr/mocha-jenkins-reporter
+
+
+
+
+
 # [0.6.0](https://github.com/CSSSR/e2e-tools/compare/@csssr/mocha-jenkins-reporter@0.5.3...@csssr/mocha-jenkins-reporter@0.6.0) (2020-09-07)
 
 
