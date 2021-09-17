@@ -24,7 +24,7 @@ function generatePeriodicRunWorkflow({ url, command, run, id, config }) {
       workflow_dispatch: {},
     },
     permissions: {
-      actions: 'none',
+      actions: 'read',
       checks: 'none',
       contents: 'read',
       deployments: 'none',
@@ -60,6 +60,24 @@ function generatePeriodicRunWorkflow({ url, command, run, id, config }) {
               LAUNCH_URL: url,
             },
           },
+
+          run.slackChannel && {
+            if: 'always()',
+            uses: 'actions/github-script@v4',
+            id: 'query-jobs',
+            with: {
+              script: [
+                'const result = await github.actions.listJobsForWorkflowRun({',
+                '  owner: context.repo.owner,',
+                '  repo: context.repo.repo,',
+                '  run_id: ${{ github.run_id }},',
+                '})',
+                'return result.data.jobs[0].id',
+              ].join('\n'),
+              'result-encoding': 'string',
+            },
+          },
+
           run.slackChannel && {
             if: 'failure()',
             name: 'Send failure to Slack',
@@ -77,7 +95,7 @@ function generatePeriodicRunWorkflow({ url, command, run, id, config }) {
                 command,
                 '```',
                 '',
-                'Логи: https://github.com/${{ github.repository }}/runs/${{ job.id }}?check_suite_focus=true',
+                'Логи: https://github.com/${{ github.repository }}/runs/${{ steps.query-jobs.outputs.result }}?check_suite_focus=true',
                 '',
                 'https://s.csssr.ru/U09LGPMEU/20200731115800.jpg?run=${{ github.run_id }}',
               ].join('\n'),
@@ -100,7 +118,7 @@ function generatePeriodicRunWorkflow({ url, command, run, id, config }) {
                 command,
                 '```',
                 '',
-                'Логи: https://github.com/${{ github.repository }}/runs/${{ job.id }}?check_suite_focus=true',
+                'Логи: https://github.com/${{ github.repository }}/runs/${{ steps.query-jobs.outputs.result }}?check_suite_focus=true',
                 '',
                 'https://s.csssr.ru/U09LGPMEU/20200731115845.jpg?run=${{ github.run_id }}',
               ].join('\n'),
