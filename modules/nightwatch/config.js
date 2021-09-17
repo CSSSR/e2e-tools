@@ -2,9 +2,14 @@
 const ci = require('ci-info')
 
 const disableColors = ci.JENKINS
+const forceColors = ci.GITHUB_ACTIONS
 
 if (disableColors) {
   process.env.FORCE_COLOR = '0'
+}
+
+if (forceColors) {
+  process.env.FORCE_COLOR = '1'
 }
 
 const url = require('url')
