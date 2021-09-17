@@ -66,7 +66,7 @@ function generatePeriodicRunWorkflow({ url, command, run, id, config }) {
             uses: 'archive/github-actions-slack@27663f2377ce6f86d7fca5b8056e6b977f03b5c9',
             with: {
               'slack-bot-user-oauth-access-token': '${{ secrets.SLACK_SEND_MESSAGE_TOKEN }}',
-              'slack-channel': 'C0129A519T8',
+              'slack-channel': run.slackChannel,
               'slack-text': [
                 ':fire: Тесты упали',
                 workflowName,
@@ -81,7 +81,7 @@ function generatePeriodicRunWorkflow({ url, command, run, id, config }) {
             uses: 'archive/github-actions-slack@27663f2377ce6f86d7fca5b8056e6b977f03b5c9',
             with: {
               'slack-bot-user-oauth-access-token': '${{ secrets.SLACK_SEND_MESSAGE_TOKEN }}',
-              'slack-channel': 'C0129A519T8',
+              'slack-channel': run.slackChannel,
               'slack-text': [
                 ':approve: Тесты прошли успешно',
                 workflowName,
