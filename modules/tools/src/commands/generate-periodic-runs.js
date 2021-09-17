@@ -79,7 +79,7 @@ function generatePeriodicRunWorkflow({ url, command, run, id, config }) {
                 '',
                 'Логи: https://github.com/${{ github.repository }}/runs/${{ job.id }}?check_suite_focus=true',
                 '',
-                'https://s.csssr.ru/U09LGPMEU/20200731115845.jpg?run=${{ github.run_id }}',
+                'https://s.csssr.ru/U09LGPMEU/20200731115800.jpg?run=${{ github.run_id }}',
               ].join('\n'),
             },
           },
