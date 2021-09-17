@@ -7,7 +7,7 @@
   },
   "workspaces": [
     "modules/*",
-    "modules/codecept-playground/e2e-tests"
+    "modules/playground/e2e-tests"
   ],
   "devDependencies": {
     "@types/jest": "^26.0.23",
