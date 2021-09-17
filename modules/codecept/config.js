@@ -1,11 +1,6 @@
-const { getConfig, getEnvVariable } = require('@csssr/e2e-tools/utils')
+const { getConfig, getSeleniumBasicAuthEnv } = require('@csssr/e2e-tools/utils')
 
 const config = getConfig()
-
-function getSeleniumBasicAuthEnv(browserName, env, description) {
-  const envValue = process.env[`${browserName.toUpperCase()}_${env}`]
-  return envValue || getEnvVariable(env, description)
-}
 
 function getBasicAuthAuthorizationHeader(browserName, browserConfig) {
   const { url, seleniumBasicAuth: sba } = browserConfig

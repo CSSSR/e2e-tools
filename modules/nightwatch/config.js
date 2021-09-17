@@ -20,7 +20,12 @@ const nightwatchImageComparison = require('@csssr/nightwatch-image-comparison')
 const nightwatchLocalFileUpload = require('@csssr/nightwatch-local-file-upload')
 const packageName = require('./package.json').name
 const mochawesome = require('mochawesome')
-const { getTestsRootDir, getConfig, getEnvVariable } = require('@csssr/e2e-tools/utils')
+const {
+  getTestsRootDir,
+  getConfig,
+  getSeleniumBasicAuthEnv,
+  getEnvVariable,
+} = require('@csssr/e2e-tools/utils')
 const { argv } = require('yargs')
 
 process.chdir(getTestsRootDir())
@@ -115,12 +120,17 @@ function getTestSettingsForBrowser(browser, browserName) {
       const { host, port, useSsl } = parseUrl(settings)
       const isDefaultPort = [80, 443].includes(port)
       const serverName = `${host}${!isDefaultPort ? `:${port}` : ''}`
+      const sba = basicAuth
 
       return {
         selenium: { port, host },
         useSsl,
-        username: basicAuth && getEnvVariable(basicAuth.username_env, `Логин от ${serverName}`),
-        access_key: basicAuth && getEnvVariable(basicAuth.password_env, `Пароль от ${serverName}`),
+        username:
+          basicAuth &&
+          getSeleniumBasicAuthEnv(browserName, basicAuth.username_env, `Логин от ${serverName}`),
+        access_key:
+          basicAuth &&
+          getSeleniumBasicAuthEnv(browserName, basicAuth.password_env, `Пароль от ${serverName}`),
         ...rest,
       }
     }
