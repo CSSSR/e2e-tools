@@ -205,7 +205,7 @@ async function main() {
     console.log(chalk.cyan(`Report is successfully generated and available at ${reportLink}`))
 
     if ('GITHUB_ACTIONS' in process.env) {
-      console.log(`::set-output name=report-link::${reportLink}\n`)
+      console.log(`::set-output name=report-link::${reportLink}`)
     }
   } finally {
     console.log('Cleaning temporary files…')
