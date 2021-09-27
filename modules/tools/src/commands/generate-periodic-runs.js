@@ -124,7 +124,7 @@ function generatePeriodicRunWorkflow({ url, command, run, id, config }) {
               'slack-bot-user-oauth-access-token': '${{ secrets.SLACK_SEND_MESSAGE_TOKEN }}',
               'slack-channel': run.slackChannel,
               'slack-text': [
-                ':approve: *Тесты прошли успешно*',
+                ':approved: *Тесты прошли успешно*',
                 '',
                 `Название: ${run.name}`,
                 `URL: ${url}`,
