@@ -63,7 +63,7 @@ function generatePeriodicRunWorkflow({ url, command, run, id, config }) {
           },
           {
             name: 'Generate Allure report',
-            run: `node -e 'require("@csssr/e2e-tools/upload-allure-report")'`
+            run: `node -e 'require("@csssr/e2e-tools/upload-allure-report")'`,
             'working-directory': 'e2e-tests',
             id: 'allure',
             env: {
