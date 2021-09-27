@@ -92,5 +92,10 @@ exports.config = {
     screenshotOnFail: {
       enabled: true,
     },
+    allure: {
+      enabled: !!process.env.ENABLE_ALLURE_REPORT,
+      outputDir: './codecept/report/allure-reports',
+      enableScreenshotDiffPlugin: true,
+    },
   },
 }
