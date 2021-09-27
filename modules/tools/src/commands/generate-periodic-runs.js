@@ -205,7 +205,7 @@ function createPeriodicRunsWorkflows(config) {
   })
 
   const workflowsRoot = path.join(getProjectRootDir(), `.github/workflows`)
-  const workflowsFileNames = glob.sync(`*.yaml`, {
+  const workflowsFileNames = glob.sync(`e2e-run-periodic-task-*.yaml`, {
     cwd: workflowsRoot,
   })
 
@@ -213,7 +213,7 @@ function createPeriodicRunsWorkflows(config) {
   workflowsFileNames.forEach((workflowFileName) => {
     if (!generatedWorkflows.includes(workflowFileName)) {
       console.log(`Removing ${workflowFileName}`)
-      fs.rmSync(workflowFileName, { force: true })
+      fs.rmSync(path.join(workflowsRoot, workflowFileName), { force: true })
       removedCount++
     }
   })
