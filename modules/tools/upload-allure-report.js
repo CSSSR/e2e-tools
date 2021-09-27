@@ -180,7 +180,7 @@ async function main() {
         })
         await s3.putObject({
           Bucket: 'csssr-test-reports',
-          Key: `${s3Prefix}/allure-html-reports/${htmlReportID}/${reportFileName.relativePath}`,
+          Key: `allure-html-reports/${htmlReportID}/${reportFileName.relativePath}`,
           Body: reportContent,
         })
       })
