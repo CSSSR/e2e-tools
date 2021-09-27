@@ -58,9 +58,23 @@ function generatePeriodicRunWorkflow({ url, command, run, id, config }) {
               ...getGitHubSecretEnv(config.tools['@csssr/e2e-tools-nightwatch']?.browsers),
               ...getGitHubSecretEnv(config.tools['@csssr/e2e-tools-codecept']?.browsers),
               LAUNCH_URL: url,
+              ENABLE_ALLURE_REPORT: 'true',
             },
           },
-
+          {
+            name: 'Generate Allure report',
+            run: `node -e 'require("@csssr/e2e-tools/upload-allure-report")'`
+            'working-directory': 'e2e-tests',
+            id: 'allure',
+            env: {
+              LAUNCH_URL: url,
+              RUN_COMMAND: command,
+              ALLURE_REPORT_DIRECTORIES:
+                'codecept/report/allure-reports/,nightwatch/report/allure-reports/',
+              AWS_ACCESS_KEY_ID: '${{ secrets.TEST_REPORTS_AWS_ACCESS_KEY_ID }}',
+              AWS_SECRET_ACCESS_KEY: '${{ secrets.TEST_REPORTS_AWS_SECRET_ACCESS_KEY }}',
+            },
+          },
           run.slackChannel && {
             if: 'always()',
             uses: 'actions/github-script@v4',
@@ -95,6 +109,7 @@ function generatePeriodicRunWorkflow({ url, command, run, id, config }) {
                 command,
                 '```',
                 '',
+                '*Allure отчёт*: ${{ steps.allure.outputs.report-link }}',
                 'Логи: https://github.com/${{ github.repository }}/runs/${{ steps.query-jobs.outputs.result }}?check_suite_focus=true',
                 '',
                 'https://s.csssr.ru/U09LGPMEU/20200731115800.jpg?run=${{ github.run_id }}',
@@ -118,6 +133,7 @@ function generatePeriodicRunWorkflow({ url, command, run, id, config }) {
                 command,
                 '```',
                 '',
+                '*Allure отчёт*: ${{ steps.allure.outputs.report-link }}',
                 'Логи: https://github.com/${{ github.repository }}/runs/${{ steps.query-jobs.outputs.result }}?check_suite_focus=true',
                 '',
                 'https://s.csssr.ru/U09LGPMEU/20200731115845.jpg?run=${{ github.run_id }}',

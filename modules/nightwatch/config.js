@@ -196,7 +196,20 @@ const jenkinsReporter = {
   },
 }
 
+const allureReporter = {
+  reporter: require('mocha-multi-reporters'),
+  reporterOptions: {
+    reporterEnabled: 'spec, mocha-allure-reporter',
+    mochaAllureReporterReporterOptions: {
+      targetDir: './nightwatch/report/allure-reports',
+    },
+  },
+}
+
 function getReporter() {
+  if (process.env.ENABLE_ALLURE_REPORT) {
+    return allureReporter
+  }
   return ci.isCI ? jenkinsReporter : mochawesomeReporter
 }
 
