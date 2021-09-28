@@ -183,7 +183,7 @@ function getEnvVariable(variable, description) {
 }
 
 function getSeleniumBasicAuthEnv(browserName, env, description) {
-  const envValue = process.env[`${browserName.toUpperCase()}_${env}`]
+  const envValue = process.env[`${browserName.toUpperCase()}_${env}`] || process.env[env]
   return envValue || getEnvVariable(env, description)
 }
 
