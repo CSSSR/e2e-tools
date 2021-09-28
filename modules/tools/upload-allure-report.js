@@ -216,11 +216,11 @@ async function main() {
     const s = summaryData.statistic
     const summaryText = [
       `Всего тестов: ${s.total}`,
-      `Прошли:       ${s.passed}`,
-      `Упали:        ${s.failed}`,
-      s.skipped && `Пропущено:    ${s.skipped}`,
-      s.broken && `Сломано:      ${s.broken}`,
-      s.unknown && `Неизвестно:   ${s.unknown}`,
+      `Прошли: ${s.passed} (${((s.passed / s.total) * 100).toFixed(2)})`,
+      `Упали: ${s.failed}`,
+      s.skipped && `Пропущено: ${s.skipped}`,
+      s.broken && `Сломано: ${s.broken}`,
+      s.unknown && `Неизвестно: ${s.unknown}`,
     ].join('\n')
 
     const reportLink = `https://test-reports.csssr.com/r/${htmlReportID}`
