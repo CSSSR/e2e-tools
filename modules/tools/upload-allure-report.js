@@ -216,7 +216,7 @@ async function main() {
     const s = summaryData.statistic
     const summaryText = [
       `Всего тестов: ${s.total}`,
-      `Прошли: ${s.passed} (${((s.passed / s.total) * 100).toFixed(2)})`,
+      `Прошли: ${s.passed} (${((s.passed / s.total) * 100).toFixed(2).replace('.', '.')}%)`,
       `Упали: ${s.failed}`,
       s.skipped && `Пропущено: ${s.skipped}`,
       s.broken && `Сломано: ${s.broken}`,
