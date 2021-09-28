@@ -208,12 +208,29 @@ async function main() {
       })
     )
 
+    const summaryFileContent = await fsp.readFile(
+      path.join(htmlReportPath, 'widgets/summary.json'),
+      { encoding: 'utf-8' }
+    )
+    const summaryData = JSON.parse(summaryFileContent)
+    const s = summaryData.statistic
+    const summaryText = [
+      `Всего тестов: ${s.total}`,
+      `Прошли:       ${s.passed}`,
+      `Упали:        ${s.failed}`,
+      s.skipped && `Пропущено:    ${s.skipped}`,
+      s.broken && `Сломано:      ${s.broken}`,
+      s.unknown && `Неизвестно:   ${s.unknown}`,
+    ].join('\n')
+
     const reportLink = `https://test-reports.csssr.com/r/${htmlReportID}`
 
     console.log(chalk.cyan(`Report is successfully generated and available at ${reportLink}`))
+    console.log(`\n${summaryText}\n`)
 
     if ('GITHUB_ACTIONS' in process.env) {
       console.log(`::set-output name=report-link::${reportLink}`)
+      console.log(`::set-output name=report-summary::${summaryText.replace('\n', '%0A')}`)
     }
   } finally {
     console.log('Cleaning temporary files…')
