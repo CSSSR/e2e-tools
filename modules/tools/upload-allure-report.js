@@ -7,6 +7,7 @@ const klaw = require('klaw')
 const crypto = require('crypto')
 const chalk = require('chalk')
 const allure = require('allure-commandline')
+const mime = require('mime-types')
 const { S3 } = require('@aws-sdk/client-s3')
 
 // To test this script
@@ -113,6 +114,15 @@ async function downloadS3File(key, filePath) {
   })
 }
 
+async function uploadS3File(key, content) {
+  await s3.putObject({
+    Bucket: 'csssr-test-reports',
+    Key: key,
+    Body: content,
+    ContentType: mime.contentType(path.basename(key)) || 'application/octet-stream',
+  })
+}
+
 async function main() {
   const envHash = await getEnvHash()
   const s3Prefix =
@@ -178,11 +188,10 @@ async function main() {
         const reportContent = await fsp.readFile(reportFileName.absolutePath, {
           encoding: 'utf-8',
         })
-        await s3.putObject({
-          Bucket: 'csssr-test-reports',
-          Key: `allure-html-reports/${htmlReportID}/${reportFileName.relativePath}`,
-          Body: reportContent,
-        })
+        await uploadS3File(
+          `site-root/r/${htmlReportID}/${reportFileName.relativePath}`,
+          reportContent
+        )
       })
     )
 
@@ -192,11 +201,10 @@ async function main() {
         const reportContent = await fsp.readFile(reportFileName.absolutePath, {
           encoding: 'utf-8',
         })
-        await s3.putObject({
-          Bucket: 'csssr-test-reports',
-          Key: `${s3Prefix}/allure-html-reports-history/${reportFileName.relativePath}`,
-          Body: reportContent,
-        })
+        await uploadS3File(
+          `${s3Prefix}/allure-html-reports-history/${reportFileName.relativePath}`,
+          reportContent
+        )
       })
     )
 
