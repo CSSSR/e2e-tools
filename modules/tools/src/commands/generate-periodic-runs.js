@@ -16,6 +16,38 @@ function generatePeriodicRunWorkflow({ url, command, run, id, config }) {
 
   const workflowName = getWorkflowName({ url, command, run })
 
+  function slackMessage(status) {
+    function byStatus(success, failure) {
+      return status === 'success' ? success : failure
+    }
+
+    return {
+      'slack-bot-user-oauth-access-token': '${{ secrets.SLACK_SEND_MESSAGE_TOKEN }}',
+      'slack-channel': run.slackChannel,
+      'slack-text': [
+        byStatus(':approved: *Тесты прошли успешно*', ':fire: *Тесты упали*'),
+        '',
+        `Название: ${run.name}`,
+        `URL: ${url}`,
+        'Команда для запуска:',
+        '```',
+        command,
+        '```',
+        '',
+        '*Allure отчёт*: ${{ steps.allure.outputs.report-link }}',
+        '',
+        '${{ steps.allure.outputs.report-summary }}',
+        '',
+        'Логи: https://github.com/${{ github.repository }}/runs/${{ steps.query-jobs.outputs.result }}?check_suite_focus=true',
+        '',
+        `https://s.csssr.ru/U09LGPMEU/${byStatus(
+          '20200731115845',
+          '20200731115800'
+        )}.jpg?run=\${{ github.run_id }}`,
+      ].join('\n'),
+    }
+  }
+
   const workflow = {
     name: workflowName,
     concurrency: 'e2e-tests',
@@ -96,49 +128,13 @@ function generatePeriodicRunWorkflow({ url, command, run, id, config }) {
             if: 'failure()',
             name: 'Send failure to Slack',
             uses: 'archive/github-actions-slack@27663f2377ce6f86d7fca5b8056e6b977f03b5c9',
-            with: {
-              'slack-bot-user-oauth-access-token': '${{ secrets.SLACK_SEND_MESSAGE_TOKEN }}',
-              'slack-channel': run.slackChannel,
-              'slack-text': [
-                ':fire: *Тесты упали*',
-                '',
-                `Название: ${run.name}`,
-                `URL: ${url}`,
-                'Команда для запуска:',
-                '```',
-                command,
-                '```',
-                '',
-                '*Allure отчёт*: ${{ steps.allure.outputs.report-link }}',
-                'Логи: https://github.com/${{ github.repository }}/runs/${{ steps.query-jobs.outputs.result }}?check_suite_focus=true',
-                '',
-                'https://s.csssr.ru/U09LGPMEU/20200731115800.jpg?run=${{ github.run_id }}',
-              ].join('\n'),
-            },
+            with: slackMessage('success'),
           },
           run.slackChannel && {
             if: 'success()',
             name: 'Send success to Slack',
             uses: 'archive/github-actions-slack@27663f2377ce6f86d7fca5b8056e6b977f03b5c9',
-            with: {
-              'slack-bot-user-oauth-access-token': '${{ secrets.SLACK_SEND_MESSAGE_TOKEN }}',
-              'slack-channel': run.slackChannel,
-              'slack-text': [
-                ':approved: *Тесты прошли успешно*',
-                '',
-                `Название: ${run.name}`,
-                `URL: ${url}`,
-                'Команда для запуска:',
-                '```',
-                command,
-                '```',
-                '',
-                '*Allure отчёт*: ${{ steps.allure.outputs.report-link }}',
-                'Логи: https://github.com/${{ github.repository }}/runs/${{ steps.query-jobs.outputs.result }}?check_suite_focus=true',
-                '',
-                'https://s.csssr.ru/U09LGPMEU/20200731115845.jpg?run=${{ github.run_id }}',
-              ].join('\n'),
-            },
+            with: slackMessage('failure'),
           },
         ].filter(Boolean),
       },
