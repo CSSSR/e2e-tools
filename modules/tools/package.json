@@ -31,6 +31,7 @@
     "inquirer": "^8.0.0",
     "klaw": "^4.0.1",
     "lodash": "^4.17.21",
+    "mime-types": "^2.1.32",
     "package-json": "^6.5.0",
     "prettier": "2.2.1",
     "readline-sync": "^1.4.10",
