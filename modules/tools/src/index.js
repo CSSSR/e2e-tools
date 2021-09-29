@@ -172,6 +172,8 @@ const upgradeCommand = (context) => ({
       stdio: 'inherit',
       cwd: getTestsRootDir(),
     })
+
+    createPeriodicRunsWorkflows(config)
   },
 })
 
