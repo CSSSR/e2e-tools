@@ -16,6 +16,7 @@ const { S3 } = require('@aws-sdk/client-s3')
 // export ALLURE_REPORT_DIRECTORIES="<path-to-dir-with-allure-reports>"
 // export LAUNCH_URL=https://fake-url.my-company.com
 // export RUN_COMMAND="yarn et codecept:run --browser remote_chrome"
+// export GITHUB_ACTIONS=1
 // node modules/tools/upload-allure-report.js
 
 const env = process.env
@@ -125,8 +126,12 @@ async function uploadS3File(key, content) {
 
 function githubActionsOutput(name, value) {
   if ('GITHUB_ACTIONS' in process.env) {
-    console.log(`::set-output name=${name}::${value.replace(/\n/ug, '%0A')}`)
+    console.log(`::set-output name=${name}::${String(value).replace(/\n/gu, '%0A')}`)
   }
+}
+
+function formatPercentage(num) {
+  return (num * 100).toFixed(2).replace('.', ',')
 }
 
 async function main() {
@@ -220,10 +225,10 @@ async function main() {
     )
     const summaryData = JSON.parse(summaryFileContent)
     const s = summaryData.statistic
-    const passedPercentage = ((s.passed / s.total) * 100).toFixed(2).replace('.', ',')
-    const failedPercentage = (100 - Number(passedPercentage)).toFixed(2).replace('.', ',')
+    const passedPercentage = s.passed / s.total
+    const failedPercentage = 1 - passedPercentage
     const summaryText = [
-      `*Summary*: ${passedPercentage}% of tests passed`,
+      `*Summary*: ${formatPercentage(passedPercentage)}% of tests passed`,
       `Total: ${s.total}`,
       `Passed: ${s.passed}`,
       `Failed: ${s.failed}`,
@@ -239,8 +244,8 @@ async function main() {
 
     githubActionsOutput('report-link', reportLink)
     githubActionsOutput('report-summary', summaryText)
-    githubActionsOutput('report-passed-percentage', passedPercentage)
-    githubActionsOutput('report-failed-percentage', failedPercentage)
+    githubActionsOutput('report-passed-percentage', formatPercentage(passedPercentage))
+    githubActionsOutput('report-failed-percentage', formatPercentage(failedPercentage))
     githubActionsOutput('report-passed-total', s.passed)
     githubActionsOutput('report-failed-total', s.total - s.passed)
   } finally {
