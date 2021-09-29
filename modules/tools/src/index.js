@@ -8,6 +8,7 @@ const {
   getConfigSafe,
   getConfig,
   createFilesFromTemplates,
+  ensureNodeVersion,
 } = require('./utils')
 const { generatePeriodicRunsCommand } = require('./commands/generate-periodic-runs')
 const toolsPackageInfo = require('../package.json')
@@ -178,6 +179,7 @@ const upgradeCommand = (context) => ({
 })
 
 exports.main = (context) => {
+  ensureNodeVersion()
   process.chdir(getTestsRootDir())
   const config = getConfigSafe()
 
