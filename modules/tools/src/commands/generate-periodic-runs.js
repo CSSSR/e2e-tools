@@ -230,4 +230,4 @@ const generatePeriodicRunsCommand = () => ({
   },
 })
 
-module.exports = { generatePeriodicRunsCommand }
+module.exports = { generatePeriodicRunsCommand, createPeriodicRunsWorkflows }
