@@ -125,7 +125,7 @@ async function uploadS3File(key, content) {
 
 function githubActionsOutput(name, value) {
   if ('GITHUB_ACTIONS' in process.env) {
-    console.log(`::set-output name=${name}::${value.replace('\n', '%0A')}`)
+    console.log(`::set-output name=${name}::${value.replace(/\n/ug, '%0A')}`)
   }
 }
 
