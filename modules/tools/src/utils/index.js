@@ -331,6 +331,15 @@ function getGitHubSecretEnv(browsers) {
     }, {})
 }
 
+function ensureNodeVersion() {
+  const majorVersion = Number(process.versions.node.split('.')[0])
+  if (majorVersion < 14) {
+    throw new Error(
+      'Node.js version is too old. Please update to latest version https://nodejs.org'
+    )
+  }
+}
+
 module.exports = {
   getTestsRootDir,
   getProjectRootDir,
@@ -355,4 +364,5 @@ module.exports = {
   stripDirectoryNameCaseInsensitive,
   createWorkflow,
   getGitHubSecretEnv,
+  ensureNodeVersion,
 }
