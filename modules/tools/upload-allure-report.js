@@ -123,6 +123,12 @@ async function uploadS3File(key, content) {
   })
 }
 
+function githubActionsOutput(name, value) {
+  if ('GITHUB_ACTIONS' in process.env) {
+    console.log(`::set-output name=${name}::${value.replace('\n', '%0A')}`)
+  }
+}
+
 async function main() {
   const envHash = await getEnvHash()
   const s3Prefix =
@@ -214,13 +220,16 @@ async function main() {
     )
     const summaryData = JSON.parse(summaryFileContent)
     const s = summaryData.statistic
+    const passedPercentage = ((s.passed / s.total) * 100).toFixed(2).replace('.', ',')
+    const failedPercentage = (100 - Number(passedPercentage)).toFixed(2).replace('.', ',')
     const summaryText = [
-      `Всего тестов: ${s.total}`,
-      `Прошли: ${s.passed} (${((s.passed / s.total) * 100).toFixed(2).replace('.', '.')}%)`,
-      `Упали: ${s.failed}`,
-      s.skipped && `Пропущено: ${s.skipped}`,
-      s.broken && `Сломано: ${s.broken}`,
-      s.unknown && `Неизвестно: ${s.unknown}`,
+      `*Summary*: ${passedPercentage}% of tests passed`,
+      `Total: ${s.total}`,
+      `Passed: ${s.passed}`,
+      `Failed: ${s.failed}`,
+      `Skipped: ${s.skipped}`,
+      `Broken: ${s.broken}`,
+      `Unknown: ${s.unknown}`,
     ].join('\n')
 
     const reportLink = `https://test-reports.csssr.com/r/${htmlReportID}`
@@ -228,10 +237,12 @@ async function main() {
     console.log(chalk.cyan(`Report is successfully generated and available at ${reportLink}`))
     console.log(`\n${summaryText}\n`)
 
-    if ('GITHUB_ACTIONS' in process.env) {
-      console.log(`::set-output name=report-link::${reportLink}`)
-      console.log(`::set-output name=report-summary::${summaryText.replace('\n', '%0A')}`)
-    }
+    githubActionsOutput('report-link', reportLink)
+    githubActionsOutput('report-summary', summaryText)
+    githubActionsOutput('report-passed-percentage', passedPercentage)
+    githubActionsOutput('report-failed-percentage', failedPercentage)
+    githubActionsOutput('report-passed-total', s.passed)
+    githubActionsOutput('report-failed-total', s.total - s.passed)
   } finally {
     console.log('Cleaning temporary files…')
     await Promise.all([
