@@ -10,7 +10,10 @@ const {
   createFilesFromTemplates,
   ensureNodeVersion,
 } = require('./utils')
-const { generatePeriodicRunsCommand } = require('./commands/generate-periodic-runs')
+const {
+  generatePeriodicRunsCommand,
+  createPeriodicRunsWorkflows,
+} = require('./commands/generate-periodic-runs')
 const toolsPackageInfo = require('../package.json')
 
 const initCommand = ({ config }) => ({
