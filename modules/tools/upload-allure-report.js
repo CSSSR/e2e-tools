@@ -134,6 +134,24 @@ function formatPercentage(num) {
   return (num * 100).toFixed(2).replace('.', ',')
 }
 
+function formatDuration(ms) {
+  const totalSeconds = Math.floor(ms / 1000)
+  const totalMinutes = Math.floor(totalSeconds / 60)
+  const totalHours = Math.floor(totalMinutes / 60)
+
+  const hours = totalHours
+  const minutes = totalMinutes - totalHours * 60
+  const seconds = totalSeconds - totalMinutes * 60
+
+  return [
+    hours && `${hours} hours`,
+    minutes && `${minutes} minutes`,
+    seconds && `${seconds} seconds`,
+  ]
+    .filter(Boolean)
+    .join(' ')
+}
+
 async function main() {
   const envHash = await getEnvHash()
   const s3Prefix =
@@ -228,13 +246,15 @@ async function main() {
     const passedPercentage = s.passed / (s.total - s.skipped)
     const failedPercentage = 1 - passedPercentage
     const summaryText = [
-      `*Summary*: ${formatPercentage(passedPercentage)}% of tests passed`,
+      `*Summary:* ${formatPercentage(passedPercentage)}% of tests passed`,
       `Total: ${s.total}`,
       `Passed: ${s.passed}`,
       `Failed: ${s.failed}`,
       `Skipped: ${s.skipped}`,
       `Broken: ${s.broken}`,
       `Unknown: ${s.unknown}`,
+      '',
+      `*Duration:* ${formatDuration(summaryData.time.duration)}`,
     ].join('\n')
 
     const reportLink = `https://test-reports.csssr.com/r/${htmlReportID}`
