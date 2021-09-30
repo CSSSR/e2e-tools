@@ -6,6 +6,7 @@ const path = require('path')
 const klaw = require('klaw')
 const crypto = require('crypto')
 const chalk = require('chalk')
+const pluralize = require('pluralize')
 const allure = require('allure-commandline')
 const mime = require('mime-types')
 const { S3 } = require('@aws-sdk/client-s3')
@@ -144,9 +145,9 @@ function formatDuration(ms) {
   const seconds = totalSeconds - totalMinutes * 60
 
   return [
-    hours && `${hours} hours`,
-    minutes && `${minutes} minutes`,
-    seconds && `${seconds} seconds`,
+    hours && pluralize('hour', hours),
+    minutes && pluralize('minute', minutes),
+    seconds && pluralize('second', seconds),
   ]
     .filter(Boolean)
     .join(' ')

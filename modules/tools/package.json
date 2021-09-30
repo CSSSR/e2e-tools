@@ -33,6 +33,7 @@
     "lodash": "^4.17.21",
     "mime-types": "^2.1.32",
     "package-json": "^6.5.0",
+    "pluralize": "^8.0.0",
     "prettier": "2.2.1",
     "readline-sync": "^1.4.10",
     "validate-npm-package-name": "^3.0.0",
