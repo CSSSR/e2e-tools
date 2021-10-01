@@ -120,7 +120,11 @@ function getTestSettingsForBrowser(browser, browserName) {
       const { host, port, useSsl } = parseUrl(settings)
       const isDefaultPort = [80, 443].includes(port)
       const serverName = `${host}${!isDefaultPort ? `:${port}` : ''}`
-      const sba = seleniumBasicAuth || basicAuth
+      const sba = seleniumBasicAuth ||
+        basicAuth || {
+          username_env: 'SELENIUM_USERNAME',
+          password_env: 'SELENIUM_PASSWORD',
+        }
 
       return {
         selenium: { port, host },
