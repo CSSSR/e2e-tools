@@ -145,9 +145,9 @@ function formatDuration(ms) {
   const seconds = totalSeconds - totalMinutes * 60
 
   return [
-    hours && pluralize('hour', hours),
-    minutes && pluralize('minute', minutes),
-    seconds && pluralize('second', seconds),
+    hours && pluralize('hour', hours, true),
+    minutes && pluralize('minute', minutes, true),
+    seconds && pluralize('second', seconds, true),
   ]
     .filter(Boolean)
     .join(' ')
