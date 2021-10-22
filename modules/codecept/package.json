@@ -19,13 +19,16 @@
   "dependencies": {
     "@codeceptjs/ui": "^0.4.6",
     "@csssr/e2e-tools": "^1.6.4",
+    "@csssr/codeceptjs": "^3.0.7",
     "@types/node": "^14.14.41",
-    "codeceptjs": "^3.0.7",
+    "codeceptjs-resemblehelper": "^1.9.4",
     "faker": "^5.5.3",
     "js-yaml": "^4.1.0",
     "lodash": "^4.17.21",
     "playwright": "^1.12.3",
     "puppeteer": "^10.1.0",
+    "testcafe": "^1.16.1",
+    "@csssr/testcafe-browser-provider-csssr": "^1.0.0",
     "webdriverio": "^7.7.6"
   },
   "repository": {

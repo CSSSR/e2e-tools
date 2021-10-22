@@ -43,6 +43,31 @@ function createToolConfig() {
           },
         },
       },
+      testcafe_remote_chrome: {
+        type: 'testcafe',
+        browser: '@csssr/csssr:remote-chrome:chrome',
+        browserServer: 'k8s',
+      },
+      testcafe_remote_firefox: {
+        type: 'testcafe',
+        browser: '@csssr/csssr:remote-firefox:firefox',
+        browserServer: 'k8s',
+      },
+      testcafe_macmini_safari: {
+        type: 'testcafe',
+        browser: '@csssr/csssr:macmini:safari',
+        browserServer: 'ssh',
+      },
+      testcafe_macmini_chrome: {
+        type: 'testcafe',
+        browser: '@csssr/csssr:macmini:chrome',
+        browserServer: 'ssh',
+      },
+      testcafe_macmini_firefox: {
+        type: 'testcafe',
+        browser: '@csssr/csssr:macmini:firefox',
+        browserServer: 'ssh',
+      },
     },
     githubActions: {
       enabled: true,
