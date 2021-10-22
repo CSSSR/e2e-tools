@@ -6,7 +6,8 @@
     "modules/nightwatch",
     "modules/nightwatch-image-comparison",
     "modules/tools",
-    "modules/nightwatch-local-file-upload"
+    "modules/nightwatch-local-file-upload",
+    "modules/testcafe-browser-provider-csssr"
   ],
   "changelogPreset": "e2e-tools",
   "version": "independent"

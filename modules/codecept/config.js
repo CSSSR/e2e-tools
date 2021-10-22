@@ -52,6 +52,22 @@ function getBrowser(browserName, browserConfig) {
       }
     }
 
+    case 'testcafe': {
+      return {
+        TestCafe: {
+          waitForTimeout: 3000,
+          ...settings
+        },
+        ResembleHelper : {
+          require: "codeceptjs-resemblehelper",
+          screenshotFolder : "./report/",
+          baseFolder: "./report/base/",
+          diffFolder: "./report/diff/",
+          ...settings,
+        },
+      }
+    }
+
     default:
       throw new Error(`Unexpected browser type ${type}`)
   }
