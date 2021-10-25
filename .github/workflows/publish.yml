@@ -32,6 +32,10 @@ jobs:
           git config --local user.name "GitHub Action"
           git config --local user.email "action@github.com"
 
+      - name: Build testcafe-browser-provider-csssr module
+        run: make build
+        working-directory: ./modules/testcafe-browser-provider-csssr
+
       - name: Publish prerelease
         run: |
           yarn lerna publish --yes --canary --force-publish --no-verify-access
