@@ -43,12 +43,17 @@ export class SshStrategy implements Strategy {
     const port = this.forwardedPorts.shift()
     if (port) {
       await this.unforward(port)
-      this.logger.info({ port }, 'Unforward previos port')
+      await this.unforward(port + 1)
+      this.logger.info({ port1: port, port2: port + 1 }, 'Unforward previos ports')
     }
 
-    await this.forward(u.port)
-    this.logger.info({ port: u.port }, 'Port forwarded')
-    this.forwardedPorts.push(u.port)
+    const port1 = parseInt(u.port)
+    const port2 = port1 + 1
+    await this.forward(port1)
+    await this.forward(port2)
+    this.logger.info({ port1, port2 }, 'Ports forwarded')
+    this.forwardedPorts.push(port1)
+    this.forwardedPorts.push(port2)
   }
 
   public async dispose() {
