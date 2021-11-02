@@ -43,6 +43,18 @@ function createToolConfig() {
           },
         },
       },
+      testcafe_local_chrome: {
+        type: 'testcafe',
+        browser: 'chrome',
+      },
+      testcafe_local_safari: {
+        type: 'testcafe',
+        browser: 'safari',
+      },
+      testcafe_local_firefox: {
+        type: 'testcafe',
+        browser: 'firefox',
+      },
       testcafe_remote_chrome: {
         type: 'testcafe',
         browser: '@csssr/csssr:remote-chrome:chrome',
