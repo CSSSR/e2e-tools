@@ -55,6 +55,7 @@ function getBrowser(browserName, browserConfig) {
     case 'testcafe': {
       return {
         TestCafe: {
+          url: config.defaultLaunchUrl,
           waitForTimeout: 3000,
           ...settings
         },
