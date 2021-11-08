@@ -151,8 +151,8 @@ function generatePeriodicRunWorkflow({ url, command, run, id, config }) {
     }
 
     workflow.jobs['run-tests'].if = [
-      `github.event_name == "workflow_dispatch" ||`,
-      `github.event_name == "deployment_status" &&`,
+      `github.event_name == 'workflow_dispatch' ||`,
+      `github.event_name == 'deployment_status' &&`,
       `github.event.deployment_status.state == 'success' &&`,
       `github.event.deployment.payload.environmentURL == '${url}'`,
     ].join(' ')
