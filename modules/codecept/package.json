@@ -21,7 +21,7 @@
     "@csssr/e2e-tools": "^1.6.4",
     "@csssr/codeceptjs": "^3.0.7",
     "@types/node": "^14.14.41",
-    "codeceptjs-resemblehelper": "^1.9.4",
+    "codeceptjs-resemblehelper": "1.9.4",
     "faker": "^5.5.3",
     "js-yaml": "^4.1.0",
     "lodash": "^4.17.21",
