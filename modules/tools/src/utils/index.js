@@ -296,8 +296,12 @@ async function addAnyProjectFields(ctx, opts) {
 // а process.cwd() возвращает название диска в верхнем регистре. Поэтому обрезаем
 // название пути не учитывая регистра
 function stripDirectoryNameCaseInsensitive(filePath, directoryName) {
-  if (filePath.toLowerCase().slice(0, directoryName.length) == directoryName.toLowerCase()) {
+  if (filePath.toLowerCase().slice(0, directoryName.length) === directoryName.toLowerCase()) {
     return filePath.slice(directoryName.length)
+  }
+
+  if (!path.isAbsolute(filePath)) {
+    return filePath
   }
 
   throw new Error(`Could not remove directory prefix ${directoryName} from path ${filePath}`)
