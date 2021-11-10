@@ -59,13 +59,7 @@ function getBrowser(browserName, browserConfig) {
           waitForTimeout: 3000,
           ...settings
         },
-        ResembleHelper : {
-          require: "codeceptjs-resemblehelper",
-          screenshotFolder : "./report/",
-          baseFolder: "./report/base/",
-          diffFolder: "./report/diff/",
-          ...settings,
-        },
+        ...helpers
       }
     }
 
@@ -74,7 +68,7 @@ function getBrowser(browserName, browserConfig) {
   }
 }
 
-const { browsers } = config.tools['@csssr/e2e-tools-codecept']
+const { browsers, helpers } = config.tools['@csssr/e2e-tools-codecept']
 
 function getBrowserName() {
   if (process.env.BROWSER) {
