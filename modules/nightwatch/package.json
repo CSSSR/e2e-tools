@@ -1,6 +1,6 @@
 {
   "name": "@csssr/e2e-tools-nightwatch",
-  "version": "1.15.9",
+  "version": "1.15.10",
   "description": "Nightwatch плагин для @csssr/e2e-tools",
   "author": "Maxim Samoilov <nitive@icloud.com>",
   "license": "MIT",
@@ -32,7 +32,7 @@
     "geckodriver": "1.22.3",
     "mocha": "^6",
     "mochawesome": "^4",
-    "nightwatch": "~1.6.3",
+    "nightwatch": "~1.7.11",
     "rimraf": "^3.0.0"
   },
   "repository": {
