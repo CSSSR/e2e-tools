@@ -30,7 +30,10 @@
 3. Элемент перекрывается другим элементом
 4. Клик отменяется через JS (не уверен, насколько это возможно)
 
-Пример:
-`<input>` перекрывался `<span>`
-http://s.csssr.ru/UGFKUFRBL/2021-11-16-14-11-36-eZM2a.jpg
-http://s.csssr.ru/UGFKUFRBL/2021-11-16-14-12-28-jsO5V.jpg
+<details>
+  <summary>Пример: &lt;input> перекрывался &lt;span></summary>
+
+![](http://s.csssr.ru/UGFKUFRBL/2021-11-16-14-11-36-eZM2a.jpg)
+![](http://s.csssr.ru/UGFKUFRBL/2021-11-16-14-12-28-jsO5V.jpg)
+
+</details>
