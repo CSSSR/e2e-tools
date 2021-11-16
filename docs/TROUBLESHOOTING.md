@@ -19,19 +19,18 @@
 2. Вводим «Terminal: Select Default Shell»
 3. Выбираем Powershell или Git Bash
 
-
 ## Ошибка «element not interactable»
+
 Ошибка `An error occurred while running .... element not interactable`
 
-Причины: 
+Причины:
+
 1. Элемент за пределами вьюпорта (до него надо скролить)
 2. Элемент 0 пикселей в высоту и ширину
 3. Элемент перекрывается другим элементом
 4. Клик отменяется через JS (не уверен, насколько это возможно)
 
-Пример: 
-`<input>` перекрывался `<span>` 
+Пример:
+`<input>` перекрывался `<span>`
 http://s.csssr.ru/UGFKUFRBL/2021-11-16-14-11-36-eZM2a.jpg
 http://s.csssr.ru/UGFKUFRBL/2021-11-16-14-12-28-jsO5V.jpg
-  
-  
