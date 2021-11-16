@@ -22,6 +22,7 @@
 
 ## Ошибка «element not interactable»
 Ошибка `An error occurred while running .... element not interactable`
+
 Причины: 
 1. Элемент за пределами вьюпорта (до него надо скролить)
 2. Элемент 0 пикселей в высоту и ширину
