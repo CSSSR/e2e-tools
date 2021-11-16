@@ -20,7 +20,7 @@
 3. Выбираем Powershell или Git Bash
 
 
-## Не кликается элемент 
+## Ошибка «element not interactable»
 Ошибка `An error occurred while running .... element not interactable`
 Причины: 
 1. Элемент за пределами вьюпорта (до него надо скролить)
