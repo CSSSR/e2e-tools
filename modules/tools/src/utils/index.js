@@ -308,7 +308,7 @@ function createWorkflow(workflowPath, content) {
 }
 
 function getGitHubSecretEnv(browsers) {
-  return Object.entries(browsers)
+  return Object.entries(browsers || {})
     .filter(
       ([_, browserConfig]) => browserConfig.type === 'selenium' && browserConfig.seleniumBasicAuth
     )
