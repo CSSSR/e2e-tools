@@ -336,7 +336,8 @@ function getGitHubSecretEnv(browsers) {
 
   return Object.entries(browsers)
     .filter(
-      ([_, browserConfig]) => browserConfig.type === 'testcafe' && browserConfig.browserServer === 'ssh'
+      ([_, browserConfig]) =>
+        browserConfig.type === 'testcafe' && browserConfig.browserServer === 'ssh'
     )
     .reduce((acc, [browserName, browserConfig]) => {
       const [_, config] = browserConfig.browser.split(':')
