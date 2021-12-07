@@ -1,11 +1,53 @@
 const fs = require('fs')
 const path = require('path')
-const yaml = require('js-yaml')
 const glob = require('fast-glob')
 const { getConfig, getProjectRootDir, createWorkflow, getGitHubSecretEnv } = require('../utils')
 
 function getWorkflowName({ url, command, run }) {
   return `${run.name} (url: ${url}, command: ${command})`
+}
+
+function getCheckoutSteps(run) {
+  if (run.testsBranch) {
+    if (run.customEvent === 'successful-deploy') {
+      return [
+        {
+          uses: 'actions/checkout@v2',
+          with: {
+            lfs: true,
+            ref: run.testsBranch,
+          },
+        },
+      ]
+    }
+
+    return [
+      {
+        uses: 'actions/checkout@v2',
+        with: {
+          lfs: true,
+          ref: run.testsBranch,
+        },
+        if: `github.event_name != 'workflow_dispatch'`,
+      },
+      {
+        uses: 'actions/checkout@v2',
+        with: {
+          lfs: true,
+        },
+        if: `github.event_name == 'workflow_dispatch'`,
+      },
+    ]
+  }
+
+  return [
+    {
+      uses: 'actions/checkout@v2',
+      with: {
+        lfs: true,
+      },
+    },
+  ]
 }
 
 function generatePeriodicRunWorkflow({ url, command, run, id, config }) {
@@ -76,12 +118,7 @@ function generatePeriodicRunWorkflow({ url, command, run, id, config }) {
         'runs-on': ['self-hosted', 'e2e-tests'],
         'timeout-minutes': 90,
         steps: [
-          {
-            uses: 'actions/checkout@v2',
-            with: {
-              lfs: true,
-            },
-          },
+          ...getCheckoutSteps(run),
           {
             run: 'yarn install --frozen-lockfile',
             'working-directory': 'e2e-tests',
