@@ -1,5 +1,6 @@
 const { getConfig, createArgsArrayFromMap } = require('@csssr/e2e-tools/utils')
 const packageName = require('../../package.json').name
+const { generateGitHubWorkflow } = require('./generate-github-workflow')
 
 /**
  * @returns {import('yargs').CommandModule | undefined}
@@ -40,6 +41,7 @@ const addNightwatchRunCommand = (context) => {
     describe: 'Run nightwatch',
     handler(args) {
       context.spawnSync('yarn', ['install', '--frozen-lockfile'], { stdio: 'inherit' })
+      generateGitHubWorkflow()
 
       const result = context.spawnSync(
         'yarn',
