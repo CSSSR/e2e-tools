@@ -57,9 +57,9 @@ function getBrowser(browserName, browserConfig) {
         TestCafe: {
           url: config.defaultLaunchUrl,
           waitForTimeout: 3000,
-          ...settings
+          ...settings,
         },
-        ...helpers
+        ...helpers,
       }
     }
 
