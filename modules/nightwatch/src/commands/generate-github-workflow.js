@@ -21,22 +21,23 @@ function getJobName(testFile) {
 
 function generateGitHubWorkflow() {
   const config = getConfig()
-  const codeceptConfig = config.tools['@csssr/e2e-tools-codecept']
+  const nightwatchConfig = config.tools['@csssr/e2e-tools-nightwatch']
+
   const githubWorkflowPath = path.join(
     getProjectRootDir(),
-    '.github/workflows/run-codecept-tests.yaml'
+    '.github/workflows/run-nightwatch-tests.yaml'
   )
-  if (!codeceptConfig.githubActions?.enabled) {
+  if (!nightwatchConfig.githubActions?.enabled) {
     fs.rmSync(githubWorkflowPath, { force: true })
     return
   }
 
-  const githubSecretsEnv = getGitHubSecretEnv(codeceptConfig.browsers)
+  const githubSecretsEnv = getGitHubSecretEnv(nightwatchConfig.browsers)
   const testFiles = glob.sync('**/*.test.{js,ts}', {
-    cwd: path.join(getTestsRootDir(), 'codecept/tests'),
+    cwd: path.join(getTestsRootDir(), 'nightwatch/tests'),
   })
 
-  const defaultRemoteBrowser = Object.entries(codeceptConfig.browsers)
+  const defaultRemoteBrowser = Object.entries(nightwatchConfig.browsers)
     .filter(([_, cfg]) => cfg.remote)
     .map(([browserName]) => browserName)[0]
 
@@ -58,7 +59,7 @@ function generateGitHubWorkflow() {
           'working-directory': 'e2e-tests',
         },
         {
-          run: `yarn et codecept:run --browser \${{ github.event.inputs.browserName }} --test 'tests/${testFile}'`,
+          run: `yarn et nightwatch:run --browser \${{ github.event.inputs.browserName }} --test 'tests/${testFile}'`,
           'working-directory': 'e2e-tests',
           env: {
             ...githubSecretsEnv,
@@ -70,7 +71,7 @@ function generateGitHubWorkflow() {
   }
 
   const workflowContent = {
-    name: 'Run CodeceptJS e2e tests',
+    name: 'Run Nightwatch e2e tests',
     concurrency: 'e2e-tests',
     on: {
       workflow_dispatch: {

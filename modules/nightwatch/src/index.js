@@ -47,6 +47,9 @@ function createToolConfig() {
         },
         globals: { skipScreenshotAssertions: false },
       },
+      githubActions: {
+        enabled: true,
+      },
     },
   }
 }
