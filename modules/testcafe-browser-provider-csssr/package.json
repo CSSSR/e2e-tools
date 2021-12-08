@@ -1,6 +1,6 @@
 {
   "name": "@csssr/testcafe-browser-provider-csssr",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Плагин для testcafe для запуска тестов на remote browsers",
   "author": "CSSSR",
   "license": "MIT",
