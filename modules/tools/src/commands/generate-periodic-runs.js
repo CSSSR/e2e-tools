@@ -93,6 +93,18 @@ function generatePeriodicRunWorkflow({ url, command, run, id, config }) {
     }
   }
 
+  function getAllureEnv() {
+    return config.allureProjectId && {
+      ALLURE_ENDPOINT: '${{ secrets.ALLURE_ENDPOINT }}',
+      ALLURE_TOKEN: '${{ secrets.ALLURE_TOKEN }}',
+      ALLURE_PROJECT_ID: config.allureProjectId,
+      ALLURE_JOB_UID: '${{ github.run_id }}',
+      ALLURE_CI_TYPE: 'github',
+      ALLURE_LAUNCH_NAME: `${run.name}`,
+      ALLURE_RESULTS: `${command.includes('nightwatch') ? 'nightwatch' : 'codecept'}/report/allure-reports/`
+    }
+  }
+
   const workflow = {
     name: workflowName,
     concurrency: 'e2e-tests',
@@ -123,14 +135,23 @@ function generatePeriodicRunWorkflow({ url, command, run, id, config }) {
             run: 'yarn install --frozen-lockfile',
             'working-directory': 'e2e-tests',
           },
+          config.allureProjectId && {
+            name: "Download allurectl",
+            'working-directory': 'e2e-tests',
+            run: [
+              "wget https://github.com/allure-framework/allurectl/releases/latest/download/allurectl_linux_386 -O ./allurectl",
+              "chmod +x ./allurectl\n",
+            ].join('\n')
+          },
           {
-            run: command,
+            run: config.allureProjectId ? `./allurectl watch -- ${command}` : command,
             'working-directory': 'e2e-tests',
             env: {
               ...getGitHubSecretEnv(config.tools['@csssr/e2e-tools-nightwatch']?.browsers),
               ...getGitHubSecretEnv(config.tools['@csssr/e2e-tools-codecept']?.browsers),
               LAUNCH_URL: url,
               ENABLE_ALLURE_REPORT: 'true',
+              ...getAllureEnv(),
             },
           },
           {
