@@ -1,23 +1,11 @@
 const fs = require('fs')
 const path = require('path')
-const glob = require('fast-glob')
-const crypto = require('crypto')
 const {
   getConfig,
-  getTestsRootDir,
   getProjectRootDir,
   createWorkflow,
   getGitHubSecretEnv,
 } = require('@csssr/e2e-tools/utils')
-
-function getTestFilePrettyName(testFile) {
-  return testFile.replace(/\.test\.[jt]s$/, '')
-}
-
-function getJobName(testFile) {
-  const hash = crypto.createHash('sha256').update(testFile, 'utf8').digest('hex')
-  return `run-test-${hash}`
-}
 
 function generateGitHubWorkflow() {
   const config = getConfig()
@@ -33,40 +21,43 @@ function generateGitHubWorkflow() {
   }
 
   const githubSecretsEnv = getGitHubSecretEnv(nightwatchConfig.browsers)
-  const testFiles = glob.sync('**/*.test.{js,ts}', {
-    cwd: path.join(getTestsRootDir(), 'nightwatch/tests'),
-  })
-
+  
   const defaultRemoteBrowser = Object.entries(nightwatchConfig.browsers)
     .filter(([_, cfg]) => cfg.remote)
     .map(([browserName]) => browserName)[0]
 
-  function getTestRunJob(testFile) {
+  function slackMessage(status) {
+    function byStatus(success, failure) {
+      return status === 'success' ? success : failure
+    }
+
     return {
-      name: getTestFilePrettyName(testFile),
-      if: `github.event.inputs.${getJobName(testFile)} == 'true'`,
-      'runs-on': ['self-hosted', 'e2e-tests'],
-      'timeout-minutes': 30,
-      steps: [
-        {
-          uses: 'actions/checkout@v2',
-          with: {
-            lfs: true,
-          },
-        },
-        {
-          run: 'yarn install --frozen-lockfile',
-          'working-directory': 'e2e-tests',
-        },
-        {
-          run: `yarn et nightwatch:run --browser \${{ github.event.inputs.browserName }} --test 'tests/${testFile}'`,
-          'working-directory': 'e2e-tests',
-          env: {
-            ...githubSecretsEnv,
-            LAUNCH_URL: '${{ github.event.inputs.launchUrl }}',
-          },
-        },
-      ],
+      'slack-bot-user-oauth-access-token': '${{ secrets.SLACK_SEND_MESSAGE_TOKEN }}',
+      'slack-channel': nightwatchConfig.githubActions?.slackChannel,
+      'slack-text': [
+        byStatus(
+          ':approved: *Тесты прошли успешно*',
+          ':fire: *${{ steps.allure.outputs.report-failed-percentage }}% (${{ steps.allure.outputs.report-failed-total }}) тестов упало*'
+        ),
+        '',
+        `Название: Run tests`,
+        'URL: ${{ github.event.inputs.launchUrl }}',
+        'Команда для запуска:',
+        '```',
+        'yarn et nightwatch:run --browser ${{ github.event.inputs.browserName }} --checkScreenshots=${{ github.event.inputs.checkScreenshots }}',
+        '```',
+        '',
+        '*Allure отчёт*: ${{ steps.allure.outputs.report-link }}',
+        '',
+        '${{ steps.allure.outputs.report-summary }}',
+        '',
+        'Логи: https://github.com/${{ github.repository }}/runs/${{ steps.query-jobs.outputs.result }}?check_suite_focus=true',
+        '',
+        `https://s.csssr.ru/U09LGPMEU/${byStatus(
+          '20200731115845',
+          '20200731115800'
+        )}.jpg?run=\${{ github.run_id }}`,
+      ].join('\n'),
     }
   }
 
@@ -86,22 +77,16 @@ function generateGitHubWorkflow() {
             default: defaultRemoteBrowser,
             required: true,
           },
-
-          ...Object.fromEntries(
-            testFiles.map((testFile) => [
-              getJobName(testFile),
-              {
-                description: `Запустить тест «${getTestFilePrettyName(testFile)}»`,
-                required: false,
-                default: 'true',
-              },
-            ])
-          ),
+          checkScreenshots: {
+            description: 'Проверка скриншотов',
+            default: 'true',
+            required: true,
+          },
         },
       },
     },
     permissions: {
-      actions: 'none',
+      actions: 'read',
       checks: 'none',
       contents: 'read',
       deployments: 'none',
@@ -112,9 +97,78 @@ function generateGitHubWorkflow() {
       'security-events': 'none',
       statuses: 'none',
     },
-    jobs: Object.fromEntries(
-      testFiles.map((testFile) => [getJobName(testFile), getTestRunJob(testFile)])
-    ),
+    jobs: {
+      'run-tests': {
+        name: 'Run tests',
+        'runs-on': ['self-hosted', 'e2e-tests'],
+        'timeout-minutes': 90,
+        steps: [
+          {
+            uses: 'actions/checkout@v2',
+            with: {
+              lfs: true,
+            },
+          },
+          {
+            run: 'yarn install --frozen-lockfile',
+            'working-directory': 'e2e-tests',
+          },
+          {
+            run: `yarn et nightwatch:run --browser \${{ github.event.inputs.browserName }} --checkScreenshots=\${{ github.event.inputs.checkScreenshots }}`,
+            'working-directory': 'e2e-tests',
+            env: {
+              ...githubSecretsEnv,
+              LAUNCH_URL: '${{ github.event.inputs.launchUrl }}',
+              ENABLE_ALLURE_REPORT: 'true',
+            },
+          },
+          {
+            if: 'always()',
+            name: 'Generate Allure report',
+            run: `node -e 'require("@csssr/e2e-tools/upload-allure-report")'`,
+            'working-directory': 'e2e-tests',
+            id: 'allure',
+            env: {
+              LAUNCH_URL: '${{ github.event.inputs.launchUrl }}',
+              RUN_COMMAND: `yarn et nightwatch:run --browser \${{ github.event.inputs.browserName }} --checkScreenshots=\${{ github.event.inputs.checkScreenshots }}`,
+              ALLURE_REPORT_DIRECTORIES:
+                'codecept/report/allure-reports/,nightwatch/report/allure-reports/',
+              AWS_ACCESS_KEY_ID: '${{ secrets.TEST_REPORTS_AWS_ACCESS_KEY_ID }}',
+              AWS_SECRET_ACCESS_KEY: '${{ secrets.TEST_REPORTS_AWS_SECRET_ACCESS_KEY }}',
+            },
+          },
+          nightwatchConfig.githubActions?.slackChannel && {
+            if: 'always()',
+            uses: 'actions/github-script@v4',
+            id: 'query-jobs',
+            with: {
+              script: [
+                'const result = await github.actions.listJobsForWorkflowRun({',
+                '  owner: context.repo.owner,',
+                '  repo: context.repo.repo,',
+                '  run_id: ${{ github.run_id }},',
+                '})',
+                'return result.data.jobs[0].id',
+              ].join('\n'),
+              'result-encoding': 'string',
+            },
+          },
+
+          nightwatchConfig.githubActions?.slackChannel && {
+            if: 'failure()',
+            name: 'Send failure to Slack',
+            uses: 'archive/github-actions-slack@27663f2377ce6f86d7fca5b8056e6b977f03b5c9',
+            with: slackMessage('failure'),
+          },
+          nightwatchConfig.githubActions?.slackChannel && {
+            if: 'success()',
+            name: 'Send success to Slack',
+            uses: 'archive/github-actions-slack@27663f2377ce6f86d7fca5b8056e6b977f03b5c9',
+            with: slackMessage('success'),
+          },
+        ].filter(Boolean),
+      },
+    },
   }
 
   createWorkflow(githubWorkflowPath, workflowContent)
