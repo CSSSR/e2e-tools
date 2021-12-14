@@ -174,7 +174,7 @@ function takeScreenshot({ client, description, check, methodOptions, callback })
             }
           }
 
-          if (result.misMatchPercentage > allowedMisMatchPercentage / 100) {
+          if (result.misMatchPercentage > allowedMisMatchPercentage) {
             callback({ status: 'error', error: 'Screenshot does not match', result })
             return
           }
