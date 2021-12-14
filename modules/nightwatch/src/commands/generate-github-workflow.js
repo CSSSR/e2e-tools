@@ -5,6 +5,9 @@ const {
   getProjectRootDir,
   createWorkflow,
   getGitHubSecretEnv,
+  allurectlWatch,
+  allureEnv,
+  downloadAllurectlStep,
 } = require('@csssr/e2e-tools/utils')
 
 function generateGitHubWorkflow() {
@@ -21,7 +24,7 @@ function generateGitHubWorkflow() {
   }
 
   const githubSecretsEnv = getGitHubSecretEnv(nightwatchConfig.browsers)
-  
+
   const defaultRemoteBrowser = Object.entries(nightwatchConfig.browsers)
     .filter(([_, cfg]) => cfg.remote)
     .map(([browserName]) => browserName)[0]
@@ -60,9 +63,10 @@ function generateGitHubWorkflow() {
       ].join('\n'),
     }
   }
+  const name = 'Run Nightwatch e2e tests'
 
   const workflowContent = {
-    name: 'Run Nightwatch e2e tests',
+    name,
     concurrency: 'e2e-tests',
     on: {
       workflow_dispatch: {
@@ -113,13 +117,22 @@ function generateGitHubWorkflow() {
             run: 'yarn install --frozen-lockfile',
             'working-directory': 'e2e-tests',
           },
+          config.allureProjectId && downloadAllurectlStep(),
           {
-            run: `yarn et nightwatch:run --browser \${{ github.event.inputs.browserName }} --checkScreenshots=\${{ github.event.inputs.checkScreenshots }}`,
+            run: allurectlWatch(
+              config.allureProjectId,
+              `yarn et nightwatch:run --browser \${{ github.event.inputs.browserName }} --checkScreenshots=\${{ github.event.inputs.checkScreenshots }}`
+            ),
             'working-directory': 'e2e-tests',
             env: {
               ...githubSecretsEnv,
               LAUNCH_URL: '${{ github.event.inputs.launchUrl }}',
               ENABLE_ALLURE_REPORT: 'true',
+              ...allureEnv(
+                config.allureProjectId,
+                `${name} in \${{ github.event.inputs.browserName }}`,
+                'nightwatch'
+              ),
             },
           },
           {

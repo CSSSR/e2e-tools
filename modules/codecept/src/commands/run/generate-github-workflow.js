@@ -3,6 +3,9 @@ const path = require('path')
 const glob = require('fast-glob')
 const crypto = require('crypto')
 const {
+  allurectlWatch,
+  allureEnv,
+  downloadAllurectlStep,
   getConfig,
   getTestsRootDir,
   getProjectRootDir,
