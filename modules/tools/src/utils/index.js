@@ -11,6 +11,7 @@ const glob = require('fast-glob')
 const JSONWithComments = require('comment-json')
 const prettierConfig = require('../../prettier')
 const { isValidRepoSshAddress, getRepoSshAddress } = require('./repo-address')
+const { allurectlWatch, allureEnv, downloadAllurectlStep } = require('./allure')
 
 const getTestsRootDir = () => {
   const foundRoot = findRoot(process.cwd())
@@ -390,4 +391,7 @@ module.exports = {
   createWorkflow,
   getGitHubSecretEnv,
   ensureNodeVersion,
+  allurectlWatch,
+  allureEnv,
+  downloadAllurectlStep,
 }
