@@ -8,6 +8,7 @@ function allurectlUploadStep(config, name, command) {
   return (
     config.allure?.projectId &&
     config.allure?.mode !== 'watch' && {
+      if: 'always()',
       name: 'Upload allure reports to TestOps',
       'working-directory': 'e2e-tests',
       run: `./allurectl upload ${resultsDirectory(command)}`,
