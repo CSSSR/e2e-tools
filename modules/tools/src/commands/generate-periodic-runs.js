@@ -195,7 +195,7 @@ function generatePeriodicRunWorkflow({ url, command, run, id, config }) {
             uses: 'archive/github-actions-slack@27663f2377ce6f86d7fca5b8056e6b977f03b5c9',
             with: slackMessage('success'),
           },
-          allurectlUploadStep(config, run.name, command)
+          allurectlUploadStep(config, run.name, command),
         ].filter(Boolean),
       },
     },
