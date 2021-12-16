@@ -6,6 +6,7 @@ const {
   createWorkflow,
   getGitHubSecretEnv,
   allurectlWatch,
+  allurectlUploadStep,
   allureEnv,
   downloadAllurectlStep,
 } = require('@csssr/e2e-tools/utils')
@@ -117,10 +118,10 @@ function generateGitHubWorkflow() {
             run: 'yarn install --frozen-lockfile',
             'working-directory': 'e2e-tests',
           },
-          config.allureProjectId && downloadAllurectlStep(),
+          config.allure?.projectId && downloadAllurectlStep(),
           {
             run: allurectlWatch(
-              config.allureProjectId,
+              config,
               `yarn et nightwatch:run --browser \${{ github.event.inputs.browserName }} --checkScreenshots=\${{ github.event.inputs.checkScreenshots }}`
             ),
             'working-directory': 'e2e-tests',
@@ -129,7 +130,7 @@ function generateGitHubWorkflow() {
               LAUNCH_URL: '${{ github.event.inputs.launchUrl }}',
               ENABLE_ALLURE_REPORT: 'true',
               ...allureEnv(
-                config.allureProjectId,
+                config,
                 `${name} in \${{ github.event.inputs.browserName }}`,
                 'nightwatch'
               ),
@@ -179,6 +180,7 @@ function generateGitHubWorkflow() {
             uses: 'archive/github-actions-slack@27663f2377ce6f86d7fca5b8056e6b977f03b5c9',
             with: slackMessage('success'),
           },
+          allurectlUploadStep(config, name, 'nightwatch')
         ].filter(Boolean),
       },
     },
