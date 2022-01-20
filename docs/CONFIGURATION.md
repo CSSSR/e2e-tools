@@ -68,15 +68,14 @@ Id браузера можно задать в файле `e2e-tools.json`:
 },
 ```
 
-## Добавление переодических запусков
+# Добавление периодических запусков автотестов в 3 шага!
 
-Есть возможность генерировать GitHub workflows, которые будут выполняться по расписанию или после каждого обновления стенда. Конфигурация запусков добавляется в `e2e-tools.json`. После изменения конфигурации нужно перегенерировать файлы командой `yarn et generate-periodic-runs`
+## ШАГ 1. Необходимо открыть файл e2e-tools.json
+## ШАГ 2. Добавить настройки для запусков
 
-### Примеры
-
-Запуск каждый день в 9 утра
-
+Добавить для ежедневного запуска в 9 утра: 
 ```json
+"releaseChannel": "canary",
 "periodicRuns": [
   {
     "name": "Run Nightwatch tests everyday at 9:00",
@@ -93,9 +92,9 @@ Id браузера можно задать в файле `e2e-tools.json`:
 ],
 ```
 
-Запуск при успешном обновлении стенда master.professionals.csssr.cloud
-
+Добавить для запуска при успешном обновлении стенда: 
 ```json
+"releaseChannel": "canary",
 "periodicRuns": [
   {
     "name": "Run Nightwatch tests when branch master is updated",
@@ -107,31 +106,7 @@ Id браузера можно задать в файле `e2e-tools.json`:
 ],
 ```
 
-Всё вместе
-
-```json
-"periodicRuns": [
-  {
-    "name": "Run Nightwatch tests everyday at 9:00",
-    "slackChannel": "C0129A519T8",
-    "event": {
-      "schedule": [{ "cron": "0 9 * * *" }]
-    },
-    "urls": ["https://master.professionals.csssr.cloud"],
-    "commands": [
-      "yarn et nightwatch:run --browser remote_chrome",
-      "yarn et nightwatch:run --browser remote_firefox",
-    ]
-  },
-  {
-    "name": "Run Nightwatch tests when branch master is updated",
-    "slackChannel": "C0129A519T8",
-    "customEvent": "successful-deploy",
-    "urls": ["https://master.professionals.csssr.cloud"],
-    "commands": ["yarn et nightwatch:run --browser remote_chrome"]
-  }
-],
-```
+Пример по [ссылке](https://github.com/CSSSR/professionals-platform-e2e/blob/ee3f5c0ee319632caa1fcbabba1373cc6a232d53/e2e-tests/e2e-tools.json#L6-L14). 
 
 ### Подробности
 
@@ -158,3 +133,6 @@ Id браузера можно задать в файле `e2e-tools.json`:
 Каждый URL, указанный в `urls` и каждая команда, указанныя в `commands`, создаёт отдельный файл, который можно запустить независимо.
 
 Тесты не запускаются параллельно — если на момент запуска тестов другой запуск ещё идёт, то запуск попадёт в очередь и будет выполнен, когда первый запуск закончится
+
+## ШАГ 3. Перегенерировать файлы
+Перегенерировать файлы командой ```yarn et generate-periodic-runs```
