@@ -133,6 +133,25 @@ Id браузера можно задать в файле `e2e-tools.json`:
 Каждый URL, указанный в `urls` и каждая команда, указанныя в `commands`, создаёт отдельный файл, который можно запустить независимо.
 
 Тесты не запускаются параллельно — если на момент запуска тестов другой запуск ещё идёт, то запуск попадёт в очередь и будет выполнен, когда первый запуск закончится
+> Обратите внимание! 
+> Если в файле e2e-tools.json тип браузера “selenium” ("type": "selenium",) [пример](https://github.com/CSSSR/csssr.com/blob/46f58b18d54b7bb7e3733b72b482a5b1c9f18f55/e2e-tests/e2e-tools.json#L26), необходимо исправить имена переменных: 
+> 
+> БЫЛО: 
+> ```json
+> "basicAuth": {
+>            "credentialsId": "chromedriver",
+>           "username_env": "CHROMEDRIVER_USERNAME",
+>           "password_env": "CHROMEDRIVER_PASSWORD"
+>         },
+> ```
+> 
+> СТАЛО: 
+> ```json
+> "seleniumBasicAuth": {
+>           "username_env": "SELENIUM_USERNAME",
+>             "password_env": "SELENIUM_PASSWORD"
+> },
+> ```
 
 ## ШАГ 3. Перегенерировать файлы
 Перегенерировать файлы командой ```yarn et generate-periodic-runs```
