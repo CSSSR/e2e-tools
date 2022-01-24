@@ -298,7 +298,7 @@ async function addAnyProjectFields(ctx, opts) {
   })
 }
 
-// VSCode на Windowns прокидывает название директории с диском в нижнем регистре,
+// VSCode на Windows прокидывает название директории с диском в нижнем регистре,
 // а process.cwd() возвращает название диска в верхнем регистре. Поэтому обрезаем
 // название пути не учитывая регистра
 function stripDirectoryNameCaseInsensitive(filePath, directoryName) {
@@ -306,11 +306,7 @@ function stripDirectoryNameCaseInsensitive(filePath, directoryName) {
     return filePath.slice(directoryName.length)
   }
 
-  if (!path.isAbsolute(filePath)) {
-    return filePath
-  }
-
-  throw new Error(`Could not remove directory prefix ${directoryName} from path ${filePath}`)
+  return filePath
 }
 
 function createWorkflow(workflowPath, content) {
