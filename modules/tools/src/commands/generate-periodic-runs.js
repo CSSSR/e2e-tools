@@ -108,6 +108,16 @@ function generatePeriodicRunWorkflow({ url, command, run, id, config }) {
     ].join('')
   }
 
+  /*
+    Событие workflow_run происходит когда процесс изменяет статус 
+    на requested или completed Но статус completed не указывает на успех 
+    выполнения процесса. Для отсеивания процессов что не завершились успешно 
+    нам необходимо добавить следующее условие:
+  */
+  if (run.event && run.event.workflow_run) {
+    workflow.jobs['run-tests'].if = `github.event.workflow_run.conclusion == 'success'`
+  }
+
   createWorkflow(workflowPath, workflow)
 }
 
