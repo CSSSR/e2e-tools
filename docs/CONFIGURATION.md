@@ -71,9 +71,11 @@ Id браузера можно задать в файле `e2e-tools.json`:
 # Добавление периодических запусков автотестов в 5 шагов!
 
 ## ШАГ 1. Необходимо открыть файл e2e-tools.json
+
 ## ШАГ 2. Добавить настройки для запусков
 
-Добавить для ежедневного запуска в 9 утра: 
+Добавить для ежедневного запуска в 9 утра:
+
 ```json
 "releaseChannel": "canary",
 "periodicRuns": [
@@ -92,7 +94,8 @@ Id браузера можно задать в файле `e2e-tools.json`:
 ],
 ```
 
-Добавить для запуска при успешном обновлении стенда: 
+Добавить для запуска при успешном обновлении стенда при помощи кубереты :
+
 ```json
 "releaseChannel": "canary",
 "periodicRuns": [
@@ -106,13 +109,36 @@ Id браузера можно задать в файле `e2e-tools.json`:
 ],
 ```
 
-Пример по [ссылке](https://github.com/CSSSR/professionals-platform-e2e/blob/ee3f5c0ee319632caa1fcbabba1373cc6a232d53/e2e-tests/e2e-tools.json#L6-L14). 
+Пример по [ссылке](https://github.com/CSSSR/professionals-platform-e2e/blob/ee3f5c0ee319632caa1fcbabba1373cc6a232d53/e2e-tests/e2e-tools.json#L6-L14).
+
+Добавить для запуска при успешном обновлении стенда при помощи GitHub Actions:
+
+```json
+"releaseChannel": "canary",
+"periodicRuns": [
+  {
+    "name": "Run Nightwatch tests when branch master is updated",
+    "slackChannel": "C0129A519T8",
+    "event": {
+        "workflow_run": {
+          "workflows": ["Deploy Workflow Name"],
+          "types": ["completed"],
+          "branches": ["master"]
+        }
+    },
+    "urls": ["https://master.professionals.csssr.cloud"],
+    "commands": ["yarn et nightwatch:run --browser remote_chrome"]
+  }
+],
+```
+
+Пример по [ссылке](https://github.com/CSSSR/s7/blob/aa47f1f94a3d9d5e2b7ad4441fd75a3fed1692e5/e2e-tests/e2e-tools.json#L3-L15).
 
 ### Подробности
 
 Если указать `"slackChannel": "<channel-id>"`, то результат прогона будет отправляться в слак. ID канала можно найти в его настройках ([видеоинструкция](https://s.csssr.ru/U09LGPMEU/20210709142250.mp4)).
 
-Способа запуска два:
+Способа запуска три:
 
 1. Запуск по расписанию. Время запуска определяется строкой в формате CRON: `0 9 * * *`. Кастомизировать её удобно при помощи сайта [crontab.guru](https://crontab.guru/#0_9_*_*_*).
 
@@ -126,6 +152,19 @@ Id браузера можно задать в файле `e2e-tools.json`:
 
 ```json
 "customEvent": "successful-deploy",
+
+```
+
+3. Запуск при успешном деплое. Только для деплоев при помощи GitHub Actions
+
+```json
+"event": {
+  "workflow_run": {
+    "workflows": ["Deploy Workflow Name"],
+    "types": ["completed"],
+    "branches": ["master"]
+  }
+}
 ```
 
 Также все переодичные запуски можно запустить вручную с вкладки «Actions» в репозитории.
@@ -133,10 +172,12 @@ Id браузера можно задать в файле `e2e-tools.json`:
 Каждый URL, указанный в `urls` и каждая команда, указанныя в `commands`, создаёт отдельный файл, который можно запустить независимо.
 
 Тесты не запускаются параллельно — если на момент запуска тестов другой запуск ещё идёт, то запуск попадёт в очередь и будет выполнен, когда первый запуск закончится
+
 > _Обратите внимание!_
 > Если в файле e2e-tools.json тип браузера “selenium” ("type": "selenium",) [пример](https://github.com/CSSSR/csssr.com/blob/46f58b18d54b7bb7e3733b72b482a5b1c9f18f55/e2e-tests/e2e-tools.json#L26), необходимо исправить имена переменных
-> 
-> БЫЛО: 
+>
+> БЫЛО:
+>
 > ```json
 > "basicAuth": {
 >            "credentialsId": "chromedriver",
@@ -144,8 +185,9 @@ Id браузера можно задать в файле `e2e-tools.json`:
 >           "password_env": "CHROMEDRIVER_PASSWORD"
 >         },
 > ```
-> 
-> НЕОБХОДИМО ИСПРАВИТЬ НА: 
+>
+> НЕОБХОДИМО ИСПРАВИТЬ НА:
+>
 > ```json
 > "seleniumBasicAuth": {
 >           "username_env": "SELENIUM_USERNAME",
@@ -154,12 +196,15 @@ Id браузера можно задать в файле `e2e-tools.json`:
 > ```
 
 ## ШАГ 3. Запустить любой тест на удаленном сервере
+
 При первом прогоне будет запрос username и password, которые сразу запишутся в .env
 
 ## ШАГ 4. Перегенерировать файлы
-Перегенерировать файлы командой ```yarn et generate-periodic-runs```
+
+Перегенерировать файлы командой `yarn et generate-periodic-runs`
 
 ## ШАГ 5. Закоммитить изменения
 
-# Как запустить ран в Actions 
+# Как запустить ран в Actions
+
 [Исчерпывающий скрин](https://s.csssr.ru/UUK0K6P5F/2022-01-18-17-51-21-uyI9E.jpg)
