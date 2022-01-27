@@ -244,7 +244,7 @@ async function main() {
     )
     const summaryData = JSON.parse(summaryFileContent)
     const s = summaryData.statistic
-    const passedPercentage = s.passed / (s.total - s.skipped)
+    const passedPercentage = s.passed / s.total
     const failedPercentage = 1 - passedPercentage
     const summaryText = [
       `*Summary:* ${formatPercentage(passedPercentage)}% of tests passed`,
