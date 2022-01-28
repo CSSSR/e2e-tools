@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.4.9](https://github.com/CSSSR/e2e-tools/compare/@csssr/nightwatch-image-comparison@0.4.8...@csssr/nightwatch-image-comparison@0.4.9) (2022-01-28)
+
+
+### Bug Fixes
+
+* Исправлена ошибка порядка при сравнении допустимой разницы скриншотов ([4bdae8f](https://github.com/CSSSR/e2e-tools/commit/4bdae8f84f10f13d163ec5b1413d25e42a66afe3))
+
+
+
+
+
 ## [0.4.8](https://github.com/CSSSR/e2e-tools/compare/@csssr/nightwatch-image-comparison@0.4.6...@csssr/nightwatch-image-comparison@0.4.8) (2021-09-16)
 
 **Note:** Version bump only for package @csssr/nightwatch-image-comparison

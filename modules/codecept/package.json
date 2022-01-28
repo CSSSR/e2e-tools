@@ -1,6 +1,6 @@
 {
   "name": "@csssr/e2e-tools-codecept",
-  "version": "1.1.5",
+  "version": "1.1.6",
   "description": "Codecept плагин для @csssr/e2e-tools",
   "author": "Pavel Liaukovich <pl@xlinur.com>",
   "license": "MIT",
@@ -18,8 +18,9 @@
   },
   "dependencies": {
     "@codeceptjs/ui": "^0.4.6",
-    "@csssr/e2e-tools": "^1.6.5",
     "@csssr/codeceptjs": "^3.0.7",
+    "@csssr/e2e-tools": "^1.6.6",
+    "@csssr/testcafe-browser-provider-csssr": "^1.0.2",
     "@types/node": "^14.14.41",
     "codeceptjs-resemblehelper": "1.9.4",
     "faker": "^5.5.3",
@@ -28,7 +29,6 @@
     "playwright": "^1.12.3",
     "puppeteer": "^10.1.0",
     "testcafe": "^1.16.1",
-    "@csssr/testcafe-browser-provider-csssr": "^1.0.0",
     "webdriverio": "^7.7.6"
   },
   "repository": {

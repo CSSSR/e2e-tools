@@ -3,6 +3,47 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.6.6](https://github.com/CSSSR/e2e-tools/compare/@csssr/e2e-tools@1.6.4...@csssr/e2e-tools@1.6.6) (2022-01-28)
+
+
+### Bug Fixes
+
+* Всегда генерируем Allure отчёт, а не только когда тесты прошли успешно ([896498f](https://github.com/CSSSR/e2e-tools/commit/896498f910af7ee0056d3d81ac4cb24c4e940fc7))
+* Добавлен забытый import ([49905fd](https://github.com/CSSSR/e2e-tools/commit/49905fdf0a3c85250f874587fea97a19dfd41fdf))
+* Добавлена пропущенная запятая ([f5259ea](https://github.com/CSSSR/e2e-tools/commit/f5259ea38c2d94eadb03fdd1a9a6e045a5cf8fe7))
+* Исправлена авторизация в Selenium в GitHub Actions с Nightwatch ([e6de454](https://github.com/CSSSR/e2e-tools/commit/e6de454882e3bef026c4f3e28e5a80e68d61733d))
+* Исправлена загрузка Allure отчёта ([140b112](https://github.com/CSSSR/e2e-tools/commit/140b1129a669f96716e58bf4cd82297e8be9e1f1))
+* Исправлена картинка при падении тестов ([79b728b](https://github.com/CSSSR/e2e-tools/commit/79b728b739e5f3f6f3beec662505bb5a5dc4ce5d))
+* Исправлена отправка уведомлений о запуске теста в Slack ([a48008f](https://github.com/CSSSR/e2e-tools/commit/a48008f7537447cae872e85f1d4fdd74e78e4b8a))
+* Исправлена ссылка на логи в Slack нотификации ([577ba7a](https://github.com/CSSSR/e2e-tools/commit/577ba7a9d11c4dae932bd7f101e561332d5bf86a))
+* исправлена формула расчёта процента успешно завершённых тестов ([641752e](https://github.com/CSSSR/e2e-tools/commit/641752e89e6e9be74a8984fb328d3914f9d961f8))
+* Исправлено обрезание всех строк, кроме первых двух в отчёте по тестам в Slack сообщении ([d790a39](https://github.com/CSSSR/e2e-tools/commit/d790a399f1252953cab4ccabb3b6430522013d98))
+* Исправлено отображение emoji при успешном завершении тестов ([5f620c6](https://github.com/CSSSR/e2e-tools/commit/5f620c6e0b0be135f982680ac0a170d492c6d569))
+* Исправлено отображение времени прогона тестов ([8489127](https://github.com/CSSSR/e2e-tools/commit/8489127c75a2baa2d0eac78e8c2bd0521068096a))
+* Исправлено отображение количества упавших тестов в title ([42c2b25](https://github.com/CSSSR/e2e-tools/commit/42c2b25fdfc29bfcca37d6af7a42f634745836a5))
+* Исправлено получение переменных окружения для авторизации Selenium в Jenkins ([947e1af](https://github.com/CSSSR/e2e-tools/commit/947e1af7f7d2a29be901e8505825e3b0616f55d2))
+* Исправлено склонение слов при выводе продолжительности теста ([fc8ed4a](https://github.com/CSSSR/e2e-tools/commit/fc8ed4a2526c45d2ba261b6a9167796bfce9df5b))
+* Исправлено удаление старый переодических workflows ([14a8bd4](https://github.com/CSSSR/e2e-tools/commit/14a8bd44390ca106d021d8f9e1c2254b38c4f1c2))
+* Исправлено форматирования процентов в Slack сообщении ([6ae6196](https://github.com/CSSSR/e2e-tools/commit/6ae6196a1b3e700e80b905c291886b5cc9d76a95))
+* Исправлены отступы в отчёте о количестве тестов ([9f3dda6](https://github.com/CSSSR/e2e-tools/commit/9f3dda6fee5c676dd60a50787ef421e3cea5e10a))
+* Исправлены перепутанные статусы сообщения в Slack ([cd490d4](https://github.com/CSSSR/e2e-tools/commit/cd490d4339d136ee6db6e819c421293560031e62))
+* Не учитываем пропущенные тесты в статистике для Slack сообщения ([52649f0](https://github.com/CSSSR/e2e-tools/commit/52649f0d22059bbbc8baad517a0c8541c74b4628))
+* проверка на абсолютный путь некорректно работает в GithubActions ([887a9fe](https://github.com/CSSSR/e2e-tools/commit/887a9fe95c8e49edf491d5f69d9a9b98f1742d5f))
+* Сохраняем html отчёты в общую директорию, так как у них есть уникальный ID ([1f083b1](https://github.com/CSSSR/e2e-tools/commit/1f083b15031d795e3ffd1d7194ccbbe4def4a43c))
+
+
+### Features
+
+* Добавлен вывод длительности тестов в Slack уведомлении ([e1f5ba1](https://github.com/CSSSR/e2e-tools/commit/e1f5ba1334c2f97c0fc82a4acba70de3db1c69af))
+* Добавлено количество тестов (упавших и прошедших в Slack сообщение ([347d79a](https://github.com/CSSSR/e2e-tools/commit/347d79a5e252114b948d91cb9e82f6d2505f2eeb))
+* Добавлено предупреждение, что версия Node.js слишком низкая ([c7c0bbd](https://github.com/CSSSR/e2e-tools/commit/c7c0bbd16ed5e0380e8c811d0e313cade79cb76b))
+* Обновляем workflow для переодических запусков во время yarn et upgrade ([821385a](https://github.com/CSSSR/e2e-tools/commit/821385a7f80d999e5cf535d176f46d79a23356a8))
+* Улучшен вывод слак уведомления о прогоне тестов ([e9fe318](https://github.com/CSSSR/e2e-tools/commit/e9fe31855a10189600ede7b504a27894d20133ca))
+
+
+
+
+
 ## [1.6.4](https://github.com/CSSSR/e2e-tools/compare/@csssr/e2e-tools@1.6.3...@csssr/e2e-tools@1.6.4) (2022-01-27)
 
 **Note:** Version bump only for package @csssr/e2e-tools

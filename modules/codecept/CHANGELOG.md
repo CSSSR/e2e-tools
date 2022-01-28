@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.6](https://github.com/CSSSR/e2e-tools/compare/@csssr/e2e-tools-codecept@1.1.5...@csssr/e2e-tools-codecept@1.1.6) (2022-01-28)
+
+
+### Bug Fixes
+
+* Исправлена авторизация в Selenium в GitHub Actions с Nightwatch ([e6de454](https://github.com/CSSSR/e2e-tools/commit/e6de454882e3bef026c4f3e28e5a80e68d61733d))
+* Исправлено форматирование по рекомендациям Prettier ([3637b87](https://github.com/CSSSR/e2e-tools/commit/3637b87877b5a25123e11a232745a90004b33ca0))
+
+
+
+
+
 ## [1.1.5](https://github.com/CSSSR/e2e-tools/compare/@csssr/e2e-tools-codecept@1.1.4...@csssr/e2e-tools-codecept@1.1.5) (2022-01-27)
 
 **Note:** Version bump only for package @csssr/e2e-tools-codecept

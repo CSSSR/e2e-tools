@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.15.14](https://github.com/CSSSR/e2e-tools/compare/@csssr/e2e-tools-nightwatch@1.15.13...@csssr/e2e-tools-nightwatch@1.15.14) (2022-01-28)
+
+
+### Bug Fixes
+
+* Исправлен вывод цветов в GitHub Actions ([0570f38](https://github.com/CSSSR/e2e-tools/commit/0570f38e34b636c614097c903e6cba3e3cd55592))
+* Исправлена авторизация в Selenium в GitHub Actions с Nightwatch ([e6de454](https://github.com/CSSSR/e2e-tools/commit/e6de454882e3bef026c4f3e28e5a80e68d61733d))
+
+
+### Features
+
+* В Nightwatch конфиг добавлены переменные окружения по умолчанию для авторизации в Selenium ([272fb93](https://github.com/CSSSR/e2e-tools/commit/272fb93dd0215b022c932ce0b3aa7c3cbcd17d1b))
+* Добавлены дефолтные credentials для Jenkins, чтобы не приходилось добавлять их в каждом проекте ([0cff1ef](https://github.com/CSSSR/e2e-tools/commit/0cff1ef85ca9a29fcfc01f8b2cb4ccf7ca152922))
+
+
+
+
+
 ## [1.15.13](https://github.com/CSSSR/e2e-tools/compare/@csssr/e2e-tools-nightwatch@1.15.12...@csssr/e2e-tools-nightwatch@1.15.13) (2022-01-27)
 
 **Note:** Version bump only for package @csssr/e2e-tools-nightwatch
