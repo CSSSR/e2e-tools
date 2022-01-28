@@ -18,7 +18,7 @@
   },
   "dependencies": {
     "@codeceptjs/ui": "^0.4.6",
-    "@csssr/e2e-tools": "^1.6.4",
+    "@csssr/e2e-tools": "^1.6.5",
     "@csssr/codeceptjs": "^3.0.7",
     "@types/node": "^14.14.41",
     "codeceptjs-resemblehelper": "1.9.4",
