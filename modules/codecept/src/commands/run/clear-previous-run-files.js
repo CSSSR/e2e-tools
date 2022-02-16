@@ -2,25 +2,21 @@ const fs = require('fs')
 const path = require('path')
 const packageName = require('../../../package.json').name
 const glob = require('fast-glob')
-const {
-  getTestsRootDir,
-  getConfig,
-} = require('@csssr/e2e-tools/utils')
+const { getTestsRootDir, getConfig } = require('@csssr/e2e-tools/utils')
 
 function clearFiles(filesPath) {
-
   const files = glob.sync(filesPath, {
     cwd: getTestsRootDir(),
   })
 
-  files.forEach(filePath => {
+  files.forEach((filePath) => {
     fs.unlinkSync(filePath)
   })
 }
 
 function clearPreviousRunFiles() {
   if (process.env.ENABLE_ALLURE_REPORT) {
-    clearFiles("codecept/report/allure-reports/*")
+    clearFiles('codecept/report/allure-reports/*')
   }
 
   const config = getConfig()

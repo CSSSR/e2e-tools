@@ -46,11 +46,11 @@ function createToolConfig() {
     },
     helpers: {
       ResembleHelper: {
-        require: "codeceptjs-resemblehelper",
-        screenshotFolder: "./report/",
-        baseFolder: "./base/",
-        diffFolder: "./report/diff/"
-      }
+        require: 'codeceptjs-resemblehelper',
+        screenshotFolder: './report/',
+        baseFolder: './base/',
+        diffFolder: './report/diff/',
+      },
     },
     githubActions: {
       enabled: true,
