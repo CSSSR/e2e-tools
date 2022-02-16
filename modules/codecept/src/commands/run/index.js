@@ -7,6 +7,7 @@ const {
 } = require('@csssr/e2e-tools/utils')
 const packageName = require('../../../package.json').name
 const { generateGitHubWorkflow } = require('./generate-github-workflow')
+const { clearPreviousRunFiles } = require('./clear-previous-run-files')
 
 /**
  * @returns {import('yargs').CommandModule | undefined}
@@ -22,6 +23,8 @@ const addRunCommand = (context) => {
   const defaultBrowser =
     process.env.BROWSER || Object.entries(browsersConfig).find(([_, browser]) => browser.default)[0]
   const browsers = Object.keys(browsersConfig)
+
+  clearPreviousRunFiles()
 
   return {
     aliases: ['codecept', 'ct'],

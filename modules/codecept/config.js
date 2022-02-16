@@ -49,6 +49,7 @@ function getBrowser(browserName, browserConfig) {
           uniqueScreenshotNames: true,
           ...settings,
         },
+        ...helpers,
       }
     }
 
