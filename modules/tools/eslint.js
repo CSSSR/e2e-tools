@@ -1,5 +1,5 @@
 // To not mix languages by mistake in naming!
-const eitherLatinOrCyrillicRegex = '^(\.)?(([a-zA-Z0-9\-_ ]+)|([а-яА-ЯёЁ0-9\-_ ]+))(\.test)?(\.js)?$'
+const { eitherLatinOrCyrillicRegex } = require('./eslint-helpers')
 
 module.exports = {
   root: true,
