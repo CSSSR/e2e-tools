@@ -75,7 +75,7 @@ function generateGitHubWorkflow() {
           },
         },
         config.allure?.projectId && allurectlUploadStep(config, name, command),
-      ],
+      ].filter(Boolean),
     }
   }
 
