@@ -3,9 +3,9 @@ const path = require('path')
 const glob = require('fast-glob')
 const crypto = require('crypto')
 const {
-  allurectlWatch,
   allureEnv,
   downloadAllurectlStep,
+  allurectlUploadStep,
   getConfig,
   getTestsRootDir,
   getProjectRootDir,
@@ -43,9 +43,12 @@ function generateGitHubWorkflow() {
     .filter(([_, cfg]) => cfg.remote)
     .map(([browserName]) => browserName)[0]
 
-  function getTestRunJob(testFile) {
+  function getTestRunJob(testFile, config) {
+    const name = getTestFilePrettyName(testFile)
+    const command = `yarn et codecept:run --browser \${{ github.event.inputs.browserName }} --test 'tests/${testFile}'`
+
     return {
-      name: getTestFilePrettyName(testFile),
+      name,
       if: `github.event.inputs.${getJobName(testFile)} == 'true'`,
       'runs-on': ['self-hosted', 'e2e-tests'],
       'timeout-minutes': 30,
@@ -60,14 +63,18 @@ function generateGitHubWorkflow() {
           run: 'yarn install --frozen-lockfile',
           'working-directory': 'e2e-tests',
         },
+        config.allure?.projectId && downloadAllurectlStep(),
         {
-          run: `yarn et codecept:run --browser \${{ github.event.inputs.browserName }} --test 'tests/${testFile}'`,
+          run: command,
           'working-directory': 'e2e-tests',
           env: {
             ...githubSecretsEnv,
             LAUNCH_URL: '${{ github.event.inputs.launchUrl }}',
+            ...(config.allure?.projectId && { ENABLE_ALLURE_REPORT: 'true' }),
+            ...(config.allure?.projectId && allureEnv(config, name, command)),
           },
         },
+        config.allure?.projectId && allurectlUploadStep(config, name, command),
       ],
     }
   }
@@ -115,7 +122,7 @@ function generateGitHubWorkflow() {
       statuses: 'none',
     },
     jobs: Object.fromEntries(
-      testFiles.map((testFile) => [getJobName(testFile), getTestRunJob(testFile)])
+      testFiles.map((testFile) => [getJobName(testFile), getTestRunJob(testFile, config)])
     ),
   }
 
