@@ -1,6 +1,7 @@
 const fs = require('fs')
 const path = require('path')
 const glob = require('fast-glob')
+const hbs = require('handlebars')
 const {
   getConfig,
   getProjectRootDir,
@@ -11,6 +12,10 @@ const {
   allureEnv,
   downloadAllurectlStep,
 } = require('../utils')
+const templateContext = {
+  url: '${{ github.event.deployment_status.environment_url }}',
+  branch: '${{ github.event.deployment.payload.branch }}',
+}
 
 function getWorkflowName({ url, command, run }) {
   let name = `${run.name} (url: ${url}, command: ${command})`
@@ -26,12 +31,14 @@ function getWorkflowName({ url, command, run }) {
 function getCheckoutSteps(run) {
   if (run.testsBranch) {
     if (run.customEvent === 'successful-deploy') {
+      const testsBranchTemplate = hbs.compile(run.testsBranch)
+      const testsBranch = testsBranchTemplate(templateContext)
       return [
         {
           uses: 'actions/checkout@v2',
           with: {
             lfs: true,
-            ref: run.testsBranch,
+            ref: testsBranch,
           },
         },
       ]
@@ -67,12 +74,15 @@ function getCheckoutSteps(run) {
 }
 
 function generatePeriodicRunWorkflow({ url, command, run, id, config }) {
+  const urlTemplate = hbs.compile(url)
+  const environmentUrl = urlTemplate(templateContext)
+
   const workflowPath = path.join(
     getProjectRootDir(),
     `.github/workflows/e2e-run-periodic-task-${id}.yaml`
   )
 
-  const workflowName = getWorkflowName({ url, command, run })
+  const workflowName = getWorkflowName({ environmentUrl, command, run })
 
   function slackMessage(status) {
     function byStatus(success, failure) {
@@ -89,7 +99,7 @@ function generatePeriodicRunWorkflow({ url, command, run, id, config }) {
         ),
         '',
         `Название: ${run.name}`,
-        `URL: ${url}`,
+        `URL: ${environmentUrl}`,
         'Команда для запуска:',
         '```',
         command,
@@ -146,7 +156,7 @@ function generatePeriodicRunWorkflow({ url, command, run, id, config }) {
             env: {
               ...getGitHubSecretEnv(config.tools['@csssr/e2e-tools-nightwatch']?.browsers),
               ...getGitHubSecretEnv(config.tools['@csssr/e2e-tools-codecept']?.browsers),
-              LAUNCH_URL: url,
+              LAUNCH_URL: environmentUrl,
               ENABLE_ALLURE_REPORT: 'true',
               ...allureEnv(config, run.name, command),
             },
@@ -158,7 +168,7 @@ function generatePeriodicRunWorkflow({ url, command, run, id, config }) {
             'working-directory': 'e2e-tests',
             id: 'allure',
             env: {
-              LAUNCH_URL: url,
+              LAUNCH_URL: environmentUrl,
               RUN_COMMAND: command,
               ALLURE_REPORT_DIRECTORIES:
                 'codecept/report/allure-reports/,nightwatch/report/allure-reports/',
@@ -195,7 +205,7 @@ function generatePeriodicRunWorkflow({ url, command, run, id, config }) {
             uses: 'archive/github-actions-slack@27663f2377ce6f86d7fca5b8056e6b977f03b5c9',
             with: slackMessage('success'),
           },
-          allurectlUploadStep(config, run.name, command),
+          allurectlUploadStep(config, run.name, command, 'periodic'),
         ].filter(Boolean),
       },
     },
@@ -206,18 +216,25 @@ function generatePeriodicRunWorkflow({ url, command, run, id, config }) {
       deployment_status: {},
     }
 
+    workflow.concurrency = {
+      group: environmentUrl,
+      'cancel-in-progress': true,
+    }
+
     workflow.jobs['run-tests'].if = [
       `github.event_name == 'workflow_dispatch' ||`,
       `github.event_name == 'deployment_status' &&`,
-      `github.event.deployment_status.state == 'success' &&`,
-      `github.event.deployment.payload.environmentURL == '${url}'`,
+      `github.event.deployment_status.state == 'success'`,
+      url === '{{url}}'
+        ? `&& !contains(github.event.deployment_status.environment_url, 'storybook')`
+        : `&& github.event.deployment_status.environment_url == '${environmentUrl}'`,
     ].join(' ')
   }
 
   /*
-    Событие workflow_run происходит когда процесс изменяет статус 
-    на requested или completed Но статус completed не указывает на успех 
-    выполнения процесса. Для отсеивания процессов что не завершились успешно 
+    Событие workflow_run происходит когда процесс изменяет статус
+    на requested или completed Но статус completed не указывает на успех
+    выполнения процесса. Для отсеивания процессов что не завершились успешно
     нам необходимо добавить следующее условие:
   */
   if (run.event && run.event.workflow_run) {
