@@ -4,7 +4,9 @@ function allurectlWatch(config, command) {
     : command
 }
 
-function allurectlUploadStep(config, name, command) {
+function allurectlUploadStep(config, name, command, type) {
+  const allureLaunchName =
+    type === 'periodic' ? name : `${name} in \${{ github.event.inputs.browserName }}`
   return (
     config.allure?.projectId &&
     config.allure?.mode !== 'watch' && {
@@ -13,7 +15,7 @@ function allurectlUploadStep(config, name, command) {
       'working-directory': 'e2e-tests',
       run: `./allurectl upload ${resultsDirectory(command)}`,
       env: {
-        ...allureEnv(config, `${name} in \${{ github.event.inputs.browserName }}`, command),
+        ...allureEnv(config, allureLaunchName, command),
       },
     }
   )
