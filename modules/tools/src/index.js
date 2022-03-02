@@ -138,7 +138,7 @@ const upgradeCommand = (context) => ({
     if (args.updatePackageJson && dropCommit(toolsPackageInfo.version) !== info.version) {
       spawn.sync(
         'yarn',
-        ['add', '--dev', '--tilde', `${toolsPackageInfo.name}@${releaseChannel}`],
+        ['add', '--dev', '--exact', `${toolsPackageInfo.name}@${releaseChannel}`],
         {
           stdio: 'inherit',
           cwd: getTestsRootDir(),
