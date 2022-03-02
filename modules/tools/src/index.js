@@ -62,7 +62,7 @@ const addToolCommand = (context) => ({
         ? `file:${__dirname.replace('tools/src', 'nightwatch')}`
         : `${packageName}@${config.releaseChannel || 'latest'}`
 
-    spawn.sync('yarn', ['add', '--dev', '--tilde', package], {
+    spawn.sync('yarn', ['add', '--dev', '--exact', package], {
       stdio: 'inherit',
       cwd: getTestsRootDir(),
     })
@@ -80,7 +80,7 @@ const addToolCommand = (context) => ({
 
 async function updateTool(context, packageName, shouldUpdatePackages, releaseChannel) {
   if (shouldUpdatePackages) {
-    spawn.sync('yarn', ['add', '--dev', '--tilde', `${packageName}@${releaseChannel}`], {
+    spawn.sync('yarn', ['add', '--dev', '--exact', `${packageName}@${releaseChannel}`], {
       stdio: 'inherit',
       cwd: getTestsRootDir(),
     })
