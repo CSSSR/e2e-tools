@@ -4,7 +4,7 @@ const {
   getConfig,
   getProjectRootDir,
   createWorkflow,
-  getGitHubSecretEnv,
+  getGitHubBrowserSecretEnv,
   allurectlWatch,
   allurectlUploadStep,
   allureEnv,
@@ -24,7 +24,7 @@ function generateGitHubWorkflow() {
     return
   }
 
-  const githubSecretsEnv = getGitHubSecretEnv(nightwatchConfig.browsers)
+  const githubSecretsEnv = getGitHubBrowserSecretEnv(nightwatchConfig.browsers)
 
   const defaultRemoteBrowser = Object.entries(nightwatchConfig.browsers)
     .filter(([_, cfg]) => cfg.remote)

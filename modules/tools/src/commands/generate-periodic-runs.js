@@ -7,6 +7,7 @@ const {
   getProjectRootDir,
   createWorkflow,
   getGitHubSecretEnv,
+  getGitHubBrowserSecretEnv,
   allurectlWatch,
   allurectlUploadStep,
   allureEnv,
@@ -154,11 +155,12 @@ function generatePeriodicRunWorkflow({ url, command, run, id, config }) {
             run: allurectlWatch(config, command),
             'working-directory': 'e2e-tests',
             env: {
-              ...getGitHubSecretEnv(config.tools['@csssr/e2e-tools-nightwatch']?.browsers),
-              ...getGitHubSecretEnv(config.tools['@csssr/e2e-tools-codecept']?.browsers),
+              ...getGitHubBrowserSecretEnv(config.tools['@csssr/e2e-tools-nightwatch']?.browsers),
+              ...getGitHubBrowserSecretEnv(config.tools['@csssr/e2e-tools-codecept']?.browsers),
               LAUNCH_URL: environmentUrl,
               ENABLE_ALLURE_REPORT: 'true',
               ...allureEnv(config, run.name, command),
+              ...getGitHubSecretEnv(config.env),
             },
           },
           {
