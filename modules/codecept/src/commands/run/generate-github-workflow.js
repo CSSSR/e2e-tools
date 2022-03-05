@@ -10,7 +10,7 @@ const {
   getTestsRootDir,
   getProjectRootDir,
   createWorkflow,
-  getGitHubSecretEnv,
+  getGitHubBrowserSecretEnv,
 } = require('@csssr/e2e-tools/utils')
 
 function getTestFilePrettyName(testFile) {
@@ -34,7 +34,7 @@ function generateGitHubWorkflow() {
     return
   }
 
-  const githubSecretsEnv = getGitHubSecretEnv(codeceptConfig.browsers)
+  const githubSecretsEnv = getGitHubBrowserSecretEnv(codeceptConfig.browsers)
   const testFiles = glob.sync('**/*.test.{js,ts}', {
     cwd: path.join(getTestsRootDir(), 'codecept/tests'),
   })

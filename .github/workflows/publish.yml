@@ -34,7 +34,7 @@ jobs:
 
       - name: Publish prerelease
         run: |
-          yarn lerna publish --yes --canary --force-publish --no-verify-access
+          yarn lerna publish --yes --canary --force-publish --no-verify-access --pre-dist-tag=canary --preid=canary
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
         if: github.ref == 'refs/heads/canary'

@@ -318,7 +318,16 @@ function createWorkflow(workflowPath, content) {
   fs.writeFileSync(workflowPath, githubWorkflowContent, { encoding: 'utf-8' })
 }
 
-function getGitHubSecretEnv(browsers) {
+function getGitHubSecretEnv(env) {
+  return Object.entries(env || {}).reduce((acc, [envName, env]) => {
+    return {
+      ...acc,
+      [envName]: `\${{ secrets.${envName} || '${env.default}' }}`,
+    }
+  }, {})
+}
+
+function getGitHubBrowserSecretEnv(browsers) {
   return Object.entries(browsers || {})
     .filter(
       ([_, browserConfig]) => browserConfig.type === 'selenium' && browserConfig.seleniumBasicAuth
@@ -391,6 +400,7 @@ module.exports = {
   stripDirectoryNameCaseInsensitive,
   createWorkflow,
   getGitHubSecretEnv,
+  getGitHubBrowserSecretEnv,
   ensureNodeVersion,
   allurectlWatch,
   allurectlUploadStep,
