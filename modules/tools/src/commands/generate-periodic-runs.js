@@ -12,6 +12,7 @@ const {
   allurectlUploadStep,
   allureEnv,
   downloadAllurectlStep,
+  allureJobUidStep,
 } = require('../utils')
 const templateContext = {
   url: '${{ github.event.deployment_status.environment_url }}',
@@ -146,6 +147,7 @@ function generatePeriodicRunWorkflow({ url, command, run, id, config }) {
         'timeout-minutes': 90,
         steps: [
           ...getCheckoutSteps(run),
+          config.allure?.projectId && allureJobUidStep(),
           {
             run: 'yarn install --frozen-lockfile',
             'working-directory': 'e2e-tests',
