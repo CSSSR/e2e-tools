@@ -54,6 +54,7 @@ const addRunCommand = (context) => {
         [
           'codeceptjs',
           'run',
+          '--steps',
           ...(args.test
             ? [stripDirectoryNameCaseInsensitive(args.test, path.join(testRoot, 'codecept/'))]
             : []),
