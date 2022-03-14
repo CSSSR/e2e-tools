@@ -9,6 +9,9 @@ const {
   allurectlUploadStep,
   allureEnv,
   downloadAllurectlStep,
+  allureJobUidStep,
+  getGitHubEnv,
+  getGitHubEnvInputs,
 } = require('@csssr/e2e-tools/utils')
 
 function generateGitHubWorkflow() {
@@ -87,6 +90,13 @@ function generateGitHubWorkflow() {
             default: 'true',
             required: true,
           },
+          ...(nightwatchConfig.allureTestOpsJobs?.enabled && {
+            ALLURE_JOB_RUN_ID: {
+              description: 'Inner parameter for Allure TestOps',
+              required: false,
+            },
+          }),
+          ...getGitHubEnvInputs(config.env),
         },
       },
     },
@@ -114,6 +124,7 @@ function generateGitHubWorkflow() {
               lfs: true,
             },
           },
+          config.allure?.projectId && allureJobUidStep(),
           {
             run: 'yarn install --frozen-lockfile',
             'working-directory': 'e2e-tests',
@@ -126,13 +137,15 @@ function generateGitHubWorkflow() {
             ),
             'working-directory': 'e2e-tests',
             env: {
+              ...getGitHubEnv(config.env),
               ...githubSecretsEnv,
               LAUNCH_URL: '${{ github.event.inputs.launchUrl }}',
               ENABLE_ALLURE_REPORT: 'true',
               ...allureEnv(
                 config,
                 `${name} in \${{ github.event.inputs.browserName }}`,
-                'nightwatch'
+                'nightwatch',
+                nightwatchConfig.allureTestOpsJobs?.enabled
               ),
             },
           },
@@ -180,7 +193,13 @@ function generateGitHubWorkflow() {
             uses: 'archive/github-actions-slack@27663f2377ce6f86d7fca5b8056e6b977f03b5c9',
             with: slackMessage('success'),
           },
-          allurectlUploadStep(config, name, 'nightwatch'),
+          allurectlUploadStep(
+            config,
+            name,
+            'nightwatch',
+            '',
+            nightwatchConfig.allureTestOpsJobs?.enabled
+          ),
         ].filter(Boolean),
       },
     },

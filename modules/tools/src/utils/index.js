@@ -16,6 +16,7 @@ const {
   allurectlUploadStep,
   allureEnv,
   downloadAllurectlStep,
+  allureJobUidStep,
 } = require('./allure')
 
 const getTestsRootDir = () => {
@@ -327,6 +328,28 @@ function getGitHubSecretEnv(env) {
   }, {})
 }
 
+function getGitHubEnv(env) {
+  return Object.entries(env || {}).reduce((acc, [envName, env]) => {
+    return {
+      ...acc,
+      [envName]: `\${{ github.event.inputs.${envName} }}`,
+    }
+  }, {})
+}
+
+function getGitHubEnvInputs(env) {
+  return Object.entries(env || {}).reduce((acc, [envName, env]) => {
+    return {
+      ...acc,
+      [envName]: {
+        description: env.description,
+        default: env.default,
+        required: true,
+      },
+    }
+  }, {})
+}
+
 function getGitHubBrowserSecretEnv(browsers) {
   return Object.entries(browsers || {})
     .filter(
@@ -400,10 +423,13 @@ module.exports = {
   stripDirectoryNameCaseInsensitive,
   createWorkflow,
   getGitHubSecretEnv,
+  getGitHubEnv,
+  getGitHubEnvInputs,
   getGitHubBrowserSecretEnv,
   ensureNodeVersion,
   allurectlWatch,
   allurectlUploadStep,
   allureEnv,
   downloadAllurectlStep,
+  allureJobUidStep,
 }
