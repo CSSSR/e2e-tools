@@ -1,6 +1,11 @@
-const { getConfig, getSeleniumBasicAuthEnv } = require('@csssr/e2e-tools/utils')
+const { getConfig, getSeleniumBasicAuthEnv, getEnvVariable } = require('@csssr/e2e-tools/utils')
 
 const config = getConfig()
+
+function getLaunchUrl() {
+  const url = getEnvVariable('LAUNCH_URL', 'Launch URL')
+  return url.endsWith('/') ? url.slice(0, -1) : url
+}
 
 function getBasicAuthAuthorizationHeader(browserName, browserConfig) {
   const { url, seleniumBasicAuth: sba } = browserConfig
@@ -16,7 +21,7 @@ function getBrowser(browserName, browserConfig) {
     case 'playwright': {
       return {
         Playwright: {
-          url: config.defaultLaunchUrl,
+          url: getLaunchUrl(),
           ...settings,
         },
       }
@@ -25,7 +30,7 @@ function getBrowser(browserName, browserConfig) {
     case 'puppeteer': {
       return {
         Puppeteer: {
-          url: config.defaultLaunchUrl,
+          url: getLaunchUrl(),
           ...settings,
         },
       }
@@ -39,7 +44,7 @@ function getBrowser(browserName, browserConfig) {
       const u = new URL(url)
       return {
         WebDriver: {
-          url: config.defaultLaunchUrl,
+          url: getLaunchUrl(),
           host: u.host,
           port: Number(u.port || (u.protocol === 'https:' ? 443 : 80)),
           protocol: u.protocol.slice(0, -1),
@@ -56,7 +61,7 @@ function getBrowser(browserName, browserConfig) {
     case 'testcafe': {
       return {
         TestCafe: {
-          url: config.defaultLaunchUrl,
+          url: getLaunchUrl(),
           waitForTimeout: 3000,
           ...settings,
         },
@@ -110,4 +115,8 @@ exports.config = {
       enableScreenshotDiffPlugin: true,
     },
   },
+
+  include: {
+    launch: { url: getLaunchUrl() },
+  }
 }
