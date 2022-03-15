@@ -117,6 +117,6 @@ exports.config = {
   },
 
   include: {
-    launch: { url: getLaunchUrl() },
+    url: { launchUrl: getLaunchUrl() },
   },
 }
