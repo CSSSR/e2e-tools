@@ -94,8 +94,14 @@ const browserName = getBrowserName()
 exports.config = {
   tests: './tests/**/*.test.js',
   output: './report',
-  helpers: getBrowser(browserName, browsers[browserName]),
-
+  helpers: {
+    ...getBrowser(browserName, browsers[browserName]),
+    ...{
+      TestPlan: {
+        require: '@csssr/e2e-tools-codecept/src/helpers/testplan',
+      },
+    },
+  },
   bootstrap: null,
   mocha: {},
   name: 'e2e-tests',

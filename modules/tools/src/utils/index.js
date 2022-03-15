@@ -17,6 +17,7 @@ const {
   allureEnv,
   downloadAllurectlStep,
   allureJobUidStep,
+  allureTestPlanStep,
 } = require('./allure')
 
 const getTestsRootDir = () => {
@@ -432,4 +433,5 @@ module.exports = {
   allureEnv,
   downloadAllurectlStep,
   allureJobUidStep,
+  allureTestPlanStep,
 }
