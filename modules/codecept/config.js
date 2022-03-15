@@ -21,6 +21,7 @@ function getBrowser(browserName, browserConfig) {
     case 'playwright': {
       return {
         Playwright: {
+          timeout: 10000,
           url: getLaunchUrl(),
           ...settings,
         },
