@@ -99,7 +99,7 @@ function generateGitHubWorkflow() {
       },
     },
     permissions: {
-      actions: 'none',
+      actions: 'read',
       checks: 'none',
       contents: 'read',
       deployments: 'none',
