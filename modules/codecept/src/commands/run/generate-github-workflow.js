@@ -15,6 +15,7 @@ const {
   getGitHubEnv,
   getGitHubEnvInputs,
   allurectlWatch,
+  allureTestPlanStep,
 } = require('@csssr/e2e-tools/utils')
 
 function generateGitHubWorkflow() {
@@ -88,12 +89,13 @@ function generateGitHubWorkflow() {
             default: defaultRemoteBrowser,
             required: true,
           },
-          ...(codeceptConfig.allureTestOpsJobs?.enabled && {
-            ALLURE_JOB_RUN_ID: {
-              description: 'Inner parameter for Allure TestOps',
-              required: false,
-            },
-          }),
+          ...(codeceptConfig.allureTestOpsJobs?.enabled &&
+            config.allure?.projectId && {
+              ALLURE_JOB_RUN_ID: {
+                description: 'Inner parameter for Allure TestOps',
+                required: false,
+              },
+            }),
           ...getGitHubEnvInputs(config.env),
         },
       },
@@ -128,6 +130,9 @@ function generateGitHubWorkflow() {
             'working-directory': 'e2e-tests',
           },
           config.allure?.projectId && downloadAllurectlStep(),
+          codeceptConfig.allureTestOpsJobs?.enabled &&
+            config.allure?.projectId &&
+            allureTestPlanStep(config),
           {
             run: allurectlWatch(
               config,
@@ -146,6 +151,8 @@ function generateGitHubWorkflow() {
                   'codecept',
                   codeceptConfig.allureTestOpsJobs?.enabled
                 )),
+              ...(codeceptConfig.allureTestOpsJobs?.enabled &&
+                config.allure?.projectId && { ALLURE_TESTPLAN_PATH: './testplan.json' }),
             },
           },
           codeceptConfig.githubActions?.slackChannel && {

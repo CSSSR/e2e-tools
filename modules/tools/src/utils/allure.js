@@ -97,10 +97,28 @@ function allureJobUidStep() {
   }
 }
 
+function allureTestPlanStep(config) {
+  return (
+    config.allure?.projectId && {
+      name: 'Download allure test-plan',
+      'working-directory': 'e2e-tests',
+      run: './allurectl job-run plan --output-file ${ALLURE_TESTPLAN_PATH}',
+      env: {
+        ALLURE_ENDPOINT: '${{ secrets.ALLURE_ENDPOINT }}',
+        ALLURE_TOKEN: '${{ secrets.ALLURE_TOKEN }}',
+        ALLURE_PROJECT_ID: config.allure?.projectId,
+        ALLURE_JOB_RUN_ID: '${{ github.event.inputs.ALLURE_JOB_RUN_ID }}',
+        ALLURE_TESTPLAN_PATH: './testplan.json',
+      },
+    }
+  )
+}
+
 module.exports = {
   allurectlWatch,
   allurectlUploadStep,
   allureEnv,
   downloadAllurectlStep,
   allureJobUidStep,
+  allureTestPlanStep,
 }
