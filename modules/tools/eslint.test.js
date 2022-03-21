@@ -49,4 +49,12 @@ describe('Регулярка для линтинга имен файлов и д
   it('файлы тестов, кириллица', () => {
     expect(regex.test('Файл с тестами.test')).toBe(true)
   })
+
+  it('файл конфига', () => {
+    expect(regex.test('codecept.conf.js')).toBe(true)
+  })
+
+  it('файлы с русским куском перед расширением', () => {
+    expect(regex.test('codecept.русский.js')).toBe(false)
+  })
 })
