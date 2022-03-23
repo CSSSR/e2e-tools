@@ -100,6 +100,15 @@ exports.config = {
       TestPlan: {
         require: '@csssr/e2e-tools-codecept/src/helpers/testplan',
       },
+      ChaiWrapper: {
+        require: 'codeceptjs-chai',
+      },
+      ResembleHelper: {
+        require: 'codeceptjs-resemblehelper',
+        screenshotFolder: './report/',
+        baseFolder: './base/',
+        diffFolder: './report/diff/',
+      },
     },
   },
   bootstrap: null,

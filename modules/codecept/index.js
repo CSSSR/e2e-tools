@@ -44,17 +44,6 @@ function createToolConfig() {
         },
       },
     },
-    helpers: {
-      ResembleHelper: {
-        require: 'codeceptjs-resemblehelper',
-        screenshotFolder: './report/',
-        baseFolder: './base/',
-        diffFolder: './report/diff/',
-      },
-      ChaiWrapper: {
-        require: 'codeceptjs-chai',
-      },
-    },
     githubActions: {
       enabled: true,
     },
