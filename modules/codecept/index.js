@@ -53,7 +53,7 @@ function createToolConfig() {
       },
       ChaiWrapper: {
         require: 'codeceptjs-chai',
-      }
+      },
     },
     githubActions: {
       enabled: true,
