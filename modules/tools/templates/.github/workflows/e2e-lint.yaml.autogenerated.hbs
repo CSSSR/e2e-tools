@@ -1,0 +1,24 @@
+# Этот файл сгенерирован автоматически, не редактируйте его вручную
+
+name: Линтинг файлов в e2e-tests
+on: pull_request
+
+jobs:
+  lint:
+    name: e2e-tests lint
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 16
+          cache: yarn
+
+      - name: Установка зависимостей
+        working-directory: e2e-tests
+        run: yarn --frozen-lockfile
+
+      - name: Линтинг
+        working-directory: e2e-tests
+        run: yarn eslint .
