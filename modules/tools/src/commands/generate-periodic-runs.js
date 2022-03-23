@@ -221,7 +221,7 @@ function generatePeriodicRunWorkflow({ url, command, run, id, config }) {
     }
 
     workflow.concurrency = {
-      group: environmentUrl,
+      group: `periodic-run_${id}_${environmentUrl}`,
       'cancel-in-progress': true,
     }
 
