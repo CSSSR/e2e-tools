@@ -51,6 +51,9 @@ function createToolConfig() {
         baseFolder: './base/',
         diffFolder: './report/diff/',
       },
+      ChaiWrapper: {
+        require: 'codeceptjs-chai',
+      }
     },
     githubActions: {
       enabled: true,

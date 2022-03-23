@@ -100,9 +100,6 @@ exports.config = {
       TestPlan: {
         require: '@csssr/e2e-tools-codecept/src/helpers/testplan',
       },
-      ChaiWrapper: {
-        require: 'codeceptjs-chai',
-      }
     },
   },
   bootstrap: null,
