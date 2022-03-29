@@ -1,5 +1,7 @@
 const { eitherLatinOrCyrillicRegex } = require('./eslint-helpers')
 
+// Проверка регулярки: https://regex101.com/r/Znv7pw/1
+
 describe('Регулярка для линтинга имен файлов и директорий (без расширений!)', () => {
   const regex = new RegExp(eitherLatinOrCyrillicRegex)
   it('кириллица', () => {
@@ -56,5 +58,9 @@ describe('Регулярка для линтинга имен файлов и д
 
   it('файлы с русским куском перед расширением', () => {
     expect(regex.test('codecept.русский.js')).toBe(false)
+  })
+
+  it('файлы с круглыми скобками и запятыми в названии', () => {
+    expect(regex.test('6534 Создание Происшествия с моделью (Создать новое, сущ опасность).test.js')).toBe(true)
   })
 })
