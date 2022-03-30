@@ -7,6 +7,7 @@ module.exports = {
     commonjs: true,
     es6: true,
     node: true,
+    "codeceptjs/codeceptjs": true,
   },
   extends: 'eslint:recommended',
   globals: {
@@ -20,5 +21,5 @@ module.exports = {
     'folders/match-regex': [2, eitherLatinOrCyrillicRegex, `${process.cwd()}/`],
     'filenames/match-regex': [2, eitherLatinOrCyrillicRegex],
   },
-  plugins: ['folders', 'filenames'],
+  plugins: ['folders', 'filenames', 'codeceptjs'],
 }

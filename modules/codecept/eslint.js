@@ -1,8 +1,6 @@
 module.exports = {
   globals: {
-    Feature: true,
-    Scenario: true,
-    inject: true,
+    codeceptjs: true,
     tryTo: true,
   },
   ignorePatterns: ['**/report/'],
