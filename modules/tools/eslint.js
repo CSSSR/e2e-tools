@@ -7,7 +7,7 @@ module.exports = {
     commonjs: true,
     es6: true,
     node: true,
-    "codeceptjs/codeceptjs": true,
+    'codeceptjs/codeceptjs': true,
   },
   extends: 'eslint:recommended',
   globals: {
