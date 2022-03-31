@@ -4803,10 +4803,10 @@ codeceptjs-chai@2.3.2:
     chai-json-schema-ajv "^5.1.0"
     chai-string "^1.5.0"
 
-codeceptjs-resemblehelper@1.9.4:
-  version "1.9.4"
-  resolved "https://registry.yarnpkg.com/codeceptjs-resemblehelper/-/codeceptjs-resemblehelper-1.9.4.tgz#5929fff7166e077583c50512c19f0a56cdb6e930"
-  integrity sha512-jYSs9fHFypxfVnM/UnOSY3d2q+nLu9xcfdwNs3GTN/i3HuQ40vJHfL8comRkeLFQh27VJ72bmFyF70QOfPWCqg==
+codeceptjs-resemblehelper@1.9.5:
+  version "1.9.5"
+  resolved "https://registry.yarnpkg.com/codeceptjs-resemblehelper/-/codeceptjs-resemblehelper-1.9.5.tgz#1ccf889557a3d2d56c7863655597dd2659566f00"
+  integrity sha512-I39eYN6MdROvE0LCaC1egfYRM5HaHCRQnH44jMor3R9DUUZT4BGR/hounyPmv3guAzRZvbFDQvL6Ykj5YxyQFw==
   dependencies:
     assert "^1.5.0"
     aws-sdk "^2.662.0"
