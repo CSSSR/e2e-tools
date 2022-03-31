@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.8](https://github.com/CSSSR/e2e-tools/compare/@csssr/e2e-tools-codecept@1.1.6...@csssr/e2e-tools-codecept@1.1.8) (2022-03-31)
+
+
+### Bug Fixes
+
+* Add read permission for actions in codecept manual GitHub Action ([f79e0de](https://github.com/CSSSR/e2e-tools/commit/f79e0de38f1ee04a9b6bf86f81ff0a0b1de46d4e))
+* Исправлена работа с зависимостями и каналами canary и alpha ([cc210b5](https://github.com/CSSSR/e2e-tools/commit/cc210b50b25964123c366b5cd49f17203e6393af))
+
+
+### Features
+
+* В генерируемые GitHub Actions добавлены настройки для запуска тестов из Allure TestOps ([31b000e](https://github.com/CSSSR/e2e-tools/commit/31b000e8b3d8ace1c3fb3cd6ab331ed339a4e4b5))
+* Селективный запуск тестов в codecept через Test Plan из Allure TestOps ([759c316](https://github.com/CSSSR/e2e-tools/commit/759c316c7926e9c48ef8d07886490e89c9d568b9))
+
+
+
+
+
 ## [1.1.6](https://github.com/CSSSR/e2e-tools/compare/@csssr/e2e-tools-codecept@1.1.5...@csssr/e2e-tools-codecept@1.1.6) (2022-01-28)
 
 

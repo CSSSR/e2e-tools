@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.15.16](https://github.com/CSSSR/e2e-tools/compare/@csssr/e2e-tools-nightwatch@1.15.14...@csssr/e2e-tools-nightwatch@1.15.16) (2022-03-31)
+
+
+### Bug Fixes
+
+* Исправлена работа с зависимостями и каналами canary и alpha ([cc210b5](https://github.com/CSSSR/e2e-tools/commit/cc210b50b25964123c366b5cd49f17203e6393af))
+
+
+### Features
+
+* В генерируемые GitHub Actions добавлены настройки для запуска тестов из Allure TestOps ([31b000e](https://github.com/CSSSR/e2e-tools/commit/31b000e8b3d8ace1c3fb3cd6ab331ed339a4e4b5))
+
+
+
+
+
 ## [1.15.14](https://github.com/CSSSR/e2e-tools/compare/@csssr/e2e-tools-nightwatch@1.15.13...@csssr/e2e-tools-nightwatch@1.15.14) (2022-01-28)
 
 
