@@ -53,6 +53,8 @@ function getBrowser(browserName, browserConfig) {
             Authorization: getBasicAuthAuthorizationHeader(browserName, browserConfig),
           },
           uniqueScreenshotNames: true,
+          waitForTimeout: 15000,
+          smartWait: 5000,
           ...settings,
         },
         ...helpers,
