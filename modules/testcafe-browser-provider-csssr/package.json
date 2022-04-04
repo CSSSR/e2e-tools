@@ -10,7 +10,7 @@
   },
   "prepublish": "esbuild src/index.ts --bundle --platform=node --outfile=dist/index.js --external:ssh2",
   "dependencies": {
-    "@csssr/e2e-tools": "1.6.7",
+    "@csssr/e2e-tools": "1.6.8",
     "axios": "^0.26.0",
     "hostile": "^1.3.3",
     "node-pty": "^0.10.1",
