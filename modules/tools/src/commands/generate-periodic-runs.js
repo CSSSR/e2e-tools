@@ -84,7 +84,7 @@ function generatePeriodicRunWorkflow({ url, command, run, id, config }) {
     `.github/workflows/e2e-run-periodic-task-${id}.yaml`
   )
 
-  const workflowName = getWorkflowName({ environmentUrl, command, run })
+  const workflowName = getWorkflowName({ url, command, run })
 
   function slackMessage(status) {
     function byStatus(success, failure) {
