@@ -225,12 +225,25 @@ function generatePeriodicRunWorkflow({ url, command, run, id, config }) {
       'cancel-in-progress': true,
     }
 
+    const ignoreUrls =
+      run.ignoreUrls &&
+      run.ignoreUrls
+        .map(
+          (ignoreUrl) => `!contains(github.event.deployment_status.environment_url, '${ignoreUrl}')`
+        )
+        .join(' && ')
+
     workflow.jobs['run-tests'].if = [
       `github.event_name == 'workflow_dispatch' ||`,
       `github.event_name == 'deployment_status' &&`,
       `github.event.deployment_status.state == 'success'`,
       url === '{{url}}'
-        ? `&& !contains(github.event.deployment_status.environment_url, 'storybook')`
+        ? [
+            `&& !contains(github.event.deployment_status.environment_url, 'storybook')`,
+            ignoreUrls && `&& ${ignoreUrls}`,
+          ]
+            .filter(Boolean)
+            .join(' ')
         : `&& github.event.deployment_status.environment_url == '${environmentUrl}'`,
     ].join(' ')
   }
