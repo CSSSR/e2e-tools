@@ -15,9 +15,7 @@ function clearFiles(filesPath) {
 }
 
 function clearPreviousRunFiles() {
-  if (process.env.ENABLE_ALLURE_REPORT) {
-    clearFiles('codecept/report/allure-reports/*')
-  }
+  clearFiles('codecept/report/allure-reports/*')
 
   const config = getConfig()
   const helpers = config.tools[packageName].helpers

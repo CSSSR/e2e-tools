@@ -128,7 +128,7 @@ exports.config = {
       enabled: true,
     },
     allure: {
-      enabled: !!process.env.ENABLE_ALLURE_REPORT,
+      enabled: true,
       outputDir: './codecept/report/allure-reports',
       enableScreenshotDiffPlugin: true,
     },
