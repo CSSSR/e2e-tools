@@ -9,6 +9,8 @@ function getLaunchUrl() {
 
 function getBasicAuthAuthorizationHeader(browserName, browserConfig) {
   const { url, seleniumBasicAuth: sba } = browserConfig
+  if (!sba) return
+
   const username = getSeleniumBasicAuthEnv(browserName, sba.username_env, `Login for ${url}`)
   const password = getSeleniumBasicAuthEnv(browserName, sba.password_env, `Password for ${url}`)
   return `Basic ${Buffer.from(`${username}:${password}`, 'utf-8').toString('base64')}`
@@ -18,16 +20,6 @@ function getBrowser(browserName, browserConfig) {
   const { type, default: isDefault, remote, url, seleniumBasicAuth, ...settings } = browserConfig
 
   switch (type) {
-    case 'playwright': {
-      return {
-        Playwright: {
-          timeout: 10000,
-          url: getLaunchUrl(),
-          ...settings,
-        },
-      }
-    }
-
     case 'puppeteer': {
       return {
         Puppeteer: {
@@ -55,17 +47,6 @@ function getBrowser(browserName, browserConfig) {
           uniqueScreenshotNames: true,
           waitForTimeout: 15000,
           smartWait: 5000,
-          ...settings,
-        },
-        ...helpers,
-      }
-    }
-
-    case 'testcafe': {
-      return {
-        TestCafe: {
-          url: getLaunchUrl(),
-          waitForTimeout: 3000,
           ...settings,
         },
         ...helpers,

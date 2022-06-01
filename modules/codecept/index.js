@@ -15,14 +15,32 @@ function createToolConfig() {
     browsers: {
       local_chrome: {
         default: true,
-        type: 'playwright',
-        show: true,
-        browser: 'chromium',
+        type: 'selenium',
+
+        url: 'http://localhost',
+        port: 4444,
+
+        browser: 'chrome',
+        windowSize: '1920x1680',
+        desiredCapabilities: {
+          'goog:chromeOptions': {
+            args: ['--no-sandbox', '--disable-gpu', '--window-size=1200,800'],
+          },
+        },
       },
       local_firefox: {
-        type: 'playwright',
+        type: 'selenium',
+
+        url: 'http://localhost',
+        port: 4444,
+
         browser: 'firefox',
-        show: true,
+        windowSize: '1920x1680',
+        desiredCapabilities: {
+          'goog:chromeOptions': {
+            args: ['--no-sandbox', '--disable-gpu', '--window-size=1200,800'],
+          },
+        },
       },
       remote_chrome: {
         remote: true,

@@ -368,27 +368,6 @@ function getGitHubBrowserSecretEnv(browsers) {
         [passwordEnvName]: `\${{ secrets.${passwordGitHubSecret} }}`,
       }
     }, {})
-
-  return Object.entries(browsers)
-    .filter(
-      ([_, browserConfig]) =>
-        browserConfig.type === 'testcafe' && browserConfig.browserServer === 'ssh'
-    )
-    .reduce((acc, [browserName, browserConfig]) => {
-      const [_, config] = browserConfig.browser.split(':')
-      const usernameEnvName = `${config.toUpperCase()}_USERNAME`
-      const passwordEnvName = `${config.toUpperCase()}_PASSWORD`
-      const sshUsernameEnvName = `${config.toUpperCase()}_SSH_USERNAME`
-      const sshPasswordEnvName = `${config.toUpperCase()}_SSH_PASSWORD`
-
-      return {
-        ...acc,
-        [usernameEnvName]: `\${{ secrets.${usernameEnvName} }}`,
-        [passwordEnvName]: `\${{ secrets.${passwordEnvName} }}`,
-        [sshUsernameEnvName]: `\${{ secrets.${sshUsernameEnvName} }}`,
-        [sshPasswordEnvName]: `\${{ secrets.${sshPasswordEnvName} }}`,
-      }
-    }, env)
 }
 
 function ensureNodeVersion() {

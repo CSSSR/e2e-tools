@@ -26,9 +26,7 @@
     "faker": "^5.5.3",
     "js-yaml": "^4.1.0",
     "lodash": "^4.17.21",
-    "playwright": "^1.12.3",
     "puppeteer": "^10.1.0",
-    "testcafe": "^1.16.1",
     "webdriverio": "^7.7.6"
   },
   "repository": {
