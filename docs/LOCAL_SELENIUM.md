@@ -1,6 +1,7 @@
 # Настройка локального selenium для отладки тестов
 
-Установка selenium и драйверов для chrome и firefox автоматизирована. 
+Установка selenium и драйверов для chrome и firefox автоматизирована.
+Запуск selenium также выполняется через скрипт.
 
 ## Windows
 
@@ -8,7 +9,7 @@
 
 ## Mac
 
-Необходимо выполнить сприпт `./scripts/local-selenium/mac.sh` в powershell с правами администратора.
+Необходимо выполнить сприпт `./scripts/local-selenium/mac.sh`.
 
 ## Правка e2e-tools.json
 
