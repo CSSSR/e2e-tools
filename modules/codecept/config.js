@@ -17,7 +17,7 @@ function getBasicAuthAuthorizationHeader(browserName, browserConfig) {
 }
 
 function getBrowser(browserName, browserConfig) {
-  const { type, default: isDefault, remote, url, seleniumBasicAuth, ...settings } = browserConfig
+  const { type, default: isDefault, remote, url, seleniumBasicAuth, desiredCapabilities, ...settings } = browserConfig
 
   switch (type) {
     case 'puppeteer': {
@@ -34,6 +34,10 @@ function getBrowser(browserName, browserConfig) {
         throw new Error(`Selenium url is not specified for browser ${browserName}`)
       }
 
+      if (desiredCapabilities.browserName === "firefox" && url === "http://localhost") {
+        desiredCapabilities['moz:firefoxOptions'].binary = getEnvVariable("FIREFOX_BINARY", "Path to firefox binary")
+      }
+
       const u = new URL(url)
       return {
         WebDriver: {
@@ -47,6 +51,7 @@ function getBrowser(browserName, browserConfig) {
           uniqueScreenshotNames: true,
           waitForTimeout: 15000,
           smartWait: 5000,
+          desiredCapabilities,
           ...settings,
         },
         ...helpers,

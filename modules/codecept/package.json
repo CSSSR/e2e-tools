@@ -27,7 +27,7 @@
     "js-yaml": "^4.1.0",
     "lodash": "^4.17.21",
     "puppeteer": "^10.1.0",
-    "webdriverio": "^7.7.6"
+    "webdriverio": "^7.19.7"
   },
   "repository": {
     "type": "git",
