@@ -36,10 +36,10 @@ function createToolConfig() {
 
         browser: 'firefox',
         windowSize: '1920x1680',
-        // TODO change capabilities
         desiredCapabilities: {
-          'goog:chromeOptions': {
-            args: ['--no-sandbox', '--disable-gpu', '--window-size=1200,800'],
+          browserName: 'firefox',
+          'moz:firefoxOptions': {
+            args: ['--window-size=1200,800'],
           },
         },
       },
