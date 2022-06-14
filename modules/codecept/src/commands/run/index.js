@@ -8,6 +8,7 @@ const {
 const packageName = require('../../../package.json').name
 const { generateGitHubWorkflow } = require('./generate-github-workflow')
 const { clearPreviousRunFiles } = require('./clear-previous-run-files')
+const { localSelenium } = require('./local-selenium')
 
 /**
  * @returns {import('yargs').CommandModule | undefined}
@@ -44,9 +45,10 @@ const addRunCommand = (context) => {
     },
     command: 'codecept:run',
     describe: 'Run CodeceptJS tests',
-    handler(args) {
+    async handler(args) {
       context.spawnSync('yarn', ['install', '--frozen-lockfile'], { stdio: 'inherit' })
       generateGitHubWorkflow()
+      await localSelenium(args.browser)
       const testRoot = getTestsRootDir()
 
       const result = context.spawnSync(
