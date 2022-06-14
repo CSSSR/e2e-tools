@@ -1,4 +1,4 @@
-const os = require('node:os')
+const os = require('os')
 const { getConfig, getEnvVariable } = require('@csssr/e2e-tools/utils')
 const { spawn, fork } = require('child_process')
 const retry = require('async-retry')
