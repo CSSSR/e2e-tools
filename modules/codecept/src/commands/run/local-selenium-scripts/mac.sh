@@ -4,6 +4,10 @@ if [ ! -n `which java` ]; then
   brew install java
 fi
 
+if [ ! -n `which wget` ]; then
+  brew install wget
+fi
+
 mkdir -p bin && cd bin
 
 # Download selenium
