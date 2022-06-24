@@ -125,6 +125,9 @@ exports.config = {
     tryTo: {
       enabled: true,
     },
+    retryTo: {
+      enabled: true
+    },
     screenshotOnFail: {
       enabled: true,
     },
