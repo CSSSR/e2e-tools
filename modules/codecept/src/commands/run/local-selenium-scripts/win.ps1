@@ -18,8 +18,8 @@ if(!(Test-CommandExists java)) {
 }
 
 # Download selenium
-New-Item -ItemType Directory -Force -Path "./bin"
-Set-Location -Path "./bin"
+New-Item -ItemType Directory -Force -Path "./bin" | Out-Null
+Set-Location -Path "./bin" | Out-Null
 
 $selenium = "selenium-server-4.2.1.jar"
 if (!(Test-Path -Path $selenium -PathType Leaf)) {

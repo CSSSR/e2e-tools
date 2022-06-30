@@ -41,7 +41,7 @@ function win(seleniumPath) {
     '-Verb',
     'RunAs',
     '-ArgumentList',
-    `'cd ${seleniumPath}; ls; ./win.ps1;'`,
+    `'-ExecutionPolicy Bypass cd ${seleniumPath};./win.ps1;'`,
   ])
 }
 
