@@ -78,7 +78,7 @@ function getBrowser(browserName, browserConfig) {
   }
 }
 
-const { browsers, helpers } = config.tools['@csssr/e2e-tools-codecept']
+const { browsers, helpers, plugins } = config.tools['@csssr/e2e-tools-codecept']
 
 function getBrowserName() {
   if (process.env.BROWSER) {
@@ -136,6 +136,7 @@ exports.config = {
       outputDir: './codecept/report/allure-reports',
       enableScreenshotDiffPlugin: true,
     },
+    ...plugins,
   },
 
   include: {

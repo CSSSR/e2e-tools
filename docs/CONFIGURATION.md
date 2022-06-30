@@ -71,3 +71,44 @@ Id браузера можно задать в файле `e2e-tools.json`:
 ## Настройка для стендов с базовой авторизацией
 
 В .env необходмо указать ссылку на стенд вместе с кредами `LAUNCH_URL=https://login:passsword@test.ru/`
+
+# Codecept: настройка плагинов
+
+Плагины, включенные по умолчанию:
+
+- `pauseOnFail`
+- `retryFailedStep`
+- `tryTo`
+- `retryTo`
+- `screenshotOnFail`
+- `allure`
+
+Формат конфигурации:
+
+```json
+"@csssr/e2e-tools-codecept": {
+  "plugins": {
+    "pluginName": {...pluginOptions}
+  }
+}
+```
+
+Пример конфигурации:
+
+```json
+"@csssr/e2e-tools-codecept": {
+  "plugins": {
+    "retryTo": {
+      "enabled": true,
+    },
+    "screenshotOnFail": {
+      "enabled": false,
+    },
+    "allure": {
+      "enabled": true,
+      "outputDir": "./codecept/report/allure-reports",
+      "enableScreenshotDiffPlugin": true,
+    },
+  },
+}
+```
