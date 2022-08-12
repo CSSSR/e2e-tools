@@ -331,15 +331,24 @@ function getGitHubSecretEnv(env) {
 
 function getGitHubEnv(env) {
   return Object.entries(env || {}).reduce((acc, [envName, env]) => {
+    const envValue =
+      env.type === 'github'
+        ? `\${{ secrets.${envName} || '${env.default}' }}`
+        : `\${{ github.event.inputs.${envName} }}`
+
     return {
       ...acc,
-      [envName]: `\${{ github.event.inputs.${envName} }}`,
+      [envName]: envValue,
     }
   }, {})
 }
 
 function getGitHubEnvInputs(env) {
   return Object.entries(env || {}).reduce((acc, [envName, env]) => {
+    if (env.type === 'github') {
+      return acc
+    }
+
     return {
       ...acc,
       [envName]: {

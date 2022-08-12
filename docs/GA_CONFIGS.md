@@ -160,6 +160,114 @@
 
 Тесты не запускаются параллельно — если на момент запуска тестов другой запуск ещё идёт, то запуск попадёт в очередь и будет выполнен, когда первый запуск закончится
 
+### Передача переменных окружения через GitHub Secret
+
+#### GitHub Action для ручного запуска тестов
+
+Переменные окружения, доступные во время запуска тестов задаются в блоке `env` в файле `e2e-tools.json`
+
+```json
+  "env": {
+    "API_URL": {
+      "type": "string",
+      "default": "https://api.project.csssr.cloud/",
+      "description": "Адрес API, к которому обращается стенд"
+    },
+    "AUTH_LOGIN": {
+      "type": "string",
+      "default": "user.autotest",
+      "description": "Логин пользователя для обращения напрямую к API"
+    },
+    "AUTH_PASSWORD": {
+      "type": "string",
+      "default": "123456",
+      "description": "Пароль пользователя для обращения напрямую к API"
+    }
+  }
+```
+
+Если для переменной окружения `type` задан как `string` или `boolean`, в созданном GitHub Action переменные окружения задаются через `inputs`
+
+```yaml
+name: Run CodeceptJS e2e tests
+concurrency: e2e-tests
+on:
+  workflow_dispatch:
+    inputs:
+      launchUrl:
+        description: Базовый URL сайта
+        default: 'https://master.project.csssr.cloud/'
+        required: true
+      browserName:
+        description: Название браузера как в e2e-tools.json
+        default: remote_chrome
+        required: true
+      ALLURE_JOB_RUN_ID:
+        description: Inner parameter for Allure TestOps
+        required: false
+      API_URL:
+        description: 'Адрес API, к которму обращается стенд'
+        default: 'https://master.api.mpss.csssr.cloud/'
+        required: true
+      AUTH_LOGIN:
+        description: Логин пользователя для обращения напрямую к API
+        default: user.autotest
+        required: true
+      AUTH_PASSWORD:
+        description: Пароль пользователя для обращения напрямую к API
+        default: '123456'
+        required: true
+```
+
+К сожалению GitHub ограничивает максимальное количество параметров, передаваемых через `inputs`. Можно передать не более 10 параметров.
+
+Для обхода этого ограничения можно использовать передачу переменных окружения через GitHub Secrets
+
+В настройках GitHub репозитория необходимо создать секрет, имя которого соответствуют имени переменной окружения
+![GitHub Secret](https://s.csssr.com/U019SC8BZAB/2022-08-12-12-34-40-UfpavObozgpu.jpg)
+
+![GitHub Secret](https://s.csssr.com/U019SC8BZAB/2022-08-12-12-36-12-IEjrsW3Cakw9.jpg)
+
+И изменить `type` переменной на `github`
+
+```json
+  "env": {
+    "API_URL": {
+      "type": "string",
+      "default": "https://api.project.csssr.cloud/",
+      "description": "Адрес API, к которому обращается стенд"
+    },
+    "AUTH_LOGIN": {
+      "type": "github",
+      "default": "user.autotest",
+      "description": "Логин пользователя для обращения напрямую к API"
+    },
+    "AUTH_PASSWORD": {
+      "type": "github",
+      "default": "123456",
+      "description": "Пароль пользователя для обращения напрямую к API"
+    }
+  }
+```
+
+После этого необходимо пересоздать файлы GitHub Actions.
+Теперь переменные окружения в GitHub Actions будут передаваться не через `inputs`, а через секреты GitHub репозитория.
+
+Если секрет в репозитории не задан, то для переменной окружения будет использоваться значение параметра `default`
+
+```yaml
+- run: 'yarn et codecept:run --browser ${{ github.event.inputs.browserName }}'
+  working-directory: e2e-tests
+  env:
+    API_URL: '${{ github.event.inputs.API_URL }}'
+    AUTH_LOGIN: "${{ secrets.AUTH_LOGIN || 'user.autotest' }}"
+    AUTH_PASSWORD: "${{ secrets.AUTH_PASSWORD || '123456' }}"
+```
+
+#### GitHub Action для регулярного запуска тестов
+
+Для случая с GitHub Action для регулярного запуска тестов, который создаётся командой `yarn et generate-periodic-runs`, использовать `inputs` нельзя. Все переменные окружения будут передаваться только через секреты репозитория GitHub вне зависимости от указанного `type` в `e2e-tools.json`
+
 > _Обратите внимание!_
 >
 > Если в файле e2e-tools.json тип браузера “selenium” ("type": "selenium",) [пример](https://github.com/CSSSR/csssr.com/blob/46f58b18d54b7bb7e3733b72b482a5b1c9f18f55/e2e-tests/e2e-tools.json#L26), необходимо исправить имена переменных
@@ -168,7 +276,7 @@
 >
 > ```json
 > "basicAuth": {
->            "credentialsId": "chromedriver",
+>           "credentialsId": "chromedriver",
 >           "username_env": "CHROMEDRIVER_USERNAME",
 >           "password_env": "CHROMEDRIVER_PASSWORD"
 >         },
@@ -179,6 +287,6 @@
 > ```json
 > "seleniumBasicAuth": {
 >           "username_env": "SELENIUM_USERNAME",
->             "password_env": "SELENIUM_PASSWORD"
+>           "password_env": "SELENIUM_PASSWORD"
 > },
 > ```
