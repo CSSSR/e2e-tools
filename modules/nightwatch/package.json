@@ -34,7 +34,7 @@
     "mocha-allure-reporter": "^1.4.0",
     "mocha-multi-reporters": "^1.5.1",
     "mochawesome": "^4",
-    "nightwatch": "~1.7.11",
+    "nightwatch": "~2.2.3",
     "rimraf": "^3.0.0"
   },
   "repository": {
