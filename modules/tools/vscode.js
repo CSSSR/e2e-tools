@@ -62,6 +62,22 @@ function updateVsCodeConfig({ frameworkName, runCommand, tasks = [], inputs = []
             },
             {
               type: 'shell',
+              label: `${frameworkName}: запустить все тесты в текущей папке в Chrome на удалённом сервере`,
+              command: `yarn et ${runCommand} --browser remote_chrome --test='\${fileDirname}/*.test.js'`,
+              problemMatcher: [],
+              presentation: { showReuseMessage: false },
+              group: 'build',
+            },
+            {
+              type: 'shell',
+              label: `${frameworkName}: запустить все тесты в текущей папке рекурсивно в Chrome на удалённом сервере`,
+              command: `yarn et ${runCommand} --browser remote_chrome --test='\${fileDirname}/**/*.test.js'`,
+              problemMatcher: [],
+              presentation: { showReuseMessage: false },
+              group: 'build',
+            },
+            {
+              type: 'shell',
               label: `${frameworkName}: запустить все тесты в Chrome на удалённом сервере`,
               command: `yarn et ${runCommand} --browser remote_chrome`,
               problemMatcher: [],
