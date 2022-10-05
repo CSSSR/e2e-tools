@@ -20,6 +20,9 @@ class TestPlan extends Helper {
         const fullName = `${suite.title}:.${test.title}`
         return this.plan.indexOf(fullName) >= 0
       })
+      if (suite.tests.length === 0) {
+        suite._afterAll.splice(0, 1)
+      }
     }
   }
 }

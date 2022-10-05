@@ -143,7 +143,6 @@ function generateGitHubWorkflow() {
               ...getGitHubEnv(config.env),
               ...githubSecretsEnv,
               LAUNCH_URL: '${{ github.event.inputs.launchUrl }}',
-              ...(config.allure?.projectId && { ENABLE_ALLURE_REPORT: 'true' }),
               ...(config.allure?.projectId &&
                 allureEnv(
                   config,

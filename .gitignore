@@ -1,3 +1,4 @@
 node_modules/
 *.log
 !templates/**/.vscode/
+modules/codecept-playground

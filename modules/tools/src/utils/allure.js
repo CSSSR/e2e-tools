@@ -28,9 +28,14 @@ function resultsDirectory(command) {
 function allureEnv(config, name, command, allureTestOpsJobs) {
   function getGitHubEnv(env) {
     return Object.entries(env || {}).reduce((acc, [envName, env]) => {
+      const envValue =
+        env.type === 'github'
+          ? `\${{ secrets.${envName} || '${env.default}' }}`
+          : `\${{ github.event.inputs.${envName} }}`
+
       return {
         ...acc,
-        [envName]: `\${{ github.event.inputs.${envName} }}`,
+        [envName]: envValue,
       }
     }, {})
   }

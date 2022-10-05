@@ -9,25 +9,25 @@ function getLaunchUrl() {
 
 function getBasicAuthAuthorizationHeader(browserName, browserConfig) {
   const { url, seleniumBasicAuth: sba } = browserConfig
+  if (!sba) return
+
   const username = getSeleniumBasicAuthEnv(browserName, sba.username_env, `Login for ${url}`)
   const password = getSeleniumBasicAuthEnv(browserName, sba.password_env, `Password for ${url}`)
   return `Basic ${Buffer.from(`${username}:${password}`, 'utf-8').toString('base64')}`
 }
 
 function getBrowser(browserName, browserConfig) {
-  const { type, default: isDefault, remote, url, seleniumBasicAuth, ...settings } = browserConfig
+  const {
+    type,
+    default: isDefault,
+    remote,
+    url,
+    seleniumBasicAuth,
+    desiredCapabilities,
+    ...settings
+  } = browserConfig
 
   switch (type) {
-    case 'playwright': {
-      return {
-        Playwright: {
-          timeout: 10000,
-          url: getLaunchUrl(),
-          ...settings,
-        },
-      }
-    }
-
     case 'puppeteer': {
       return {
         Puppeteer: {
@@ -42,6 +42,17 @@ function getBrowser(browserName, browserConfig) {
         throw new Error(`Selenium url is not specified for browser ${browserName}`)
       }
 
+      if (
+        desiredCapabilities.browserName === 'firefox' &&
+        url === 'http://localhost' &&
+        process.platform === 'win32'
+      ) {
+        desiredCapabilities['moz:firefoxOptions'].binary = getEnvVariable(
+          'FIREFOX_BINARY',
+          'Path to firefox binary'
+        )
+      }
+
       const u = new URL(url)
       return {
         WebDriver: {
@@ -53,17 +64,9 @@ function getBrowser(browserName, browserConfig) {
             Authorization: getBasicAuthAuthorizationHeader(browserName, browserConfig),
           },
           uniqueScreenshotNames: true,
-          ...settings,
-        },
-        ...helpers,
-      }
-    }
-
-    case 'testcafe': {
-      return {
-        TestCafe: {
-          url: getLaunchUrl(),
-          waitForTimeout: 3000,
+          waitForTimeout: 15000,
+          smartWait: 5000,
+          desiredCapabilities,
           ...settings,
         },
         ...helpers,
@@ -75,7 +78,7 @@ function getBrowser(browserName, browserConfig) {
   }
 }
 
-const { browsers, helpers } = config.tools['@csssr/e2e-tools-codecept']
+const { browsers, helpers, plugins } = config.tools['@csssr/e2e-tools-codecept']
 
 function getBrowserName() {
   if (process.env.BROWSER) {
@@ -122,14 +125,18 @@ exports.config = {
     tryTo: {
       enabled: true,
     },
+    retryTo: {
+      enabled: true,
+    },
     screenshotOnFail: {
       enabled: true,
     },
     allure: {
-      enabled: !!process.env.ENABLE_ALLURE_REPORT,
+      enabled: true,
       outputDir: './codecept/report/allure-reports',
       enableScreenshotDiffPlugin: true,
     },
+    ...plugins,
   },
 
   include: {
