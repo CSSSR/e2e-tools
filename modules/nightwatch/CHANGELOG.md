@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.15.17](https://github.com/CSSSR/e2e-tools/compare/@csssr/e2e-tools-nightwatch@1.15.16...@csssr/e2e-tools-nightwatch@1.15.17) (2022-10-05)
+
+**Note:** Version bump only for package @csssr/e2e-tools-nightwatch
+
+
+
+
+
 ## [1.15.16](https://github.com/CSSSR/e2e-tools/compare/@csssr/e2e-tools-nightwatch@1.15.14...@csssr/e2e-tools-nightwatch@1.15.16) (2022-03-31)
 
 

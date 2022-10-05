@@ -1,6 +1,6 @@
 {
   "name": "@csssr/e2e-tools",
-  "version": "1.6.8",
+  "version": "1.6.9",
   "description": "CLI утилита для быстрого добавления e2e тестов в проект",
   "author": "Maxim Samoilov <nitive@icloud.com>",
   "license": "MIT",
