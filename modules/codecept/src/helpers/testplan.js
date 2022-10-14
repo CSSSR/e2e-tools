@@ -9,17 +9,16 @@ class TestPlan extends Helper {
       const data = fs.readFileSync(path)
       const testplan = JSON.parse(data.toString())
       testplan.tests.forEach((test) => {
-        this.plan.push(test.selector)
+        this.plan.push(test.id)
       })
     }
   }
 
   _beforeSuite(suite) {
     if (this.plan.length) {
-      suite.tests = suite.tests.filter((test) => {
-        const fullName = `${suite.title}:.${test.title}`
-        return this.plan.indexOf(fullName) >= 0
-      })
+      suite.tests = suite.tests.filter((test) =>
+        this.plan.some((id) => test.title.includes(`#${id}`))
+      )
       if (suite.tests.length === 0) {
         suite._afterAll.splice(0, 1)
       }
