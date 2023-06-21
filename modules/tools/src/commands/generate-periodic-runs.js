@@ -139,6 +139,7 @@ function generatePeriodicRunWorkflow({ url, command, run, id, config }) {
       'repository-projects': 'none',
       'security-events': 'none',
       statuses: 'none',
+      'id-token': 'write',
     },
     jobs: {
       'run-tests': {

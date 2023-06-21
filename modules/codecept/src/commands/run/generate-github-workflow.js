@@ -111,6 +111,7 @@ function generateGitHubWorkflow() {
       'repository-projects': 'none',
       'security-events': 'none',
       statuses: 'none',
+      'id-token': 'write',
     },
     jobs: {
       'run-tests': {
