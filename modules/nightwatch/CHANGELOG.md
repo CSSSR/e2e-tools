@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.15.18](https://github.com/CSSSR/e2e-tools/compare/@csssr/e2e-tools-nightwatch@1.15.17...@csssr/e2e-tools-nightwatch@1.15.18) (2023-06-21)
+
+
+### Bug Fixes
+
+* Allow id-token permission in GitHub workflow to allow passwordless auth in Vault in Teleport ([45af06e](https://github.com/CSSSR/e2e-tools/commit/45af06ea447d6d9f4b2e45eb19ae70bdedfb4f98))
+
+
+
+
+
 ## [1.15.17](https://github.com/CSSSR/e2e-tools/compare/@csssr/e2e-tools-nightwatch@1.15.16...@csssr/e2e-tools-nightwatch@1.15.17) (2022-10-05)
 
 **Note:** Version bump only for package @csssr/e2e-tools-nightwatch

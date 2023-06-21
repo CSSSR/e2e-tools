@@ -1,6 +1,6 @@
 {
   "name": "@csssr/e2e-tools-nightwatch",
-  "version": "1.15.17",
+  "version": "1.15.18",
   "description": "Nightwatch плагин для @csssr/e2e-tools",
   "author": "Maxim Samoilov <nitive@icloud.com>",
   "license": "MIT",
@@ -17,7 +17,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@csssr/e2e-tools": "^1.6.9",
+    "@csssr/e2e-tools": "^1.6.10",
     "@csssr/mocha-jenkins-reporter": "0.6.2",
     "@csssr/mocha-testrail-ui": "0.4.6",
     "@csssr/nightwatch-image-comparison": "^0.4.10",
