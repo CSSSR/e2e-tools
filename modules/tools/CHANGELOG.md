@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.6.14](https://github.com/CSSSR/e2e-tools/compare/@csssr/e2e-tools@1.6.13...@csssr/e2e-tools@1.6.14) (2023-06-22)
+
+
+### Features
+
+* Fix yarn.lock path in github workflows ([0fb75b2](https://github.com/CSSSR/e2e-tools/commit/0fb75b2582ccf9716486611dd4f9a6c84b227f5e))
+
+
+
+
+
 ## [1.6.13](https://github.com/CSSSR/e2e-tools/compare/@csssr/e2e-tools@1.6.12...@csssr/e2e-tools@1.6.13) (2023-06-22)
 
 
