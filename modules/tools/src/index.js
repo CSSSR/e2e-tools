@@ -121,7 +121,7 @@ const upgradeCommand = (context) => ({
     const releaseChannel = config.releaseChannel || 'latest'
 
     updateJsonFile({
-      filePath: path.join(getProjectRootDir(), 'package.json'),
+      filePath: path.join(getTestsRootDir(), 'package.json'),
       update(config) {
         if (!config.resolutions) config.resolutions = {}
         if (!config.resolutions.canvas) config.resolutions.canvas = '^2.11.2'
