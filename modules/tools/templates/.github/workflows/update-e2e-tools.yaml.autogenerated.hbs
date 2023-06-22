@@ -16,6 +16,7 @@ jobs:
         with:
           node-version: 18
           cache: yarn
+          cache-dependency-path: e2e-tests/yarn.lock
 
       - name: Upgrade e2e tests dependencies
         working-directory: e2e-tests
