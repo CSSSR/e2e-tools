@@ -24,7 +24,7 @@
     "@csssr/nightwatch-local-file-upload": "0.3.4",
     "@types/mocha": "^8.2.2",
     "@types/nightwatch": "^1.3.3",
-    "@types/node": "^14.14.41",
+    "@types/node": "^18.16.18",
     "axios": "^0.26.0",
     "chalk": "^4.1.1",
     "chromedriver": "*",
