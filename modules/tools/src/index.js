@@ -119,6 +119,16 @@ const upgradeCommand = (context) => ({
   async handler(args) {
     const config = getConfig()
     const releaseChannel = config.releaseChannel || 'latest'
+
+    updateJsonFile({
+      filePath: path.join(getProjectRootDir(), 'package.json'),
+      update(config) {
+        if (!config.resolutions) config.resolutions = {}
+        if (!config.resolutions.canvas) config.resolutions.canvas = '^2.11.2'
+        return config
+      },
+    })
+
     const info = await getPackageInfo(toolsPackageInfo.name, {
       version: releaseChannel,
     })
