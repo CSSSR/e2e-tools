@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.6.12](https://github.com/CSSSR/e2e-tools/compare/@csssr/e2e-tools@1.6.11...@csssr/e2e-tools@1.6.12) (2023-06-22)
+
+
+### Bug Fixes
+
+* Automatically set canvas dependency version to the latest one to avoid build errors during `yarn install` ([7083481](https://github.com/CSSSR/e2e-tools/commit/708348173bae1cc83522707ee0156ae919e10fb0))
+
+
+
+
+
 ## [1.6.11](https://github.com/CSSSR/e2e-tools/compare/@csssr/e2e-tools@1.6.10...@csssr/e2e-tools@1.6.11) (2023-06-22)
 
 
