@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.15.19](https://github.com/CSSSR/e2e-tools/compare/@csssr/e2e-tools-nightwatch@1.15.18...@csssr/e2e-tools-nightwatch@1.15.19) (2023-06-22)
+
+
+### Features
+
+* Update Node.js to version 18 (lts) ([5aba493](https://github.com/CSSSR/e2e-tools/commit/5aba493364bf2644a6c6cc38a6b0fb9d803a56fe))
+
+
+
+
+
 ## [1.15.18](https://github.com/CSSSR/e2e-tools/compare/@csssr/e2e-tools-nightwatch@1.15.17...@csssr/e2e-tools-nightwatch@1.15.18) (2023-06-21)
 
 

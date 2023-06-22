@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.11](https://github.com/CSSSR/e2e-tools/compare/@csssr/e2e-tools-codecept@1.1.10...@csssr/e2e-tools-codecept@1.1.11) (2023-06-22)
+
+
+### Features
+
+* Update Node.js to version 18 (lts) ([5aba493](https://github.com/CSSSR/e2e-tools/commit/5aba493364bf2644a6c6cc38a6b0fb9d803a56fe))
+
+
+
+
+
 ## [1.1.10](https://github.com/CSSSR/e2e-tools/compare/@csssr/e2e-tools-codecept@1.1.9...@csssr/e2e-tools-codecept@1.1.10) (2023-06-21)
 
 
