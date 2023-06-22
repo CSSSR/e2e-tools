@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.6.13](https://github.com/CSSSR/e2e-tools/compare/@csssr/e2e-tools@1.6.12...@csssr/e2e-tools@1.6.13) (2023-06-22)
+
+
+### Bug Fixes
+
+* Use correct package.json to set canvas dependency version ([c205b73](https://github.com/CSSSR/e2e-tools/commit/c205b73ac296e57f0f67e3089bdc0fd5e09d05f1))
+
+
+
+
+
 ## [1.6.12](https://github.com/CSSSR/e2e-tools/compare/@csssr/e2e-tools@1.6.11...@csssr/e2e-tools@1.6.12) (2023-06-22)
 
 
