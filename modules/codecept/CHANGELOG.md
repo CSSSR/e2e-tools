@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.15](https://github.com/CSSSR/e2e-tools/compare/@csssr/e2e-tools-codecept@1.1.14...@csssr/e2e-tools-codecept@1.1.15) (2023-10-25)
+
+
+### Features
+
+* Change github runner label ([e2a8c95](https://github.com/CSSSR/e2e-tools/commit/e2a8c9559f373fd7dd44a53f0c034e9a7b139156))
+
+
+
+
+
 ## [1.1.14](https://github.com/CSSSR/e2e-tools/compare/@csssr/e2e-tools-codecept@1.1.13...@csssr/e2e-tools-codecept@1.1.14) (2023-06-22)
 
 **Note:** Version bump only for package @csssr/e2e-tools-codecept
