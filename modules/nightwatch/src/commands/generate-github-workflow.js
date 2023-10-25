@@ -116,7 +116,7 @@ function generateGitHubWorkflow() {
     jobs: {
       'run-tests': {
         name: 'Run tests',
-        'runs-on': ['self-hosted', 'e2e-tests'],
+        'runs-on': 'e2e-tests',
         'timeout-minutes': 90,
         steps: [
           {

@@ -144,7 +144,7 @@ function generatePeriodicRunWorkflow({ url, command, run, id, config }) {
     jobs: {
       'run-tests': {
         name: 'Run tests',
-        'runs-on': ['self-hosted', 'e2e-tests'],
+        'runs-on': 'e2e-tests',
         'timeout-minutes': 90,
         steps: [
           ...getCheckoutSteps(run),
