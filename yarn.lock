@@ -3726,7 +3726,7 @@ caniuse-lite@^1.0.30001503:
   resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001506.tgz#35bd814b310a487970c585430e9e80ee23faf14b"
   integrity sha512-6XNEcpygZMCKaufIcgpQNZNf00GEqc7VQON+9Rd0K1bMYo8xhMZRAo5zpbnbMNizi4YNgIDAFrdykWsvY3H4Hw==
 
-canvas@2.8.0, canvas@^2.11.2, canvas@^2.8.0, canvas@^2.9.1:
+canvas@2.8.0, canvas@^2.11.2, canvas@^2.8.0, canvas@^2.9.3:
   version "2.11.2"
   resolved "https://registry.yarnpkg.com/canvas/-/canvas-2.11.2.tgz#553d87b1e0228c7ac0fc72887c3adbac4abbd860"
   integrity sha512-ItanGBMrmRV7Py2Z+Xhs7cT+FNt5K0vPL4p9EZ/UX/Mu7hFbkxSjKF2KVtPwX7UYWp7dRKnrTvReflgrItJbdw==
@@ -12206,12 +12206,12 @@ wcwidth@^1.0.0, wcwidth@^1.0.1:
   dependencies:
     defaults "^1.0.3"
 
-webdriver-image-comparison@^0.20.0:
-  version "0.20.3"
-  resolved "https://registry.yarnpkg.com/webdriver-image-comparison/-/webdriver-image-comparison-0.20.3.tgz#4d89d3cf2ebdb67c2316c572baf492a8fdf59e0f"
-  integrity sha512-rSMOB/maanlcIqzFCqSY676I6p8h2Ewa/XFxBKdZb8XLk64QjEdtGlXcdT8Cbz0Kuf8k1+bhfbwAKgpIBBWvvg==
+webdriver-image-comparison@^0.22.0:
+  version "0.22.0"
+  resolved "https://registry.yarnpkg.com/webdriver-image-comparison/-/webdriver-image-comparison-0.22.0.tgz#1eb9b70e1cd074bac650aeed64c13b6c014f039b"
+  integrity sha512-YSYy3FtU86QkfdMQwO9jyV4gPyw5XuZYsBDIlN8Km/CTRK3JG4YGKoAjcjTcS5Is81yi0MOde0xEhZ51FnRICQ==
   dependencies:
-    canvas "^2.9.1"
+    canvas "^2.9.3"
     chalk "^4.1.2"
     fs-extra "^10.0.1"
 
