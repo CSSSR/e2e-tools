@@ -20,7 +20,7 @@
     "@aws-sdk/client-s3": "^3.33.0",
     "allure-commandline": "^2.13.8",
     "chalk": "^4.1.2",
-    "comment-json": "4.2.2",
+    "comment-json": "4.2.5",
     "cross-spawn": "^7.0.3",
     "dotenv": "^8.1.0",
     "eslint": "^7.25.0",
